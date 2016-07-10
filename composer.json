@@ -1,0 +1,15 @@
+{
+    "name": "olorin/mgmt",
+    "description": "Admin system for Laravel",
+    "type": "laravel-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Adams",
+            "email": "k.daniel.adams@gmail.com"
+        }
+    ],
+    "require": {
+        "laravelcollective/html" : "5.2.*"
+    }
+}
