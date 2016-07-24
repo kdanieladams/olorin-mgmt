@@ -1,4 +1,4 @@
-@extends('mgmt.master')
+@extends('mgmt::master')
 
 @section('title', $model_name . ' List')
 
@@ -22,7 +22,7 @@
             <tr>
             @foreach($list_fields as $field)
                 <td>
-                    @include('mgmt.fields._' . $field->type, [
+                    @include('mgmt::fields._' . $field->type, [
                         'list' => true,
                         'value' => $item->{$field->name},
                         'view_options' => $field->view_options

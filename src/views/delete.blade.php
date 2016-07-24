@@ -1,4 +1,4 @@
-@extends('mgmt.master')
+@extends('mgmt::master')
 
 @section('title', 'Delete ' . $model_name)
 

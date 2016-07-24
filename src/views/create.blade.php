@@ -1,4 +1,4 @@
-@extends('mgmt.master')
+@extends('mgmt::master')
 
 @section('title', 'Create a New ' . $model_name)
 
@@ -16,7 +16,7 @@
         {{-- Render primary fields in a large column. --}}
         @foreach($item->mgmt_fields as $index => $field)
             @if($field->sidebar === false && $field->editable === true)
-                @include('mgmt.fields._' . $field->type, [
+                @include('mgmt::fields._' . $field->type, [
                     'value' => null,
                     'name' => $field->name,
                     'label' => $field->label,
@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 @foreach($item->mgmt_fields as $index => $field)
                     @if($field->sidebar === true && $field->editable === true)
-                        @include('mgmt.fields._' . $field->relationship, [
+                        @include('mgmt::fields._' . $field->relationship, [
                             'value' => $field->getRelatedItems($item),
                             'selected' => null,
                             'name' => $field->name,

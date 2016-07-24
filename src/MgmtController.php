@@ -29,7 +29,7 @@ class MgmtController extends Controller
      */
     public function index()
     {
-        return view('mgmt.index');
+        return view('mgmt::index');
     }
 
     /**
@@ -60,7 +60,7 @@ class MgmtController extends Controller
         }
 
         flash()->error('Unable to resolve ' . $command);
-        return redirect()->route('mgmt.index');
+        return redirect()->route('mgmt::index');
     }
 
     /**
@@ -106,7 +106,7 @@ class MgmtController extends Controller
             }
         }
 
-        return view('mgmt.list', [
+        return view('mgmt::list', [
             'model_name' => $this->model_name,
             'items' => $items,
             'list_fields' => $list_fields
@@ -123,7 +123,7 @@ class MgmtController extends Controller
     {
         $item = $this->getItem(1);
 
-        return view('mgmt.create', [
+        return view('mgmt::create', [
             'model_name' => $this->model_name,
             'item' => $item,
             'related_fields' => $item->hasRelatedFields()
@@ -168,7 +168,7 @@ class MgmtController extends Controller
     {
         $item = $this->getItem($id);
 
-        return view('mgmt.edit', [
+        return view('mgmt::edit', [
             'item' => $item,
             'model_name' => $this->model_name,
             'related_fields' => $item->hasRelatedFields()
@@ -209,7 +209,7 @@ class MgmtController extends Controller
     {
         $item = $this->getItem($id);
 
-        return view('mgmt.delete', [
+        return view('mgmt::delete', [
             'model_name' => $this->model_name,
             'item' => $item
         ]);
@@ -229,7 +229,7 @@ class MgmtController extends Controller
         $model::destroy($id);
 
         flash()->success("Successfully deleted " . $this->model_name . " " . $id . ".");
-        return redirect()->route('mgmt.index');
+        return redirect()->route('mgmt::index');
     }
     
     /**

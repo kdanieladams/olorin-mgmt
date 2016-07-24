@@ -1,4 +1,4 @@
-@extends('mgmt.master')
+@extends('mgmt::master')
 
 @section('title', 'Edit ' . $model_name)
 
@@ -25,7 +25,7 @@
                         </div>
                     @else
                         @if($field->related === true)
-                            @include('mgmt.fields._' . $field->relationship, [
+                            @include('mgmt::fields._' . $field->relationship, [
                                 'value' => $field->getRelatedItems($item),
                                 'selected' => $field->getRelatedId($item),
                                 'name' => $field->name,
@@ -34,7 +34,7 @@
                                 'view_options' => $field->view_options
                             ])
                         @else
-                            @include('mgmt.fields._' . $field->type, [
+                            @include('mgmt::fields._' . $field->type, [
                                 'value' => $item->{$field->name},
                                 'name' => $field->name,
                                 'label' => $field->label,
@@ -61,7 +61,7 @@
                             </div>
                         @else
                             @if($field->related === true)
-                                @include('mgmt.fields._' . $field->relationship, [
+                                @include('mgmt::fields._' . $field->relationship, [
                                     'value' => $field->getRelatedItems($item),
                                     'selected' => $field->getRelatedId($item),
                                     'name' => $field->name,
@@ -70,7 +70,7 @@
                                     'view_options' => $field->view_options
                                 ])
                             @else
-                                @include('mgmt.fields._' . $field->type, [
+                                @include('mgmt::fields._' . $field->type, [
                                     'value' => $item->{$field->name},
                                     'name' => $field->name,
                                     'label' => $field->label,

@@ -11,5 +11,13 @@
     ],
     "require": {
         "laravelcollective/html" : "5.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Olorin\\Mgmt\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     }
 }

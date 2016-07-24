@@ -1,4 +1,4 @@
-@extends('mgmt.master')
+@extends('mgmt::master')
 
 @section('main')
     <h1>AssettoStig.com <small>MGMT</small></h1>

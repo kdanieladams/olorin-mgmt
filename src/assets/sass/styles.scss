@@ -1,0 +1,87 @@
+// Bootstrap Overrides
+$brand-primary: #900;
+$icon-font-path: '/fonts/';
+
+// Pre-Imports & Fonts
+@import "src/assets/sass/vendor/bootstrap";
+
+// Global Variables
+$light-black: #111;
+$dark-gray: #777;
+$med-red: #c00;
+
+$fast: 300ms;
+$slow: 1000ms;
+
+// Element Styles
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  padding-top: 70px;
+}
+a {
+  transition: color $fast;
+}
+
+// General Classes
+.error{
+  color: $med-red;
+}
+
+// Specific Classes
+.master-wrapper{
+  position: relative;
+  min-height: 100%;
+
+  .container.content {
+    padding-bottom: 150px;
+  }
+}
+.footer-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  .footer {
+    text-align: center;
+    height: 100px;
+    position: relative;
+    background-color: $light-black;
+    color: $dark-gray;
+
+    .footer-text {
+      /**
+       * This might be a good use case for a mixin to vertically center elements.
+       */
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.create-btn {
+  float: right;
+  margin-top: 20px;
+  @extend .btn;
+  @extend .btn-success;
+}
+
+// CK Editor styles
+#cke_body {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+@media(min-width: 768px){
+  body.mgmt {
+    table tr td {
+      min-width: 160px;
+    }
+  }
+}
