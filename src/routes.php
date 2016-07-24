@@ -25,10 +25,6 @@ Route::get('/denied', function(){
     abort(401);
 });
 
-Route::get('/test', function(){
-    return view("mgmt::test");
-});
-
 /**
  * Mgmt routes
  */
