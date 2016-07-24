@@ -64,7 +64,9 @@ class MgmtField {
             }
         }
         else {
-            $msg = $this->setName($name) ? ($this->setType($type) ? '[unknown error]' : 'setType(\'' . $type . '\')') : 'setName(\'' . $name . '\')';
+            $msg = $this->setName($name) ? ($this->setType($type) ? '[unknown error]' :
+                'setType(\'' . $type . '\')') : 'setName(\'' . $name . '\')';
+
             throw new \Exception("MgmtField: Unable to " . $msg . ".");
         }
     }
