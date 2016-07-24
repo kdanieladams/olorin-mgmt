@@ -9,7 +9,7 @@ if (!function_exists('flash')) {
      */
     function flash($msg = null)
     {
-        $flash = app('Olorin\Mgmt\Flash');
+        $flash = app('Olorin\Support\Flash');
 
         if($msg === null) return $flash;
 

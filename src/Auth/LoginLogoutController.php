@@ -1,6 +1,6 @@
 <?php
 
-namespace Olorin\Mgmt;
+namespace Olorin\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Olorin\Mgmt;
+namespace Olorin\Support;
 
 
 class Flash

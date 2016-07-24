@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Olorin\\Mgmt\\": "src/"
+            "Olorin\\" : "src/"
         },
         "files": [
             "src/helpers.php"

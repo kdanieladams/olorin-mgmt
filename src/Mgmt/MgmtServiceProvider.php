@@ -15,17 +15,17 @@ class MgmtServiceProvider extends ServiceProvider
     {
         // Setup routes
         if (!$this->app->routesAreCached()) {
-            require __DIR__ . '/routes.php';
+            require __DIR__ . '/../routes.php';
         }
 
         // Setup views
-        $this->loadViewsFrom(__DIR__ . '/views', 'mgmt');
+        $this->loadViewsFrom(__DIR__ . '/../../views', 'mgmt');
 
         // Publish custom assets
         $this->publishes([
             // __DIR__ . '/views' => resource_path('views/vendor/mgmt'),
-            __DIR__ . '/public/css' => public_path('css'),
-            __DIR__ . '/public/js' => public_path('js')
+            __DIR__ . '/../../public/css' => public_path('css'),
+            __DIR__ . '/../../public/js' => public_path('js')
         ]);
     }
 
@@ -43,6 +43,6 @@ class MgmtServiceProvider extends ServiceProvider
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('Form', 'Collective\Html\FormFacade');
         $loader->alias('Html', 'Collective\Html\HtmlFacade');
-        $loader->alias('FormGroup', 'Olorin\Mgmt\FormGroup');
+        $loader->alias('FormGroup', 'Olorin\Support\FormGroup');
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Olorin\Mgmt;
+<?php namespace Olorin\Support;
 
 use Illuminate\Support\Facades\Facade;
 
