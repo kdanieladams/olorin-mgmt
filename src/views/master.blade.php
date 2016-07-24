@@ -25,6 +25,7 @@
         {{--@include('_flash-messages')--}}
 
         <script type="text/javascript" src="/js/mgmt_scripts.js"></script>
+        @include('mgmt::_flash-messages')
         @yield('scripts')
     </body>
 </html>

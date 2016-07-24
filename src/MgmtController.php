@@ -4,7 +4,7 @@ namespace Olorin\Mgmt;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Exceptions\MgmtException;
+use Olorin\Mgmt\MgmtException;
 use Auth;
 
 class MgmtController extends Controller
@@ -60,7 +60,7 @@ class MgmtController extends Controller
         }
 
         flash()->error('Unable to resolve ' . $command);
-        return redirect()->route('mgmt::index');
+        return redirect()->route('mgmt.index');
     }
 
     /**
@@ -229,14 +229,14 @@ class MgmtController extends Controller
         $model::destroy($id);
 
         flash()->success("Successfully deleted " . $this->model_name . " " . $id . ".");
-        return redirect()->route('mgmt::index');
+        return redirect()->route('mgmt.index');
     }
     
     /**
      * Get a particular item out of the database.
      *
      * @param $id
-     * @return App\Exceptions\MgmtException || Illuminate\Database\Eloquent\Model
+     * @return MgmtException || Illuminate\Database\Eloquent\Model
      */
     private function getItem($id)
     {
