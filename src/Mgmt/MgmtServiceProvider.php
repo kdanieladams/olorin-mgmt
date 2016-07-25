@@ -19,11 +19,11 @@ class MgmtServiceProvider extends ServiceProvider
         }
 
         // Setup views
-        $this->loadViewsFrom(__DIR__ . '/../../views', 'mgmt');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'mgmt');
 
         // Publish custom assets
         $this->publishes([
-            // __DIR__ . '/views' => resource_path('views/vendor/mgmt'),
+            // __DIR__ . '/../../resources/views' => resource_path('views/vendor/mgmt'),
             __DIR__ . '/../../public/css' => public_path('css'),
             __DIR__ . '/../../public/js' => public_path('js')
         ]);
