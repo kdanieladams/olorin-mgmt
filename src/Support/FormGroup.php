@@ -295,7 +295,7 @@ class FormGroupField {
         if($this->validate && Session::has('errors')) {
             $errors = Session::get('errors');
 
-            if(gettype($errors) == 'object' && get_class($errors) == 'Illuminate/Support/ViewErrorBag'){
+            if(gettype($errors) == 'object' && get_class($errors) == 'Illuminate\Support\ViewErrorBag'){
                 $errorBag = $errors->getBag('default');
 
                 if ($errorBag->has($this->name)) {

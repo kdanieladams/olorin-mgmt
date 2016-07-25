@@ -25,16 +25,7 @@ class LoginLogoutController extends Controller
 
     public function loginPost(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->intended('mgmt.index');
-        }
-
-        return redirect()->route('auth.login')->with(['errors' => [
-            'email' => 'Entry does not match our records.',
-            'password' => 'Entry does not match our records'
-        ], 'email' => $request->email]);
-
-        // return $this->postLogin($request);
+        return $this->postLogin($request);
     }
 
     public function logout()
