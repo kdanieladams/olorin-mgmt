@@ -1,8 +1,6 @@
 # MGMT Administration System
 ## Generic admin solution for any Laravel project.
 
-**<span style="color:red;">This repository is hosted on a private VCS server, and is not intended for public distribution</span>**
-
 *MGMT* is a general purpose solution for any Laravel project to easily have a fully customizable administration interface within a few minutes of simple setup.  As you use this system, please bear in mind that it is still in early development.  You are likely to come across a few bugs here and there.
 
 ### Installation
@@ -12,17 +10,17 @@ To make *MGMT* available to your application, there are a couple of steps to get
 "repositories": [
     {
         "type": "vcs",
-        "url": "git@52.5.160.236:dan/mgmt.git"
+        "url": "git@github.com/dan/mgmt"
     }
 ],
 ```
 2. Next, require the package in your array of required packages:
 ```
 "require": {
-    "dan/mgmt": "master"
+    "olorin/mgmt": "master"
 },
 ```
-3. Now perform a composer update by running `$> composer update` from your project's route directory.  Composer will look first in *Packagist*, then when it doesn't find *MGMT* there, it will try the private VCS server.  Then, Composer will download the package into the appropriate vendor folder.
+3. Now perform a composer update by running `$> composer update` from your project's route directory.  Composer will look first in *Packagist*, then when it doesn't find *MGMT* there, it will try GitHub.  Then, Composer will download the package into the appropriate vendor folder.
 
 4. After the package has been downloaded to your `vendor/` folder, you'll have to [register](https://laravel.com/docs/master/providers#registering-providers) the `MgmtServiceProvider` within your application .  Open your `config/app.php` file, and add the following to the bottom of the *providers* array:
 ```
@@ -47,13 +45,15 @@ class MyModel extends MgmtModel
 {
 ```
 
-In the case of a `User` in Laravel v5.2+, there is a new model which is inherited from - `Illuminate\Foundation\Auth\User`.  To facilitate consistency with the framework, `Olorin\Mgmt` exposes a `MgmtUserModel` class to be used instead:
+In the case of a `User` in Laravel v5.2+, there is a new model which is inherited from - `Illuminate\Foundation\Auth\User`.  To facilitate consistency with the framework, `Olorin\Mgmt` exposes a `MgmtUserModel` class to be used for User models instead:
 ```
 use Olorin\Mgmt\MgmtUserModel;
 
 class MyUser extends MgmtUserModel
 {
 ```
+
+
 
 ### Customization
 After inheriting from one of the `MgmtModel` classes, you are free to customize the way each model's fields are defined.  *MGMT* works out of the box - all that is necessary for implementation is to inherit from the appropriate class.  However, due to the fluid nature of development in Laravel, *MGMT's* default implementations are fairly bare.  This is why it's important to get a handle on how every field can be customized to suit your individual application's needs.
@@ -76,29 +76,10 @@ public function getMgmtFieldsAttribute()
     return $this->mgmt_fields;
 }
 ```
-This is, of course, the standard format for an *Eloquent* attribute accessor.  The importance of this is, the `mgmt_fields` attribute is what *MGMT* uses to understand how to display your model.  It should return an array of `MgmtField` objects, each defining a set of properties to represent one of your model's field.  These properties tell *MGMT* how to determine things like administration form display for creating or editing an instance of your model, as well as validation and input translation rules.
+This is, of course, the standard format for an *Eloquent* attribute accessor.  The importance of this is, the `mgmt_fields` attribute is what *MGMT* uses to understand how to display your model.  It should return an array of `MgmtField` objects, each defining a set of properties to represent one of your model's fields.  These properties tell *MGMT* how to determine things like administration form display for creating or editing an instance of your model, as well as validation and input translation rules.
 
-#### Data Inference
-*MGMT* figures out most of what it needs to know by polling your application's database for meta-information on the table assigned to the model.  The exact SQL necessary to achieve this depends heavily on what type of RDBMS your application is built on.
-
-<span style="color:red;font-weight:bold;">Currently, the system is *only* compatible with MySQL databases.</span>
- 
-Inferring information about related-models is a bit more difficult than just reading what columns exist on the model's table.  *MGMT* requires a property explicitly defining relationships in order to properly resolve them.  Don't worry, it's a cinche to implement:
-```
-/**
- * Array of relationship class definitions for Mgmt.
- *
- * @var array
- */
-protected $mgmt_relations = [
-    'property_name' => ['belongsTo', 'Global\Class\Reference'],
-    'other_property_name' => ['belongsToMany', 'Global\Class\OtherReference'],
-    ...
-];
-```
-  
 #### Examples
-Below are some examples of how a `MgmtModel` can be customized:
+Below are some examples of how a `MgmtModel` can be implemented and customized:
 
 **User Model with No Relationships**
 ```PHP
@@ -196,3 +177,79 @@ public function getMgmtFieldsAttribute()
     return $this->mgmt_fields;
 }
 ```
+
+#### Data Inference
+*MGMT* figures out most of what it needs to know by polling your application's database for meta-information on the table assigned to the model.  The exact SQL necessary to achieve this depends heavily on what type of RDBMS your application is built on.
+
+<span style="color:red;font-weight:bold;">Currently, the system is *only* compatible with MySQL/MariaDB databases.</span>
+ 
+Inferring information about related-models is a bit more difficult than just reading what columns exist on the model's table.  For any `MgmtModel` to work properly, it is required that a property exists which explicitly defines relationships in order for *MGMT* to properly resolve them.  Don't worry, it's a cinche to implement:
+```
+/**
+ * Array of relationship class definitions for Mgmt.
+ *
+ * @var array
+ */
+protected $mgmt_relations = [
+    'property_name' => ['belongsTo', 'Global\Class\Reference'],
+    'other_property_name' => ['belongsToMany', 'Global\Class\OtherReference'],
+    ...
+];
+```
+
+#### Using the Included Permission System
+Using the included permissions is a cinch, and saves you from the tedious task of defining one yourself.  It's not flashy or feature-laden, but it works very well indeed.  
+
+It simply consists of a `Permission` model and a `Role` model.  A role can have many permissions, and a permission has many roles. If you're using the `MgmtUserModel` for your users, then your user can have many roles as well.  This allows you to create a complex hierarchy of permission-levels for your application, where you can control minute functionality based on a permission, then grant that permission to a role, allowing anyone with that role to use/see it.  
+
+1. *(Optional)* You can define the GateContract for MGMT's Role/Permission system if you'd like to use the `$user->can()` function throughout your application to look up MGMT Permissions. This isn't strictly necessary, because the `MgmtUserModel` exposes a `hasPermission()` method to accomplish the same task without messing with your service providers.<br><br>If you prefer the `GateContract` method and fuller integration with your application, open your AuthServiceProvider (located by default at `app/Providers/AuthServiceProvider.php`) and add the following snippet to your `boot()` function: 
+```
+public function boot() 
+{
+    $this->registerPolicies($gate);
+    
+    $permissions = Permission::with('roles')->get();
+    
+    foreach($permissions as $permission) {
+        $gate->define($permission->name, function($user) use ($permission){
+            return $user->hasRole($permission->roles);
+        });
+    }
+}
+```
+2. Now you're ready to get on using the `Olorin\Auth\Permission` model to manage granular access to your applications features.  In your controller, just check the authorized user's permissions before allowing the `ReallyCoolAdminFeature` you're trying to protect:
+```
+public function ReallyCoolAdminFeature()
+{
+    $user = auth()->user();
+    
+    if($user->can('view_mgmt')) {
+        // Do your really cool feature code here...
+        
+        return view('admin.really-cool-feature');
+    }
+    
+    return route('403');
+}
+```
+3. *MGMT* only comes with one built-in permission: 'view_mgmt'.  It's meant to separate application administrators from the public and protect the *MGMT* system from being tampered with.  If you want to add more permissions, the best way would be to use the `artisan` tinker utility to create the model then save it to the database.  You can insert permissions manually, but you'll also have to define the relationship to a role, and associate the role with users.  `artisan`'s tinker utility and Eloquent work together to make this process easy, so that's what we'll use here.<br><br>Open up a console window in your project root, and start the `artisan` tinker utility:
+ ```
+ /var/www/project-root $> php artisan tinker
+ Tinker - Laravel v5.2.x - by That Dude Who Wrote Tinker
+ >> $permission = new Olorin\Auth\Permission()
+ ...
+ >> $permission->name = "my_perm"
+ my_perm
+ >> $permission->save()
+ Yay!  You saved a permission
+ $role = Olorin\Auth\Role::find(my_role_id)
+ ...
+ $role->grantPermission($permission)
+ ...
+ $user = App\User::find(my_user_id)
+ ...
+ $user->assignRole($role)
+ ...
+ Yay!  You gave someone a role!
+ ```
+ 
