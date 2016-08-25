@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">AssettoStig.com</a>
+            <a class="navbar-brand" href="/">Mgmt Admin</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -18,9 +18,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/mgmt/User">Users</a></li>
-                        <li><a href="/mgmt/Role">Roles</a></li>
-                        <li><a href="/mgmt/Article">Articles</a></li>
-                        <li><a href="/mgmt/ArticleCategory">Article Categories</a></li>
+                        <li><a href="/mgmt/Olorin-Auth-Role">Roles</a></li>
                     </ul>
                 </li>
             </ul>

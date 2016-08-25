@@ -25,7 +25,9 @@ class MgmtServiceProvider extends ServiceProvider
         $this->publishes([
             // __DIR__ . '/../../resources/views' => resource_path('views/vendor/mgmt'),
             __DIR__ . '/../../public/css' => public_path('css'),
-            __DIR__ . '/../../public/js' => public_path('js')
+            __DIR__ . '/../../public/js' => public_path('js'),
+            __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../../database/seeds' => database_path('seeds')
         ]);
     }
 

@@ -3,12 +3,13 @@
 namespace Olorin\Mgmt;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Olorin\Auth\HasRolesTrait;
 use Carbon\Carbon;
 use DB;
 
 /**
- * Class MgmtModel
- * ===============
+ * Class MgmtUserModel
+ * ===================
  * Inherit from this base-class to use MGMT's administration features on your model.  You will also
  * need to define any related models using a protected $mgmt_relations property.  If you wish to
  * customize any fields, you can do so by overriding the getMgmtFieldsAttribute() method.
@@ -18,6 +19,8 @@ use DB;
  */
 class MgmtUserModel extends Authenticatable
 {
+    use HasRolesTrait;
+
     protected $isFresh = false;  // Is this model's $mgmt_fields attribute currently being instantiated?
 
     /**
@@ -91,6 +94,9 @@ class MgmtUserModel extends Authenticatable
                     break;
                 case 'email':
                     $ruleString .= "|email";
+                    break;
+                case 'password':
+                    $ruleString .= "|same:" . $field->name . "_confirm";
                     break;
             }
 
@@ -167,6 +173,16 @@ class MgmtUserModel extends Authenticatable
         }
     }
 
+    public function getUrlFriendlyName()
+    {
+        $reflect = new \ReflectionClass($this);
+        $global_ref = $reflect->getName();
+        $global_ref = str_replace("\\", "-", $global_ref);
+        $global_ref = str_replace("App-", "", $global_ref);
+
+        return $global_ref;
+    }
+
     /**
      * Populates this models $mgmt_fields attributes with instances
      * of App\Mgmt\MgmtField.
@@ -178,29 +194,36 @@ class MgmtUserModel extends Authenticatable
 
         foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
             $field_name = $table_row->Field;
+            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
+            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
+            $options = array();
+
+            switch($type) {
+                case "varchar":
+                    $type = "text";
+                    break;
+                case "text":
+                    $type = "textarea";
+                    break;
+                case "timestamp":
+                    $type = "datetime";
+                    break;
+            }
+
+            if(!empty($limit)) {
+                $options["limit"] = $limit;
+            }
 
             if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
-                $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
-                $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
-                $options = array();
-
-                switch($type) {
-                    case "varchar":
-                        $type = "text";
-                        break;
-                    case "text":
-                        $type = "textarea";
-                        break;
-                    case "timestamp":
-                        $type = "datetime";
-                        break;
-                }
-
-                if(!empty($limit)) {
-                    $options["limit"] = $limit;
-                }
-
                 $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+            }
+            else if(in_array($field_name, $this->hidden)) {
+                $options['hidden'] = true;
+
+                if(!!strstr(strtolower($field_name), "password")) {
+                    $type = "password";
+                    $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+                }
             }
         }
 

@@ -44,8 +44,7 @@ class MgmtController extends Controller
     public function command(Request $request, $command, $model = null, $id = 0)
     {
         if($this->hasCommand($command)){
-            $this->model_name = $model;
-            $this->model = '\App\\' . $model;
+            $this->getModel($model);
 
             if($id > 0)
                 return $this->$command($id, $request);
@@ -53,14 +52,24 @@ class MgmtController extends Controller
                 return $this->$command($request);
         }
         else if($this->hasModel($command)){
-            $this->model_name = $command;
-            $this->model = '\App\\' . $command;
+            $this->getModel($command);
 
             return $this->getList();
         }
 
         flash()->error('Unable to resolve ' . $command);
         return redirect()->route('mgmt.index');
+    }
+
+    private function filterPermissions(&$item)
+    {
+        $fields = $item->mgmt_fields;
+
+        foreach($fields as $k => $field){
+            if(count($field->permissions) > 0 && !($this->user->hasPermission($fields[$k]->permissions))){
+                unset($item->mgmt_fields[$k]);
+            }
+        }
     }
 
     /**
@@ -83,10 +92,89 @@ class MgmtController extends Controller
      */
     protected function hasModel($model)
     {
-        if(strpos($model, 'App') > -1) {
-            return class_exists($model);
+        $hasModel = false;
+
+        if(class_exists($model)) {
+            $hasModel = true;
         }
-        return class_exists('\App\\' . $model);
+        else if(is_string($model) && str_contains($model, "-")) {
+            $model = str_replace("-", "\\", $model);
+            $hasModel = class_exists($model);
+        }
+        else{
+            $hasModel = class_exists("\\App\\" . $model);
+        }
+
+        return $hasModel;
+    }
+
+    protected function getModel($model_ref)
+    {
+        if(str_contains($model_ref, "-")) {
+            $model_ref = str_replace("-", "\\", $model_ref);
+
+            if(class_exists($model_ref)) {
+                $ref_arr = explode("\\", $model_ref);
+                $this->model_name = $ref_arr[count($ref_arr) - 1];
+                $this->model = $model_ref;
+            }
+        }
+        else if(class_exists("\\App\\" . $model_ref)){
+            $this->model_name = $model_ref;
+            $this->model = '\App\\' . $model_ref;
+        }
+    }
+
+    /**
+     * Get a particular item out of the database.
+     *
+     * @param $id
+     * @return MgmtException || Illuminate\Database\Eloquent\Model
+     */
+    protected function getItem($id)
+    {
+        $model = $this->model;
+
+        if($model == null || !$this->hasModel($model)) {
+            throw new MgmtException('Model not found.', 1);
+        }
+
+        $item = $model::find($id);
+
+        if(is_null($item)) {
+            throw new MgmtException('Invalid '. $this->model_name .' id.', 1);
+        }
+
+        $fields = $item->mgmt_fields;
+
+        if(empty($fields)) {
+            throw new MgmtException($this->model_name . '\'s not configured for MGMT.', 1);
+        }
+
+        return $item;
+    }
+
+    /**
+     * Gather the collection of all items from the given model.
+     *
+     * @return Model | Request
+     */
+    protected function getItems()
+    {
+        $model = $this->model;
+        $items = $model::all();
+
+        if(count($items) == 0) {
+            throw new MgmtException('No ' . $this->model_name . "s found", 2);
+        }
+
+        $fields = $items[0]->mgmt_fields;
+
+        if(empty($fields)) {
+            throw new MgmtException($this->model_name . '\'s not configured for MGMT.', 1);
+        }
+
+        return $items;
     }
 
     /**
@@ -104,6 +192,10 @@ class MgmtController extends Controller
             if($field->list){
                 $list_fields[] = $field;
             }
+        }
+
+        if(empty($list_fields)) {
+            // TODO: Try to find one or two field names which seem like they belong in the list, and use those
         }
 
         return view('mgmt::list', [
@@ -154,7 +246,7 @@ class MgmtController extends Controller
 
         // return to list page with success message
         flash()->success("Successfully created " . $this->model_name . " " . $item->id . "!");
-        return redirect('/mgmt/' . $this->model_name);
+        return redirect('/mgmt/' . $item->getUrlFriendlyName());
     }
 
     /**
@@ -167,6 +259,8 @@ class MgmtController extends Controller
     protected function edit($id)
     {
         $item = $this->getItem($id);
+
+        $this->filterPermissions($item);
 
         return view('mgmt::edit', [
             'item' => $item,
@@ -185,7 +279,6 @@ class MgmtController extends Controller
     protected function update($id, Request $request)
     {
         $item = $this->getItem($id);
-
         $rules = $item->getValidationRules();
         $input = $request->input();
 
@@ -196,7 +289,7 @@ class MgmtController extends Controller
 
         // return to list page with success message
         flash()->success("Successfully updated " . $this->model_name . " " . $item->id . "!");
-        return redirect('/mgmt/' . $this->model_name);
+        return redirect('/mgmt/' . $item->getUrlFriendlyName());
     }
 
     /**
@@ -231,56 +324,6 @@ class MgmtController extends Controller
         flash()->success("Successfully deleted " . $this->model_name . " " . $id . ".");
         return redirect()->route('mgmt.index');
     }
-    
-    /**
-     * Get a particular item out of the database.
-     *
-     * @param $id
-     * @return MgmtException || Illuminate\Database\Eloquent\Model
-     */
-    private function getItem($id)
-    {
-        $model = $this->model;
 
-        if($model == null || !$this->hasModel($model)) {
-            throw new MgmtException('Model not found.', 1);
-        }
 
-        $item = $model::find($id);
-
-        if(is_null($item)) {
-            throw new MgmtException('Invalid '. $this->model_name .' id.', 1);
-        }
-
-        $fields = $item->mgmt_fields;
-
-        if(empty($fields)) {
-            throw new MgmtException($this->model_name . '\'s not configured for MGMT.', 1);
-        }
-
-        return $item;
-    }
-
-    /**
-     * Gather the collection of all items from the given model.
-     *
-     * @return Model | Request
-     */
-    private function getItems()
-    {
-        $model = $this->model;
-        $items = $model::all();
-
-        if(count($items) == 0) {
-            throw new MgmtException('No ' . $this->model_name . "s found", 2);
-        }
-
-        $fields = $items[0]->mgmt_fields;
-
-        if(empty($fields)) {
-            throw new MgmtException($this->model_name . '\'s not configured for MGMT.', 1);
-        }
-
-        return $items;
-    }
 }

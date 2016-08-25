@@ -14,7 +14,7 @@ use DB;
  * customize any fields, you can do so by overriding the getMgmtFieldsAttribute() method.
  * Don't forget to read the docs! http://www.olorin.io/laravel/mgmt/docs
  *
- * @package App\Mgmt
+ * @package Olorin\Mgmt
  */
 class MgmtModel extends Model
 {
@@ -68,6 +68,11 @@ class MgmtModel extends Model
         foreach($fields as $k => $field){
             $ruleString = '';
 
+            if(!empty($field->validation) && is_string($field->validation)) {
+                $rules[$field->name] = $field->validation;
+                continue;
+            }
+
             if(($field->list && $field->required !== false) || $field->required === true){
                 $ruleString .= '|required';
             }
@@ -91,6 +96,9 @@ class MgmtModel extends Model
                     break;
                 case 'email':
                     $ruleString .= "|email";
+                    break;
+                case 'password':
+                    $ruleString .= "|same:" . $field->name . "_confirm";
                     break;
             }
 
@@ -125,7 +133,7 @@ class MgmtModel extends Model
      */
     public function translateInput(array $input) {
         $fields = $this->mgmt_fields;
-
+        
         // input translations by field
         foreach($fields as $mgmt_field){
             if($mgmt_field->editable){
@@ -167,6 +175,16 @@ class MgmtModel extends Model
         }
     }
 
+    public function getUrlFriendlyName()
+    {
+        $reflect = new \ReflectionClass($this);
+        $global_ref = $reflect->getName();
+        $global_ref = str_replace("\\", "-", $global_ref);
+        $global_ref = str_replace("App-", "", $global_ref);
+
+        return $global_ref;
+    }
+
     /**
      * Populates this models $mgmt_fields attributes with instances
      * of App\Mgmt\MgmtField.
@@ -178,28 +196,30 @@ class MgmtModel extends Model
 
         foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
             $field_name = $table_row->Field;
+            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
+            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
+            $options = array();
+
+            switch($type) {
+                case "varchar":
+                    $type = "text";
+                    break;
+                case "text":
+                    $type = "textarea";
+                    break;
+                case "timestamp":
+                    $type = "datetime";
+                    break;
+                case "int unsigned":
+                    $type = "integer";
+                    break;
+            }
+
+            if(!empty($limit)) {
+                $options["limit"] = $limit;
+            }
 
             if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
-                $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
-                $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
-                $options = array();
-
-                switch($type) {
-                    case "varchar":
-                        $type = "text";
-                        break;
-                    case "text":
-                        $type = "textarea";
-                        break;
-                    case "timestamp":
-                        $type = "datetime";
-                        break;
-                }
-
-                if(!empty($limit)) {
-                    $options["limit"] = $limit;
-                }
-
                 $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
             }
         }
@@ -215,7 +235,7 @@ class MgmtModel extends Model
         if(!empty($this->mgmt_relations)){
             foreach($this->mgmt_relations as $key => $relation) {
                 if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
-                    throw new \Exception("Invalid relationship!");
+                    throw new \Exception("MgmtModel->getFieldData(): Invalid relationship!");
                 }
 
                 $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
@@ -227,7 +247,7 @@ class MgmtModel extends Model
 
     /**
      * Accepts multiple field_names, which it will set as fields to display
-     * in Mgmt's list function.
+     * in Mgmt's list function, provided mgmt_field's exist for each given name.
      *
      * @param string $field_name (+)
      */

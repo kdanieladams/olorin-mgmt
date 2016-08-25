@@ -22,10 +22,9 @@
                     <hr>
 
                     <div class="form-group">
-                        {!! Form::submit('Login', ['class' => 'btn btn-primary form-control']) !!}
+                        {!! Form::submit('Login', ['class' => 'btn btn-primary pull-right']) !!}
                     </div>
                     {!! Form::close() !!}
-                    <a href="{{ url('/register') }}">...or Register, if you haven't yet.</a>
                 </div>
             </div>
         </div>

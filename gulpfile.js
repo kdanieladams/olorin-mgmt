@@ -4,9 +4,9 @@ var concat = require('gulp-concat');
 var gutil = require('gulp-util');
 
 gulp.task('sass', function() {
-    gulp.src('src/resources/assets/sass/styles.scss')
+    gulp.src('resources/assets/sass/styles.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('src/assets/css/'));
+        .pipe(gulp.dest('resources/assets/css/'));
 
     gutil.log("===========");
     gutil.log(gutil.colors.green('Sass successfully compiled!'));
@@ -14,9 +14,9 @@ gulp.task('sass', function() {
 });
 
 gulp.task('css', function(){
-    gulp.src('src/resources/assets/css/**/*.css')
+    gulp.src('resources/assets/css/**/*.css')
         .pipe(concat('mgmt_styles.css'))
-        .pipe(gulp.dest('src/public/css/'));
+        .pipe(gulp.dest('public/css/'));
 
     gutil.log("===========");
     gutil.log(gutil.colors.green('CSS successfully concatenated and published!'));
@@ -24,12 +24,11 @@ gulp.task('css', function(){
 });
 
 gulp.task('scripts', function() {
-    gulp.src([
-        'src/resources/assets/js/vendor/jquery-*.js',
-        'src/resources/assets/js/vendor/bootstrap.js',
-        'src/resources/assets/js/vendor/sweetalert.js',
-        'src/resources/assets/js/scripts.js'
-    ]).pipe(concat('mgmt_scripts.js'))
+    gulp.src(['resources/assets/js/vendor/jquery-*.js',
+        'resources/assets/js/vendor/bootstrap.js',
+        'resources/assets/js/vendor/sweetalert.js',
+        'resources/assets/js/scripts.js'])
+        .pipe(concat('mgmt_scripts.js'))
         .pipe(gulp.dest('src/public/js/'));
 
     gutil.log("===========");
@@ -42,6 +41,6 @@ gulp.task('default', ['sass', 'css', 'scripts'], function() {
     gutil.log(gutil.colors.yellow('Tasks completed!  Initiating watch...'));
     gutil.log("===========");
 
-    gulp.watch('src/assets/sass/**/*.scss', ['sass', 'css']);
-    gulp.watch('src/assets/js/**/*.js', ['scripts']);
+    gulp.watch('resources/assets/sass/**/*.scss', ['sass', 'css']);
+    gulp.watch('resources/assets/js/**/*.js', ['scripts']);
 });

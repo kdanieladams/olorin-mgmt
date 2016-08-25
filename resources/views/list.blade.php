@@ -3,7 +3,7 @@
 @section('title', $model_name . ' List')
 
 @section('main')
-    <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $model_name }}';">
+    <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $items[0]->getUrlFriendlyName() }}';">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         Create a New {{ $model_name }}
     </button>
@@ -30,7 +30,7 @@
                 </td>
             @endforeach
                 <td>
-                    <a href="/mgmt/edit/{{ $model_name }}/{{ $item->id }}">Edit</a>
+                    <a href="/mgmt/edit/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">Edit</a>
                     @if(Route::has('show-' . strtolower($model_name)))
                         @if(isset($item->slug))
                             | <a href="{{ route('show-' . strtolower($model_name), $item->slug) }}">View</a>
@@ -38,7 +38,7 @@
                             | <a href="{{ route('show-' . strtolower($model_name), $item->id) }}">View</a>
                         @endif
                     @endif
-                    | <a href="/mgmt/delete/{{ $model_name }}/{{ $item->id }}">Delete</a>
+                    | <a href="/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">Delete</a>
                 </td>
             </tr>
         @endforeach

@@ -44,7 +44,7 @@
                 @endforeach
                 <hr />
                 <input type="submit" class="btn btn-success" value="Create New {{ $model_name }}" />
-                <button type="button" class="btn" onclick="window.location.href = '/mgmt/{{ $model_name }}';">Cancel</button>
+                <button type="button" class="btn btn-cancel" onclick="window.location.href = '/mgmt/{{ $item->getUrlFriendlyName() }}';">Cancel</button>
             </div>
         </div>
     </form>

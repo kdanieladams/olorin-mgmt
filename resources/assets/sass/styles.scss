@@ -1,13 +1,17 @@
-// Bootstrap Overrides
+// Bootstrap Variable Overrides
 $brand-primary: #900;
 $icon-font-path: '/fonts/';
 
 // Pre-Imports & Fonts
-@import "src/assets/sass/vendor/bootstrap";
+@import "resources/assets/sass/vendor/bootstrap";
 
 // Global Variables
+$almost-black: #0c0c0c;
 $light-black: #111;
+$lightest-black: #121212;
+$darker-gray: #222;
 $dark-gray: #777;
+$gray: #ccc;
 $med-red: #c00;
 
 $fast: 300ms;
@@ -21,17 +25,30 @@ body, html {
 }
 body {
   padding-top: 70px;
+  background-color: $lightest-black;
+  color: $gray;
 }
 a {
   transition: color $fast;
+
+  &:hover {
+    color: lighten($brand-primary, 30%);
+  }
 }
 
 // General Classes
 .error{
   color: $med-red;
 }
+.form-control {
+  background-color: $light-black;
+  color: $gray;
+}
+.btn-cancel {
+  color: $light-black;
+}
 
-// Specific Classes
+// Layout Classes
 .master-wrapper{
   position: relative;
   min-height: 100%;
@@ -50,7 +67,7 @@ a {
     text-align: center;
     height: 100px;
     position: relative;
-    background-color: $light-black;
+    background-color: $almost-black;
     color: $dark-gray;
 
     .footer-text {
@@ -63,7 +80,6 @@ a {
     }
   }
 }
-
 .create-btn {
   float: right;
   margin-top: 20px;
@@ -78,6 +94,37 @@ a {
   padding: 2px;
 }
 
+// Bootstrap Style Overrides
+.panel {
+  border-color: $dark-gray;
+
+  .panel-heading {
+    color: $gray;
+    background-color: $lightest-black;
+    border-color: $dark-gray;
+  }
+  .panel-body {
+    background-color:  $darker-gray;
+
+    hr {
+      border-top-color: $dark-gray;
+    }
+  }
+}
+
+.dropdown-menu {
+  background-color: $darker-gray;
+  li a {
+    color: $gray;
+
+    &:hover {
+      background-color: $dark-gray;
+      color: $gray;
+    }
+  }
+}
+
+// Media Queries
 @media(min-width: 768px){
   body.mgmt {
     table tr td {

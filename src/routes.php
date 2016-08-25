@@ -12,7 +12,7 @@ Route::post('/login', [
     'as' => 'auth.loginPost',
     'middleware' => 'web',
     // 'uses' => 'App\Http\Controllers\Auth\AuthController@postLogin'
-    'uses' => '\Olorin\Auth\LoginLogoutController@loginPost'
+    'uses' => '\Olorin\Auth\LoginLogoutController@postLogin'
 ]);
 
 Route::get('/logout', [

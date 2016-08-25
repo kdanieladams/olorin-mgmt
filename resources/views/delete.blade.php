@@ -12,9 +12,9 @@
         @endif
     @endforeach
     <hr>
-    <form method="POST" action="/mgmt/remove/{{ $model_name }}/{{ $item->id }}">
+    <form method="POST" action="/mgmt/remove/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <input type="submit" class="btn btn-danger" value="Delete" />
-        <button type="button" class="btn" onclick="window.history.back()">Cancel</button>
+        <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
     </form>
 @endsection

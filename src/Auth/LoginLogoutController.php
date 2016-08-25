@@ -23,11 +23,6 @@ class LoginLogoutController extends Controller
         ]);
     }
 
-    public function loginPost(Request $request)
-    {
-        return $this->postLogin($request);
-    }
-
     public function logout()
     {
         Auth::logout();

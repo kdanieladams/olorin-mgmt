@@ -3,6 +3,7 @@ namespace Olorin\Mgmt;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Olorin\Mgmt\MgmtException;
 
 /**
  * Class MgmtField
@@ -24,7 +25,8 @@ class MgmtField {
         'datetime',
         'integer',
         'related',
-        'email'
+        'email',
+        'password'
     ];
 
     // properties
@@ -37,6 +39,8 @@ class MgmtField {
     private $type           = 'text';
     private $sidebar        = null;
     private $view_options   = [];
+    private $validation     = null;
+    private $permissions    = [];
 
     // relationship properties
     private $belongsTo      = null;
@@ -210,6 +214,31 @@ class MgmtField {
         return false;
     }
 
+    public function setPermissions($value)
+    {
+        $go = false;
+
+        if(is_array($value)) {
+            if(is_array($value)){
+                foreach($value as $k => $perm) {
+                    if(\Olorin\Auth\Permission::where('name', $perm)->first() == null) {
+                        $go = false;
+                    }
+                    else {
+                        $go = true;
+                    }
+                }
+            }
+
+            if($go) {
+                $this->permissions = $value;
+                return true;
+            }
+        }
+
+        return $go;
+    }
+
     public function getLabel(){
         if(!empty($this->label)) return $this->label;
 
@@ -301,12 +330,11 @@ class MgmtField {
     public function getRelatedItems(Model $instance)
     {
         $relationship = $this->relationship;
-        $class = $this->$relationship;
+        $class = $relationship ? $this->$relationship : '';
         $items = array();
 
         if(!class_exists($class)) {
-            dd('MgmtField->getRelatedItems: Unabled to resolve related classname!',
-                $class, $relationship, $instance);
+            throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
         }
 
         foreach($class::all() as $item){
@@ -315,5 +343,10 @@ class MgmtField {
         }
 
         return $items;
+    }
+
+    public function getView()
+    {
+
     }
 }

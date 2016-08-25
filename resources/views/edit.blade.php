@@ -4,7 +4,7 @@
 
 @section('main')
     <h1>Edit {{ $model_name }}</h1>
-    <form method="POST" action="/mgmt/update/{{ $model_name }}/{{ $item->id }}">
+    <form method="POST" action="/mgmt/update/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="row">
             @if($related_fields)
@@ -83,8 +83,8 @@
                 @endforeach
                 <hr />
                 <input type="submit" class="btn btn-success" value="Save Changes" />
-                <button type="button" class="btn btn-danger" onclick="window.location.href = '/mgmt/delete/{{ $model_name }}/{{ $item->id }}';">Delete</button>
-                <button type="button" class="btn" onclick="window.location.href = '/mgmt/{{ $model_name }}';">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="window.location.href = '/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}';">Delete</button>
+                <button type="button" class="btn btn-cancel" onclick="window.location.href = '/mgmt/{{ $item->getUrlFriendlyName() }}';">Cancel</button>
             </div>
         </div>
     </form>
