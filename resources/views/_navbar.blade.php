@@ -7,31 +7,32 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Mgmt Admin</a>
+            <a class="navbar-brand" href="{{ route('mgmt.index') }}">Mgmt Admin</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+            @if(!empty($user))
             <ul class="nav navbar-nav">
-                <li><a href="/mgmt/">Home</a></li>
+                <li><a href="{{ route('mgmt.index') }}">Home</a></li>
+                @if($user->hasPermission('view_od'))
+                    <li><a href="https://www.google.com" target="_blank">Order Direct</a></li>
+                @endif
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Manage Models <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/mgmt/User">Users</a></li>
-                        <li><a href="/mgmt/Olorin-Auth-Role">Roles</a></li>
+                        <li><a href="{{ route('mgmt.index') }}/User">Users</a></li>
+                        <li><a href="{{ route('mgmt.index') }}/Olorin-Auth-Role">Roles</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if($user = Auth::user())
-                    <li class="navbar-text">
-                        Hello, {{ $user->name }}
-                    </li>
-                    <li><a href="{{ route('auth.logout') }}">Logout</a></li>
-                @else
-                    <li><a href="{{ route('auth.login') }}">Login</a></li>
-                @endif
+                <li class="navbar-text">
+                    Hello, {{ $user->name }}
+                </li>
+                <li><a href="{{ route('auth.logout') }}">Logout</a></li>
             </ul>
+            @endif
         </div>
     </div>
 </nav>

@@ -3,10 +3,12 @@
 @section('title', $model_name . ' List')
 
 @section('main')
+    @if(empty($items[0]->create_permission) || $user->hasPermission($items[0]->create_permission))
     <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $items[0]->getUrlFriendlyName() }}';">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         Create a New {{ $model_name }}
     </button>
+    @endif
     <h1>{{ $model_name }} List</h1>
     <table class="table">
         <thead>

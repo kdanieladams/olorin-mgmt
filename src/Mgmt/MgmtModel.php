@@ -18,7 +18,8 @@ use DB;
  */
 class MgmtModel extends Model
 {
-    protected $isFresh = false;  // Is this model's $mgmt_fields attribute currently being instantiated?
+    protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
+    public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
 
     /**
      * Returns this models $mgmt_fields property.  If the property
@@ -140,6 +141,14 @@ class MgmtModel extends Model
                 $fieldname = $mgmt_field->name;
 
                 if($mgmt_field->required == false && empty($input[$fieldname])) {
+                    if($mgmt_field->related == true) {
+                        if($mgmt_field->relationship == 'belongsTo') {
+                            $this->$fieldname()->dissociate();
+                        }
+                        elseif($mgmt_field->relationship == 'belongsToMany') {
+                            $this->$fieldname()->detach();
+                        }
+                    }
                     continue;
                 }
 
@@ -221,6 +230,11 @@ class MgmtModel extends Model
 
             if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
                 $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+            }
+            else if(in_array($field_name, $this->hidden)) {
+                $options['hidden'] = true;
+
+                // TODO: Handle hidden fields on model...
             }
         }
 

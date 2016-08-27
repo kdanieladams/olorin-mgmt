@@ -202,18 +202,34 @@ Using the included permissions is a cinch, and saves you from the tedious task o
 
 It simply consists of a `Permission` model and a `Role` model.  A role can have many permissions, and a permission has many roles. If you're using the `MgmtUserModel` for your users, then your user can have many roles as well.  This allows you to create a complex hierarchy of permission-levels for your application, where you can control minute functionality based on a permission, then grant that permission to a role, allowing anyone with that role to use/see it.  
 
-1. *(Optional)* You can define the GateContract for MGMT's Role/Permission system if you'd like to use the `$user->can()` function throughout your application to look up MGMT Permissions. This isn't strictly necessary, because the `MgmtUserModel` exposes a `hasPermission()` method to accomplish the same task without messing with your service providers.<br><br>If you prefer the `GateContract` method and fuller integration with your application, open your AuthServiceProvider (located by default at `app/Providers/AuthServiceProvider.php`) and add the following snippet to your `boot()` function: 
+1. The first step to using the included permission system is to have your `User` model inherit from the included `MgmtUserModel` in the MGMT namespace.
 ```
-public function boot() 
+use Olorin\Mgmt\MgmtUserModel;
+
+class User extends MgmtUserModel
 {
-    $this->registerPolicies($gate);
+    ...
+}
+```
+2. *(Optional)* You can define the GateContract for MGMT's Role/Permission system if you'd like to use the `$user->can()` function throughout your application to look up MGMT Permissions. This isn't strictly necessary, because the `MgmtUserModel` exposes a `hasPermission()` method to accomplish the same task without messing with your service providers.<br><br>If you prefer the `GateContract` method and fuller integration with your application, open your AuthServiceProvider (located by default at `app/Providers/AuthServiceProvider.php`) and add the following snippet to your `boot()` function: 
+```
+use Olorin\Auth\Permission;
+
+class AuthServiceProvider extends ServiceProvider
+{
+    ...
     
-    $permissions = Permission::with('roles')->get();
-    
-    foreach($permissions as $permission) {
-        $gate->define($permission->name, function($user) use ($permission){
-            return $user->hasRole($permission->roles);
-        });
+    public function boot() 
+    {
+        $this->registerPolicies($gate);
+        
+        $permissions = Permission::all();
+        
+        foreach($permissions as $permission) {
+            $gate->define($permission->name, function($user) use ($permission){
+                return $user->hasPermission($permission);
+            });
+        }
     }
 }
 ```

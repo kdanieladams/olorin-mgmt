@@ -67,7 +67,7 @@ class FormGroup {
                             false, array_merge($field->attributes, ['class' => ''])) . '</input>';
                 }
 
-                $selectStr .= ucwords(str_replace('_', ' ', $lbl));
+                $selectStr .= str_replace('_', ' ', $lbl);
                 $selectStr .= "</label>";
                 $selectStr .= "</div>";
             }

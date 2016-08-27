@@ -4,6 +4,7 @@ $icon-font-path: '/fonts/';
 
 // Pre-Imports & Fonts
 @import "resources/assets/sass/vendor/bootstrap";
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
 
 // Global Variables
 $almost-black: #0c0c0c;
@@ -12,6 +13,7 @@ $lightest-black: #121212;
 $darker-gray: #222;
 $dark-gray: #777;
 $gray: #ccc;
+$dark-red: #900;
 $med-red: #c00;
 
 $fast: 300ms;
@@ -22,6 +24,7 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: "Open Sans";
 }
 body {
   padding-top: 70px;
@@ -32,7 +35,7 @@ a {
   transition: color $fast;
 
   &:hover {
-    color: lighten($brand-primary, 30%);
+    color: lighten($dark-red, 30%);
   }
 }
 

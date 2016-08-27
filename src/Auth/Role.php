@@ -46,7 +46,7 @@ class Role extends MgmtModel
         // we only need to modify if the model is fresh
         if($this->isFresh){
             $this->setListFields("name", "label");
-            $this->mgmt_fields['permissions']->view_options = ['checkboxes' => true];
+            // $this->mgmt_fields['permissions']->view_options = ['checkboxes' => true];
             $this->mgmt_fields['permissions']->permissions = ['edit_permissions'];
         }
 

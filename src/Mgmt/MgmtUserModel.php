@@ -21,7 +21,8 @@ class MgmtUserModel extends Authenticatable
 {
     use HasRolesTrait;
 
-    protected $isFresh = false;  // Is this model's $mgmt_fields attribute currently being instantiated?
+    protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
+    public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
 
     /**
      * Returns this models $mgmt_fields property.  If the property
@@ -70,6 +71,11 @@ class MgmtUserModel extends Authenticatable
         // define validation rules
         foreach($fields as $k => $field){
             $ruleString = '';
+
+            if(!empty($field->validation) && is_string($field->validation)) {
+                $rules[$field->name] = $field->validation;
+                continue;
+            }
 
             if(($field->list && $field->required !== false) || $field->required === true){
                 $ruleString .= '|required';
@@ -138,6 +144,15 @@ class MgmtUserModel extends Authenticatable
                 $fieldname = $mgmt_field->name;
 
                 if($mgmt_field->required == false && empty($input[$fieldname])) {
+                    if($mgmt_field->related == true) {
+                        if($mgmt_field->relationship == 'belongsTo') {
+                            $this->$fieldname()->dissociate();
+                        }
+                        elseif($mgmt_field->relationship == 'belongsToMany') {
+                            $this->$fieldname()->detach();
+                        }
+                    }
+
                     continue;
                 }
 
@@ -208,6 +223,9 @@ class MgmtUserModel extends Authenticatable
                 case "timestamp":
                     $type = "datetime";
                     break;
+                case "int unsigned":
+                    $type = "integer";
+                    break;
             }
 
             if(!empty($limit)) {
@@ -238,7 +256,7 @@ class MgmtUserModel extends Authenticatable
         if(!empty($this->mgmt_relations)){
             foreach($this->mgmt_relations as $key => $relation) {
                 if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
-                    throw new \Exception("Invalid relationship!");
+                    throw new \Exception("MgmtUserModel->getFieldData(): Invalid relationship!");
                 }
 
                 $this->mgmt_fields[$key] = new MgmtField($key, 'related', [

@@ -12,6 +12,10 @@ class Permission extends MgmtModel
         'name', 'label'
     ];
 
+    protected $hidden = [
+        'created_at'
+    ];
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);

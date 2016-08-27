@@ -339,7 +339,7 @@ class MgmtField {
 
         foreach($class::all() as $item){
             $label_key = $this->getLabelKey($instance);
-            $items[$item->id] = ucwords($item->$label_key);
+            $items[$item->id] = $item->$label_key;
         }
 
         return $items;

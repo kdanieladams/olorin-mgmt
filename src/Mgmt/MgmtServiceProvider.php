@@ -3,6 +3,7 @@
 namespace Olorin\Mgmt;
 
 use Illuminate\Support\ServiceProvider;
+use View, Auth;
 
 class MgmtServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,16 @@ class MgmtServiceProvider extends ServiceProvider
             __DIR__ . '/../../database/migrations' => database_path('migrations'),
             __DIR__ . '/../../database/seeds' => database_path('seeds')
         ]);
+
+        // Compose views
+        View::composer(['mgmt::index',
+            'mgmt::list',
+            'mgmt::edit',
+            'mgmt::create',
+            'mgmt::delete'
+        ], function($view){
+            $view->with('user', auth()->user());
+        });
     }
 
     /**
@@ -43,8 +54,8 @@ class MgmtServiceProvider extends ServiceProvider
 
         // Load dependency Facades
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('Form', 'Collective\Html\FormFacade');
         $loader->alias('Html', 'Collective\Html\HtmlFacade');
+        $loader->alias('Form', 'Collective\Html\FormFacade');
         $loader->alias('FormGroup', 'Olorin\Support\FormGroup');
     }
 }

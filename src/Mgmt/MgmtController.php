@@ -325,5 +325,4 @@ class MgmtController extends Controller
         return redirect()->route('mgmt.index');
     }
 
-
 }
