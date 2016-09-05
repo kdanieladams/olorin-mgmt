@@ -11,7 +11,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com/dan/mgmt"
+            "url": "git@github.com/kdanieladams/olorin-mgmt"
         }
     ],
     ```
