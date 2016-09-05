@@ -51,6 +51,7 @@ If you'd like to change MGMT's look & feel, take a gander at your `resources/vie
 
 ### Implementation
 After installing, you have to implement *MGMT* into your application.  This is easily accomplished by making your models inherit from the MgmtModel class instead of Illuminate's default Model class - `Illuminate\Database\Eloquent\Model`.
+
 ```php
 use Olorin\Mgmt\MgmtModel;
 
@@ -214,69 +215,76 @@ Using the included permissions is a cinch, and saves you from the tedious task o
 It simply consists of a `Permission` model and a `Role` model.  A role can have many permissions, and a permission has many roles. If you're using the `MgmtUserModel` for your users, then your user can have many roles as well.  This allows you to create a complex hierarchy of permission-levels for your application, where you can control minute functionality based on a permission, then grant that permission to a role, allowing anyone with that role to use/see it.  
 
 1. The first step to using the included permission system is to have your `User` model inherit from the included `MgmtUserModel` in the MGMT namespace.
-```php
-use Olorin\Mgmt\MgmtUserModel;
 
-class User extends MgmtUserModel
-{
-    ...
-}
-```
-2. *(Optional)* You can define the GateContract for MGMT's Role/Permission system if you'd like to use the `$user->can()` function throughout your application to look up MGMT Permissions. This isn't strictly necessary, because the `MgmtUserModel` exposes a `hasPermission()` method to accomplish the same task without messing with your service providers.<br><br>If you prefer the `GateContract` method and fuller integration with your application, open your AuthServiceProvider (located by default at `app/Providers/AuthServiceProvider.php`) and add the following snippet to your `boot()` function: 
-```php
-use Olorin\Auth\Permission;
-
-class AuthServiceProvider extends ServiceProvider
-{
-    ...
+    ```php
+    use Olorin\Mgmt\MgmtUserModel;
     
-    public function boot() 
+    class User extends MgmtUserModel
     {
-        $this->registerPolicies($gate);
+        ...
+    }
+    ```
+    
+2. *(Optional)* You can define the GateContract for MGMT's Role/Permission system if you'd like to use the `$user->can()` function throughout your application to look up MGMT Permissions. This isn't strictly necessary, because the `MgmtUserModel` exposes a `hasPermission()` method to accomplish the same task without messing with your service providers.<br><br>If you prefer the `GateContract` method and fuller integration with your application, open your AuthServiceProvider (located by default at `app/Providers/AuthServiceProvider.php`) and add the following snippet to your `boot()` function: 
+
+    ```php
+    use Olorin\Auth\Permission;
+    
+    class AuthServiceProvider extends ServiceProvider
+    {
+        ...
         
-        $permissions = Permission::all();
-        
-        foreach($permissions as $permission) {
-            $gate->define($permission->name, function($user) use ($permission){
-                return $user->hasPermission($permission);
-            });
+        public function boot() 
+        {
+            $this->registerPolicies($gate);
+            
+            $permissions = Permission::all();
+            
+            foreach($permissions as $permission) {
+                $gate->define($permission->name, function($user) use ($permission){
+                    return $user->hasPermission($permission);
+                });
+            }
         }
     }
-}
-```
+    ```
+    
 3. Now you're ready to get on using the `Olorin\Auth\Permission` model to manage granular access to your applications features.  In your controller, just check the authorized user's permissions before allowing the `ReallyCoolAdminFeature` you're trying to protect:
-```php
-public function ReallyCoolAdminFeature()
-{
-    $user = auth()->user();
-    
-    if($user->can('view_mgmt')) {
-        // Do your really cool feature code here...
+
+    ```php
+    public function ReallyCoolAdminFeature()
+    {
+        $user = auth()->user();
         
-        return view('admin.really-cool-feature');
+        if($user->can('view_mgmt')) {
+            // Do your really cool feature code here...
+            
+            return view('admin.really-cool-feature');
+        }
+        
+        return route('403');
     }
+    ```
     
-    return route('403');
-}
-```
 4. *MGMT* only comes with one built-in permission: 'view_mgmt'.  It's meant to separate application administrators from the public and protect the *MGMT* system from being tampered with.  If you want to add more permissions, the best way would be to use the `artisan` tinker utility to create the model then save it to the database.  You can insert permissions manually, but you'll also have to define the relationship to a role, and associate the role with users.  `artisan`'s tinker utility and Eloquent work together to make this process easy, so that's what we'll use here.<br><br>Open up a console window in your project root, and start the `artisan` tinker utility:
- ```console
- /var/www/project-root $> php artisan tinker
- Tinker - Laravel v5.2.x - by That Dude Who Wrote Tinker
- >> $permission = new Olorin\Auth\Permission()
- ...
- >> $permission->name = "my_perm"
- my_perm
- >> $permission->save()
- Yay!  You saved a permission
- $role = Olorin\Auth\Role::find(my_role_id)
- ...
- $role->grantPermission($permission)
- ...
- $user = App\User::find(my_user_id)
- ...
- $user->assignRole($role)
- ...
- Yay!  You gave someone a role!
- ```
+ 
+     ```console
+     /var/www/project-root $> php artisan tinker
+     Tinker - Laravel v5.2.x - by That Dude Who Wrote Tinker
+     >> $permission = new Olorin\Auth\Permission()
+     ...
+     >> $permission->name = "my_perm"
+     my_perm
+     >> $permission->save()
+     Yay!  You saved a permission
+     $role = Olorin\Auth\Role::find(my_role_id)
+     ...
+     $role->grantPermission($permission)
+     ...
+     $user = App\User::find(my_user_id)
+     ...
+     $user->assignRole($role)
+     ...
+     Yay!  You gave someone a role!
+     ```
  
