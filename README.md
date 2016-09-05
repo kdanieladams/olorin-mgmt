@@ -1,40 +1,47 @@
 # MGMT Administration System
 ## Generic admin solution for any Laravel project.
 
-*MGMT* is a general purpose solution for any Laravel project to easily have a fully customizable administration interface within a few minutes of simple setup.  As you use this system, please bear in mind that it is still in early development.  You are likely to come across a few bugs here and there.
+*MGMT* is a general purpose solution for any Laravel project to easily have a fully customizable administration interface within a few minutes of simple setup.  As you use this system, please bear in mind that it is still in early development.  You are likely to come across a few bugs here and there.  To make *MGMT* available to your application, there are a couple of steps to get it installed.
 
 ### Installation
-To make *MGMT* available to your application, there are a couple of steps to get it installed.
+
 1. We start by editing your `composer.json` file.  Include the privately managed VCS server in your list of repositories:
-```javascript
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "git@github.com/dan/mgmt"
-    }
-],
-```
+
+    ```javascript
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com/dan/mgmt"
+        }
+    ],
+    ```
+
 2. Next, require the package in your array of required packages:
-```javascript
-"require": {
-    "olorin/mgmt": "master"
-},
-```
+    
+    ```javascript
+    "require": {
+        "olorin/mgmt": "master"
+    },
+    ```
+    
 3. Now perform a composer update by running `$> composer update` from your project's route directory.  Composer will look first in *Packagist*, then when it doesn't find *MGMT* there, it will try GitHub.  Then, Composer will download the package into the appropriate vendor folder.
 
 4. After the package has been downloaded to your `vendor/` folder, you'll have to [register](https://laravel.com/docs/master/providers#registering-providers) the `MgmtServiceProvider` within your application .  Open your `config/app.php` file, and add the following to the bottom of the *providers* array:
-```php
-Olorin\Mgmt\MgmtServiceProvider::class,
-```
+
+    ```php
+    Olorin\Mgmt\MgmtServiceProvider::class,
+    ```
 
 5. Finally, the last thing to do is to [define error handler logic](https://laravel.com/docs/master/errors#render-method) for `MgmtException`s.  Open your `app\Exceptions\Handler.php` file, and add the following to the `render()` method before it's final return statement:
- ```php
- if($e instanceof \Olorin\Mgmt\MgmtException) {
-     return $e->render();
- }
-         
- return parent::render($request, $e);
- ```
+ 
+     ```php
+     if($e instanceof \Olorin\Mgmt\MgmtException) {
+         return $e->render();
+     }
+             
+     return parent::render($request, $e);
+     ```
+
 
 ### Initialization
 1. The service provider [publishes](https://laravel.com/docs/5.3/packages#publishing-file-groups) MGMT's assets into appropriate directories within your application.  You'll need to run `php artisan vendor:publish` from your project's root directory to get the files to copy over.  
