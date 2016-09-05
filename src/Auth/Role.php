@@ -9,6 +9,7 @@ class Role extends MgmtModel
 {
     protected $fillable = ['name', 'label'];
     protected $mgmt_relations = ['permissions' => ['hasMany', 'Olorin\Auth\Permission']];
+    public $create_permission = "create_roles";
 
     /**
      * Specify many-to-many relationship with App\Permission::class.
