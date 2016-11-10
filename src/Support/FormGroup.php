@@ -160,6 +160,8 @@ class FormGroup {
     {
         $field = new FormGroupField($name, $options);
 
+        $field->attributes = array_merge($field->attributes, ['autocomplete' => 'off']);
+
         $inputStr = Form::select($field->name, $field->value, $field->selected, $field->attributes);
 
         $field->addInput($inputStr);
@@ -214,7 +216,7 @@ class FormGroupField {
     public $addLabel    = true;
     public $disabled    = false;
     public $multiple    = false;
-    public $attributes  = array();
+    public $attributes  = [];
 
     private $html       = null;
     private $container  = null;

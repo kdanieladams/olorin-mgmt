@@ -16,5 +16,5 @@
             CKEDITOR.replace({{ $name }});
         });
     </script>
-    @stop
+    @append
 @endif

@@ -184,6 +184,11 @@ class MgmtModel extends Model
         }
     }
 
+    /**
+     * Get a URL friendly version of this model's name.
+     *
+     * @return string
+     */
     public function getUrlFriendlyName()
     {
         $reflect = new \ReflectionClass($this);

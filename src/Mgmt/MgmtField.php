@@ -26,7 +26,8 @@ class MgmtField {
         'integer',
         'related',
         'email',
-        'password'
+        'password',
+        'image'
     ];
 
     // properties
@@ -41,6 +42,12 @@ class MgmtField {
     private $view_options   = [];
     private $validation     = null;
     private $permissions    = [];
+    private $image_options  = [
+        'upload' => false,
+        'dir' => '/img',
+        'path' => null,
+        'preview' => true
+    ];
 
     // relationship properties
     private $belongsTo      = null;
@@ -65,6 +72,10 @@ class MgmtField {
                         $this->$setString($value);
                     }
                 }
+            }
+
+            if($this->type == 'image') {
+                $this->view_options['image_options'] = $this->image_options;
             }
         }
         else {
@@ -239,6 +250,21 @@ class MgmtField {
         return $go;
     }
 
+    public function setImageOptions($value)
+    {
+        if($this->type == 'image' && is_array($value)) {
+            foreach($value as $opt => $val) {
+                if(in_array($opt, $this->image_options) && gettype($val) == gettype($this->image_options[$opt])) {
+                    $this->image_options[$opt] = $val;
+                }
+            }
+
+            $this->image_options['path'] = base_path() . '/public/' . ltrim($this->image_options['dir'], "/");
+
+            $this->view_options['image_options'] = $this->image_options;
+        }
+    }
+
     public function getLabel(){
         if(!empty($this->label)) return $this->label;
 
@@ -320,7 +346,7 @@ class MgmtField {
             }
             else {
                 //dd($instance->$fieldname, $fieldname, $value);
-                //throw new \Exception("MgmtField->resolveRelatedFields: Unable to determine related field identifier.\n\n");
+                throw new MgmtException("resolveRelatedFields(): Unable to determine related field identifier.", 1);
             }
         }
 
