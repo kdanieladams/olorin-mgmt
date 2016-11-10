@@ -20,7 +20,7 @@
     
     ```javascript
     "require": {
-        "olorin/mgmt": "master"
+        "olorin/mgmt": "dev-master"
     },
     ```
     
@@ -44,7 +44,8 @@
 
 
 ### Initialization
-1. The service provider [publishes](https://laravel.com/docs/5.3/packages#publishing-file-groups) MGMT's assets into appropriate directories within your application.  You'll need to run `php artisan vendor:publish` from your project's root directory to get the files to copy over.  
+1. The service provider [publishes](https://laravel.com/docs/5.3/packages#publishing-file-groups) MGMT's assets into appropriate directories within your application.  You'll need to run `php artisan vendor:publish` from your project's root directory to get the files to copy over.
+<!-- Need to place reference to seeder in default seeder class! -->
 2. After that, you should run `php artisan migrate && php artisan db:seed` to create the necessary tables and fill them with some essential initial data. 
 
 If you'd like to change MGMT's look & feel, take a gander at your `resources/views/vendor` folder for unhindered access to MGMT's entire view library.  From within, you'll be able to customize anything MGMT render's to the screen, from the broad layout all the way down to each individual form field.
