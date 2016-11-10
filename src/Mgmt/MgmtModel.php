@@ -46,7 +46,7 @@ class MgmtModel extends Model
     public function hasSidebar()
     {
         foreach($this->mgmt_fields as $field){
-            if($field->related){
+            if($field->related || $field->sidebar){
                 return true;
             }
         }
