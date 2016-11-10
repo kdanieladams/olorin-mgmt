@@ -222,7 +222,7 @@ class MgmtController extends Controller
         return view('mgmt::create', [
             'model_name' => $this->model_name,
             'item' => $item,
-            'related_fields' => $item->hasRelatedFields()
+            'has_sidebar' => $item->hasSidebar()
         ]);
     }
 
@@ -273,7 +273,7 @@ class MgmtController extends Controller
         return view('mgmt::edit', [
             'item' => $item,
             'model_name' => $this->model_name,
-            'related_fields' => $item->hasRelatedFields()
+            'has_sidebar' => $item->hasSidebar()
         ]);
     }
 

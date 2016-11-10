@@ -7,7 +7,7 @@
     <form method="POST" action="/mgmt/update/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="row">
-            @if($related_fields)
+            @if($has_sidebar)
                 <div class="col-md-8">
             @else
                 <div class="col-md-12">

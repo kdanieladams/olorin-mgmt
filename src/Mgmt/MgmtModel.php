@@ -43,7 +43,7 @@ class MgmtModel extends Model
      *
      * @return bool
      */
-    public function hasRelatedFields()
+    public function hasSidebar()
     {
         foreach($this->mgmt_fields as $field){
             if($field->related){
