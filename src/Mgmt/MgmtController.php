@@ -239,6 +239,10 @@ class MgmtController extends Controller
         $item = new $model();
         $rules = $item->getValidationRules();
 
+        if(!empty($item->create_permission) && !$this->user->hasPermission($item->create_permission)){
+            throw new MgmtException('You are not authorized to create a '. $this->model_name .'.', 2);
+        }
+
         if(method_exists($item, "user")){
             $item->user()->associate(Auth::user());
         }
