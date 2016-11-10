@@ -8,9 +8,9 @@
     @section('scripts')
     <script type="text/javascript">
         // CK Editor overloads
-        var CKEDITOR_BASEPATH = '/js/vendor/ckeditor/';
+        var CKEDITOR_BASEPATH = '/js/ckeditor/';
     </script>
-    <script src="/js/vendor/ckeditor/ckeditor.js"></script>
+    <script src="/js/ckeditor/ckeditor.js"></script>
     <script>
         $(document).ready(function(){
             CKEDITOR.replace({{ $name }});
