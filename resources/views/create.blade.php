@@ -25,21 +25,29 @@
                 ])
             @endif
         @endforeach
-
             </div>
-
             {{-- Render related fields in a side-bar. --}}
             <div class="col-md-4">
                 @foreach($item->mgmt_fields as $index => $field)
-                    @if($field->sidebar === true && $field->editable === true)
-                        @include('mgmt::fields._' . $field->relationship, [
-                            'value' => $field->getRelatedItems($item),
-                            'selected' => null,
-                            'name' => $field->name,
-                            'label' => $field->label,
-                            'editable' => $field->editable,
-                            'view_options' => $field->view_options
-                        ])
+                    @if($field->sidebar === true)
+                        @if($field->related === true)
+                            @include('mgmt::fields._' . $field->relationship, [
+                                'value' => $field->getRelatedItems($item),
+                                'selected' => null,
+                                'name' => $field->name,
+                                'label' => $field->label,
+                                'editable' => true,
+                                'view_options' => $field->view_options
+                            ])
+                        @else
+                            @include('mgmt::fields._' . $field->type, [
+                                'value' => $item->{$field->name},
+                                'name' => $field->name,
+                                'label' => $field->label,
+                                'editable' => true,
+                                'view_options' => $field->view_options
+                            ])
+                        @endif
                     @endif
                 @endforeach
                 <hr />

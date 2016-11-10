@@ -22,6 +22,71 @@ class MgmtModel extends Model
     public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
 
     /**
+     * Populates this models $mgmt_fields attributes with instances
+     * of App\Mgmt\MgmtField.
+     */
+    private function getFieldData()
+    {
+        // Table column names
+        $table = $this->getTable();
+
+        foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
+            $field_name = $table_row->Field;
+            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
+            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
+            $options = array();
+
+            switch($type) {
+                case "varchar":
+                    $type = "text";
+                    break;
+                case "text":
+                    $type = "textarea";
+                    break;
+                case "timestamp":
+                    $type = "datetime";
+                    break;
+                case "int unsigned":
+                    $type = "integer";
+                    break;
+            }
+
+            if(!empty($limit)) {
+                $options["limit"] = $limit;
+            }
+
+            if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
+                $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+            }
+            else if(in_array($field_name, $this->hidden)) {
+                $options['hidden'] = true;
+
+                // TODO: Handle hidden fields on model...
+            }
+        }
+
+        // Eloquent relationships
+        // NOTE: $mgmt_relations property required to resolve related classes, e.g.:
+        //      protected $mgmt_relations = array(
+        //          'property_name' => array(
+        //              'belongsTo',
+        //              'App\RelatedModel'
+        //          )
+        //      );
+        if(!empty($this->mgmt_relations)){
+            foreach($this->mgmt_relations as $key => $relation) {
+                if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
+                    throw new \Exception("MgmtModel->getFieldData(): Invalid relationship!");
+                }
+
+                $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
+                    $relation[0] => $relation[1]
+                ]);
+            }
+        }
+    }
+
+    /**
      * Returns this models $mgmt_fields property.  If the property
      * has not yet been populated, calls getFieldData() to do so.
      *
@@ -197,71 +262,6 @@ class MgmtModel extends Model
         $global_ref = str_replace("App-", "", $global_ref);
 
         return $global_ref;
-    }
-
-    /**
-     * Populates this models $mgmt_fields attributes with instances
-     * of App\Mgmt\MgmtField.
-     */
-    private function getFieldData()
-    {
-        // Table column names
-        $table = $this->getTable();
-
-        foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
-            $field_name = $table_row->Field;
-            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
-            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
-            $options = array();
-
-            switch($type) {
-                case "varchar":
-                    $type = "text";
-                    break;
-                case "text":
-                    $type = "textarea";
-                    break;
-                case "timestamp":
-                    $type = "datetime";
-                    break;
-                case "int unsigned":
-                    $type = "integer";
-                    break;
-            }
-
-            if(!empty($limit)) {
-                $options["limit"] = $limit;
-            }
-
-            if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
-                $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
-            }
-            else if(in_array($field_name, $this->hidden)) {
-                $options['hidden'] = true;
-
-                // TODO: Handle hidden fields on model...
-            }
-        }
-
-        // Eloquent relationships
-        // NOTE: $mgmt_relations property required to resolve related classes, e.g.:
-        //      protected $mgmt_relations = array(
-        //          'property_name' => array(
-        //              'belongsTo',
-        //              'App\RelatedModel'
-        //          )
-        //      );
-        if(!empty($this->mgmt_relations)){
-            foreach($this->mgmt_relations as $key => $relation) {
-                if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
-                    throw new \Exception("MgmtModel->getFieldData(): Invalid relationship!");
-                }
-
-                $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
-                    $relation[0] => $relation[1]
-                ]);
-            }
-        }
     }
 
     /**
