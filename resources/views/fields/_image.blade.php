@@ -1,6 +1,18 @@
 @if(isset($list) && $list)
+    {{-- inject some styles --}}
+    @section('head')
+        <style>
+            #{{ $name }}_preview {
+                display: block;
+                max-width: 100%;
+                max-height: 50px;
+                margin: 0;
+            }
+        </style>
+    @append
+
     {{-- list display here --}}
-    {{ $value }}
+    <img src="{{ $value }}" id="{{ $name }}_preview">
 @else
     {{-- manipulate some php vars --}}
     <?php
@@ -17,14 +29,14 @@
 
     {{-- inject some styles --}}
     @section('head')
-    <style>
-        #{{ $name }}_preview {
-            display: block;
-            max-width: 100%;
-            max-height: 150px;
-            margin: 0 auto;
-        }
-    </style>
+        <style>
+            #{{ $name }}_preview {
+                display: block;
+                max-width: 100%;
+                max-height: 150px;
+                margin: 0 auto;
+            }
+        </style>
     @append
 
     {{-- edit form display here --}}

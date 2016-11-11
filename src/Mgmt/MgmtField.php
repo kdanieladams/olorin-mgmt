@@ -22,6 +22,7 @@ class MgmtField {
         'text',
         'textarea',
         'textarea-html',
+        'date',
         'datetime',
         'integer',
         'related',

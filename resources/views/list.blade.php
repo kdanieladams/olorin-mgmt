@@ -26,6 +26,7 @@
                 <td>
                     @include('mgmt::fields._' . $field->type, [
                         'list' => true,
+                        'name' => $field->name,
                         'value' => $item->{$field->name},
                         'view_options' => $field->view_options
                     ])

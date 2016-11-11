@@ -41,7 +41,7 @@
                             ])
                         @else
                             @include('mgmt::fields._' . $field->type, [
-                                'value' => $item->{$field->name},
+                                'value' => null, //$item->{$field->name},
                                 'name' => $field->name,
                                 'label' => $field->label,
                                 'editable' => true,

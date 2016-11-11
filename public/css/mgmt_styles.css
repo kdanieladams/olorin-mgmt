@@ -5,6 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5875,16 +5876,28 @@ button.close {
 body, html {
   height: 100%;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  font-family: "Open Sans"; }
 
 body {
-  padding-top: 70px; }
+  padding-top: 70px;
+  background-color: #121212;
+  color: #ccc; }
 
 a {
   transition: color 300ms; }
+  a:hover {
+    color: #ff3333; }
 
 .error {
   color: #c00; }
+
+.form-control {
+  background-color: #111;
+  color: #ccc; }
+
+.btn-cancel {
+  color: #111; }
 
 .master-wrapper {
   position: relative;
@@ -5901,7 +5914,7 @@ a {
     text-align: center;
     height: 100px;
     position: relative;
-    background-color: #111;
+    background-color: #0c0c0c;
     color: #777; }
     .footer-wrapper .footer .footer-text {
       /**
@@ -5919,6 +5932,25 @@ a {
   border: solid 1px #ddd;
   border-radius: 5px;
   padding: 2px; }
+
+.panel {
+  border-color: #777; }
+  .panel .panel-heading {
+    color: #ccc;
+    background-color: #121212;
+    border-color: #777; }
+  .panel .panel-body {
+    background-color: #222; }
+    .panel .panel-body hr {
+      border-top-color: #777; }
+
+.dropdown-menu {
+  background-color: #222; }
+  .dropdown-menu li a {
+    color: #ccc; }
+    .dropdown-menu li a:hover {
+      background-color: #777;
+      color: #ccc; }
 
 @media (min-width: 768px) {
   body.mgmt table tr td {
