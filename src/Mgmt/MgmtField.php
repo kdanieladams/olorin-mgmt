@@ -277,7 +277,7 @@ class MgmtField {
 
                             $opt_val = rtrim($val, "/") . "/" . $filename;
 
-                            if(is_dir($opt_val)) {
+                            if(is_dir(ltrim($opt_val, "/"))) {
                                 continue;
                             }
 
