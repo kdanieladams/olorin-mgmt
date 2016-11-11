@@ -47,7 +47,8 @@ class MgmtField {
         'upload' => false,
         'dir' => '/img',
         'path' => null,
-        'preview' => true
+        'preview' => true,
+        'options' => []
     ];
 
     // relationship properties
@@ -260,13 +261,32 @@ class MgmtField {
                         $path = base_path() . '/public/' . ltrim($val, "/");
 
                         if(is_dir($path)) {
-                            $this->image_options['path'] = base_path() . '/public/' . ltrim($this->image_options['dir'], "/");
-                            $this->image_options[$opt] = $val;
+                            $this->image_options['path'] = $path;
                         }
                         else {
                             throw new MgmtException("Unable to resolve public directory given for image field.", 1);
                         }
+
+                        $dir = scandir($path);
+                        $options = array();
+
+                        foreach($dir as $k => $filename) {
+                            if($filename == "." || $filename == "..") {
+                                continue;
+                            }
+
+                            $opt_val = rtrim($val, "/") . "/" . $filename;
+
+                            if(is_dir($opt_val)) {
+                                continue;
+                            }
+
+                            $options[$opt_val] = $filename;
+                        }
+
+                        $this->image_options["options"] = $options;
                     }
+
                     $this->image_options[$opt] = $val;
                 }
             }

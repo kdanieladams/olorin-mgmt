@@ -14,25 +14,6 @@
     {{-- list display here --}}
     <img src="{{ $value }}" id="{{ $name }}_preview">
 @else
-    {{-- manipulate some php vars --}}
-    <?php
-        $dir = scandir($view_options['image_options']['path']);
-        $options = array();
-        $selected_option = "";
-
-        foreach($dir as $k => $filename) {
-            if($filename == "." || $filename == "..") {
-                continue;
-            }
-            $opt_val = rtrim($view_options['image_options']['dir'], "/") . "/" . $filename;
-            $options[$opt_val] = $filename;
-
-            if($opt_val == $value) {
-                $selected_option = $filename;
-            }
-        }
-    ?>
-
     {{-- inject some styles --}}
     @section('head')
         <style>
@@ -61,9 +42,9 @@
         <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
             @if(isset($editable) && !$editable)
-                {{ $selected_option }}
+                {{ $view_options['image_options']['options'][$value] }}
             @else
-                {!! Form::text($name . '_display', $selected_option, [
+                {!! Form::text($name . '_display', $view_options['image_options']['options'][$value], [
                     'readonly' => 'readonly',
                     'class' => 'form-control',
                     'id' => $name . '_display'
@@ -76,7 +57,7 @@
                         <i class="glyphicon glyphicon-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                    @foreach($options as $val => $opt)
+                    @foreach($view_options['image_options']['options'] as $val => $opt)
                         <li>
                             <a href="#" data-value="{{ $val }}">{{ $opt }}</a>
                         </li>
