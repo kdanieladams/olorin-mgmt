@@ -256,6 +256,17 @@ class MgmtField {
         if($this->type == 'image' && is_array($value)) {
             foreach($value as $opt => $val) {
                 if(in_array($opt, $this->image_options) && gettype($val) == gettype($this->image_options[$opt])) {
+                    if($opt == 'dir') {
+                        $path = base_path() . '/public/' . ltrim($val, "/");
+
+                        if(is_dir($path)) {
+                            $this->image_options['path'] = base_path() . '/public/' . ltrim($this->image_options['dir'], "/");
+                            $this->image_options[$opt] = $val;
+                        }
+                        else {
+                            throw new MgmtException("Unable to resolve public directory given for image field.", 1);
+                        }
+                    }
                     $this->image_options[$opt] = $val;
                 }
             }

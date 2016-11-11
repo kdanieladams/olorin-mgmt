@@ -33,27 +33,29 @@
     @append
 
     <div class="form-group">
-        <label for="{{ $name }}">{{ ucwords(str_replace("_", " ", $label)) }}:</label>
+        <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
             @if(isset($editable) && !$editable)
                 {!! Form::text($name, $value, ['disabled' => 'disabled', 'class' => 'form-control']) !!}
             @else
-
                 {!! Form::text($name, $value, ['class' => 'form-control', 'step' => '1']) !!}
             @endif
             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
         </div>
     </div>
 
-    @section('scripts')
-    <script src="/js/bootstrap-datepicker.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('input[name="{{ $name }}"]').datepicker({
-                daysOfWeekHighlighted: "0,6",
-                todayHighlight: true
+    @if(!isset($editable) || (isset($editable) && $editable))
+        @section('scripts')
+
+        <script src="/js/bootstrap-datepicker.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('input[name="{{ $name }}"]').datepicker({
+                    daysOfWeekHighlighted: "0,6",
+                    todayHighlight: true
+                });
             });
-        });
-    </script>
-    @append
+        </script>
+        @append
+    @endif
 @endif

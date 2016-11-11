@@ -15,7 +15,7 @@
         $value = str_replace(' ', 'T', $value->toDateTimeString());
     ?>
     <div class="form-group">
-        <label for="{{ $name }}">{{ ucwords(str_replace("_", " ", $label)) }}:</label>
+        <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
             @if(isset($editable) && !$editable)
                 {!! Form::input('datetime-local', $name, $value, ['disabled' => 'disabled', 'class' => 'form-control']) !!}

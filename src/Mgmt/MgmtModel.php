@@ -76,7 +76,7 @@ class MgmtModel extends Model
         if(!empty($this->mgmt_relations)){
             foreach($this->mgmt_relations as $key => $relation) {
                 if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
-                    throw new \Exception("MgmtModel->getFieldData(): Invalid relationship!");
+                    throw new MgmtException("getFieldData(): Invalid relationship!", 1);
                 }
 
                 $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
