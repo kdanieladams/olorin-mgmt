@@ -1,3 +1,5 @@
+<?php if(is_null($value)){ $value = key($view_options['image_options']['options']); } ?>
+
 @if(isset($list) && $list)
     {{-- inject some styles --}}
     @section('head')
