@@ -304,7 +304,7 @@ class MgmtModel extends Model
             $sorted_names = array_merge($sorted_names, $unspecified_names);
 
             // do the sorting
-            usort($this->mgmt_fields, function($a, $b) use($sorted_names){
+            uasort($this->mgmt_fields, function($a, $b) use($sorted_names){
                 $aInt = array_search($a->name, $sorted_names) + 1;
                 $bInt = array_search($b->name, $sorted_names) + 1;
 
