@@ -23,6 +23,7 @@ class MgmtUserModel extends Authenticatable
 
     protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
     public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
+    public $label_key = 'label';
 
     /**
      * Returns this models $mgmt_fields property.  If the property

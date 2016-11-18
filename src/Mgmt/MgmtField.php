@@ -355,7 +355,6 @@ class MgmtField {
 
         $fieldname = $this->name;
         $value = $instance->$fieldname;
-        $label_key = 'label';
 
         if($value instanceof Collection){
             if(count($value) > 0){
@@ -369,7 +368,9 @@ class MgmtField {
             }
         }
 
-        if(empty($value->label)){
+        $label_key = $value->label_key;
+
+        if(empty($value->$label_key)){
             if(!empty($value->title)) {
                 $label_key = 'title';
             }

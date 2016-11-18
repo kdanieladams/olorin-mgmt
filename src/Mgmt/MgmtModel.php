@@ -20,6 +20,7 @@ class MgmtModel extends Model
 {
     protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
     public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
+    public $label_key = 'label';
 
     /**
      * Populates this models $mgmt_fields attributes with instances
@@ -268,12 +269,12 @@ class MgmtModel extends Model
     /**
      * Sort this model's MgmtFields by name.  Accepts an array of field names.
      *
-     * @param $sorted_names
+     * @param array $sorted_names
      * @return bool
      */
-    public function sortMgmtFieldsByName($sorted_names)
+    public function sortMgmtFieldsByName(array $sorted_names)
     {
-        if(is_array($sorted_names) && is_string($sorted_names[0])) {
+        if(is_string($sorted_names[0])) {
             $unsorted_names = [];
             $unspecified_names = [];
 
