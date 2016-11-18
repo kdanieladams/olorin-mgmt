@@ -1,4 +1,10 @@
-<?php if(is_null($value)){ $value = key($view_options['image_options']['options']); } ?>
+<?php
+    if(is_null($value)) {
+        $value = current($view_options['image_options']['options']);
+    }
+
+    $image_url = rtrim($view_options['image_options']['dir'], "/") . "/" . $value;
+?>
 
 @if(isset($list) && $list)
     {{-- inject some styles --}}
@@ -14,7 +20,7 @@
     @append
 
     {{-- list display here --}}
-    <img src="{{ $value }}" id="{{ $name }}_preview">
+    <img src="{{ $image_url }}" id="{{ $name }}_preview">
 @else
     {{-- inject some styles --}}
     @section('head')
@@ -37,21 +43,21 @@
 
     {{-- edit form display here --}}
     @if($view_options['image_options']['preview'])
-        <img src="{{ $value }}" id="{{ $name }}_preview">
+        <img src="{{ $image_url }}" id="{{ $name }}_preview">
     @endif
 
     <div class="form-group">
         <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
             @if(isset($editable) && !$editable)
-                {{ $view_options['image_options']['options'][$value] }}
+                {{ $value }}
             @else
-                {!! Form::text($name . '_display', $view_options['image_options']['options'][$value], [
+                {!! Form::text($name . '_display', $value, [
                     'readonly' => 'readonly',
                     'class' => 'form-control',
                     'id' => $name . '_display'
                 ]) !!}
-                <input type="hidden" name="{{ $name }}" value="{{ $value }}">
+                <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-url="{{ $image_url }}">
 
                 <div class="input-group-btn" id="{{ $name }}_dropdown">
                     <button type="button" class="btn btn-default dropdown-toggle"
@@ -59,9 +65,9 @@
                         <i class="glyphicon glyphicon-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                    @foreach($view_options['image_options']['options'] as $val => $opt)
+                    @foreach($view_options['image_options']['options'] as $url => $filename)
                         <li>
-                            <a href="#" data-value="{{ $val }}">{{ $opt }}</a>
+                            <a href="#" data-value="{{ $filename }}" data-url="{{ $url }}">{{ $filename }}</a>
                         </li>
                     @endforeach
                     </ul>
@@ -76,7 +82,7 @@
         $(document).ready(function(){
             $('input[name="{{ $name }}"]').on('selected-new-img', function(e){
                 $('#{{ $name }}_preview').fadeOut(500, function(){
-                    $(this).prop('src', $('input[name="{{ $name }}"]').val());
+                    $(this).prop('src', $('input[name="{{ $name }}"]').data('url'));
                     $(this).fadeIn(500);
                 });
             });
@@ -86,9 +92,11 @@
 
                 var value = $(this).data("value");
                 var label = $(this).html();
+                var url = $(this).data('url');
 
                 $('input[name="{{ $name }}_display"]').val(label);
                 $('input[name="{{ $name }}"]').val(value);
+                $('input[name="{{ $name }}"]').data('url', url);
                 $('input[name="{{ $name }}"]').trigger('selected-new-img');
             });
 
