@@ -197,7 +197,8 @@ class MgmtModel extends Model
      *
      * @param array $input
      */
-    public function translateInput(array $input) {
+    public function translateInput(array $input)
+    {
         $fields = $this->mgmt_fields;
         
         // input translations by field
@@ -262,6 +263,61 @@ class MgmtModel extends Model
         $global_ref = str_replace("App-", "", $global_ref);
 
         return $global_ref;
+    }
+
+    /**
+     * Sort this model's MgmtFields by name.  Accepts an array of field names.
+     *
+     * @param $sorted_names
+     * @return bool
+     */
+    public function sortMgmtFieldsByName($sorted_names)
+    {
+        if(is_array($sorted_names) && is_string($sorted_names[0])) {
+            $unsorted_names = [];
+            $unspecified_names = [];
+
+            // check for unspecifieds
+            foreach($this->mgmt_fields as $field) {
+                $unsorted_names[] = $field->name;
+
+                if(!in_array($field->name, $sorted_names)) {
+                    $unspecified_names[] = $field->name;
+                }
+            }
+
+            // if none of the field names have been specified...
+            if(count($unspecified_names) == count($this->mgmt_fields)) {
+                return false;
+            }
+
+            // verify field names
+            foreach($sorted_names as $name) {
+                if(!in_array($name, $unsorted_names)) {
+                    // maybe should throw an error instead?
+                    return false;
+                }
+            }
+
+            // tack the unspecifieds onto the end
+            $sorted_names = array_merge($sorted_names, $unspecified_names);
+
+            // do the sorting
+            usort($this->mgmt_fields, function($a, $b) use($sorted_names){
+                $aInt = array_search($a->name, $sorted_names) + 1;
+                $bInt = array_search($b->name, $sorted_names) + 1;
+
+                if($aInt == $bInt){
+                    return 0;
+                }
+
+                return ($aInt > $bInt ? 1 : -1);
+            });
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -164,26 +164,14 @@ public function getMgmtFieldsAttribute()
         $this->mgmt_fields['published_at']->view_options = ['date_format' => 'n/j/Y h:i a'];
         $this->mgmt_fields['categories']->view_options = ['checkboxes' => true];
 
-        // sort the fields according to a particular order
-        $sortedNames = [
+        // sort the fields
+        $this->sortMgmtFieldsByName([
             "title",
-            "intro",
-            "user",
             "body",
-            "published_at",
-            "type",
-            "categories"
-        ];
-        usort($this->mgmt_fields, function($a, $b) use($sortedNames){
-            $aInt = array_search($a->name, $sortedNames) + 1;
-            $bInt = array_search($b->name, $sortedNames) + 1;
-
-            if($aInt == $bInt){
-                return 0;
-            }
-
-            return ($aInt > $bInt ? 1 : -1);
-        });
+            "image",
+            "user",
+            "published_on"
+        ]);
     }
 
 
