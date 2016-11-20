@@ -5,7 +5,7 @@
 
 ### Installation
 
-1. We start by editing your `composer.json` file.  Include the privately managed VCS server in your list of repositories:
+1. We start by editing your `composer.json` file.  Include the repo in your list of repositories:
 
     ```javascript
     "repositories": [

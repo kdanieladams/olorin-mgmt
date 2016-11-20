@@ -202,4 +202,14 @@ class FormGroup {
 
         return $field->output();
     }
+
+    public static function number($name, $options)
+    {
+        $field = new FormGroupField($name, $options);
+        $textStr = Form::number($field->name, $field->value, $field->attributes) . '</input>';
+
+        $field->addInput($textStr);
+
+        return $field->output();
+    }
 }

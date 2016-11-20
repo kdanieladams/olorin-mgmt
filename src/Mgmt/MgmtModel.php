@@ -34,6 +34,7 @@ class MgmtModel extends Model
         foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
             $field_name = $table_row->Field;
             $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
+            $type = preg_replace("/\sunsigned/i", "", $type);
             $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
             $options = array();
 
@@ -47,7 +48,11 @@ class MgmtModel extends Model
                 case "timestamp":
                     $type = "datetime";
                     break;
-                case "int unsigned":
+                case "int":
+                case "tinyint":
+                case "smallint":
+                case "mediumint":
+                case "bigint":
                     $type = "integer";
                     break;
             }
