@@ -4,6 +4,7 @@ namespace Olorin\Mgmt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Olorin\Mgmt\MgmtException;
+use View;
 
 /**
  * Class MgmtField
@@ -19,30 +20,21 @@ class MgmtField {
      * @var $typelist array
      */
     private $typelist = [
-        'text',
-        'textarea',
-        'textarea-html',
+        'boolean',
         'date',
         'datetime',
-        'integer',
-        'related',
         'email',
+        'image',
+        'integer',
+        'text',
         'password',
-        'image'
+        'related',
+        'textarea',
+        'textarea-html'
     ];
 
     // properties
     private $editable       = true;
-    private $required       = null;
-    private $label          = '';
-    private $limit          = 0;
-    private $list           = false;
-    private $name           = '';
-    private $type           = 'text';
-    private $sidebar        = null;
-    private $view_options   = [];
-    private $validation     = null;
-    private $permissions    = [];
     private $image_options  = [
         'upload' => false,
         'dir' => '/img',
@@ -50,6 +42,17 @@ class MgmtField {
         'preview' => true,
         'options' => []
     ];
+    private $label          = '';
+    private $limit          = 0;
+    private $list           = false;
+    private $name           = '';
+    private $permissions    = [];
+    private $required       = null;
+    private $sidebar        = null;
+    private $type           = 'text';
+    private $validation     = null;
+    private $view           = null;
+    private $view_options   = [];
 
     // relationship properties
     private $belongsTo      = null;
@@ -144,9 +147,7 @@ class MgmtField {
             && (class_exists($value) || class_exists('\\' . $value)))
         {
             $this->hasMany = $value;
-            // TEMP:
-            $this->belongsToMany = $value;
-            $this->relationship = 'belongsToMany';
+            $this->relationship = 'hasMany';
         }
         return false;
     }
@@ -297,6 +298,16 @@ class MgmtField {
         }
     }
 
+    public function setView($value)
+    {
+        if(View::exists($value)) {
+            $this->view = $value;
+            return true;
+        }
+
+        return false;
+    }
+
     public function getLabel(){
         if(!empty($this->label)) return $this->label;
 
@@ -364,7 +375,7 @@ class MgmtField {
                 $relationship = $this->relationship;
 
                 $class = $this->$relationship;
-                $value = $class::find(1);
+                $value = $class::first();
             }
         }
 
@@ -402,10 +413,5 @@ class MgmtField {
         }
 
         return $items;
-    }
-
-    public function getView()
-    {
-
     }
 }

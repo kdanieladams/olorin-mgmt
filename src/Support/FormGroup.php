@@ -167,7 +167,7 @@ class FormGroup {
     }
 
     /**
-     * Create new form-group with a file field inside.
+     * Create new form-group with an upload-file field inside.
      *
      * @param $name
      * @param array $options
@@ -184,7 +184,7 @@ class FormGroup {
     }
 
     /**
-     * Create new form-group with a checkbox inside.
+     * Create new form-group with a set of checkboxes inside.
      *
      * @param $name
      * @param $options
@@ -203,12 +203,52 @@ class FormGroup {
         return $field->output();
     }
 
+    /**
+     * Create a new form-group with a number field inside.
+     *
+     * @param $name
+     * @param $options
+     * @return string
+     */
     public static function number($name, $options)
     {
         $field = new FormGroupField($name, $options);
         $textStr = Form::number($field->name, $field->value, $field->attributes) . '</input>';
 
         $field->addInput($textStr);
+
+        return $field->output();
+    }
+
+    /**
+     * Create a new form-group with a pair of radio buttons for boolean assignment.
+     *
+     * @param $name
+     * @param $options
+     * @return string
+     */
+    public static function boolean($name, $options)
+    {
+        $options['labels']['true'] = $options['labels']['true'] ?: "True";
+        $options['labels']['false'] = $options['labels']['false'] ?: "False";
+        $options['cssClass'] = "";
+
+        $field = new FormGroupField($name, $options);
+
+        // insert a block element to abide strict XML-formatting standards of DOMDocument() while forcing a line-break.
+        $inputStr = "<div></div>";
+
+        $inputStr .= "<label class='radio-inline'>";
+        $inputStr .= Form::radio($field->name, "1", ($field->value == 1), $field->attributes) . '</input>';
+        $inputStr .= " " . $options['labels']['true'];
+        $inputStr .= "</label>";
+
+        $inputStr .= "<label class='radio-inline'>";
+        $inputStr .= Form::radio($field->name, "0", ($field->value == 0), $field->attributes) . '</input>';
+        $inputStr .= " " . $options['labels']['false'];
+        $inputStr .= "</label>";
+
+        $field->addInput($inputStr);
 
         return $field->output();
     }

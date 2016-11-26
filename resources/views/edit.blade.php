@@ -23,6 +23,8 @@
                                 {{ $item->{$field->name}->{$field->getLabelKey($item)} }}
                             </a>
                         </div>
+                    @elseif(!is_null($field->view))
+                        @include($field->view, ['field' => $field, 'item' => $item])
                     @else
                         @if($field->related === true)
                             @include('mgmt::fields._' . $field->relationship, [
@@ -59,6 +61,8 @@
                                     {{ $item->{$field->name}->{$field->getLabelKey($item)} }}
                                 </a>
                             </div>
+                        @elseif(!is_null($field->view))
+                            @include($field->view, ['field' => $field, 'item' => $item])
                         @else
                             @if($field->related === true)
                                 @include('mgmt::fields._' . $field->relationship, [

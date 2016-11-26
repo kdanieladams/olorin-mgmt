@@ -15,14 +15,25 @@
 
         {{-- Render primary fields in a large column. --}}
         @foreach($item->mgmt_fields as $index => $field)
-            @if($field->sidebar === false && $field->editable === true)
-                @include('mgmt::fields._' . $field->type, [
-                    'value' => null,
-                    'name' => $field->name,
-                    'label' => $field->label,
-                    'editable' => $field->editable,
-                    'view_options' => $field->view_options
-                ])
+            @if($field->sidebar === false)
+                @if($field->related == true)
+                    @include('mgmt::fields._' . $field->relationship, [
+                        'value' => $field->getRelatedItems($item),
+                        'selected' => null,
+                        'name' => $field->name,
+                        'label' => $field->label,
+                        'editable' => true,
+                        'view_options' => $field->view_options
+                    ])
+                @else
+                    @include('mgmt::fields._' . $field->type, [
+                        'value' => null,
+                        'name' => $field->name,
+                        'label' => $field->label,
+                        'editable' => true,
+                        'view_options' => $field->view_options
+                    ])
+                @endif
             @endif
         @endforeach
             </div>

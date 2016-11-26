@@ -127,6 +127,16 @@ a {
   }
 }
 
+.table tbody tr.separator-row {
+  height: 30px;
+}
+.table tbody tr.second-thead th {
+  border-top: 0;
+}
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+  background-color: $darker-gray;
+}
+
 // Media Queries
 @media(min-width: 768px){
   body.mgmt {
