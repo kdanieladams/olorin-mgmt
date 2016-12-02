@@ -28,7 +28,7 @@
                     @else
                         @if($field->related === true)
                             @include('mgmt::fields._' . $field->relationship, [
-                                'value' => $field->getRelatedItems($item),
+                                'value' => $field->getRelatedOptions($item),
                                 'selected' => $field->getRelatedId($item),
                                 'name' => $field->name,
                                 'label' => $field->label,
@@ -66,7 +66,7 @@
                         @else
                             @if($field->related === true)
                                 @include('mgmt::fields._' . $field->relationship, [
-                                    'value' => $field->getRelatedItems($item),
+                                    'value' => $field->getRelatedOptions($item),
                                     'selected' => $field->getRelatedId($item),
                                     'name' => $field->name,
                                     'label' => $field->label,

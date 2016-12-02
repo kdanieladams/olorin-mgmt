@@ -206,13 +206,13 @@ class MgmtModel extends Model
     public function translateInput(array $input)
     {
         $fields = $this->mgmt_fields;
-        
+
         // input translations by field
         foreach($fields as $mgmt_field){
             if($mgmt_field->editable){
                 $fieldname = $mgmt_field->name;
 
-                if($mgmt_field->required == false && empty($input[$fieldname])) {
+                if($mgmt_field->required == false && $input[$fieldname] != "0" && empty($input[$fieldname])) {
                     if($mgmt_field->related == true) {
                         if($mgmt_field->relationship == 'belongsTo') {
                             $this->$fieldname()->dissociate();

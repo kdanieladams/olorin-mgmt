@@ -18,7 +18,7 @@
             @if($field->sidebar === false)
                 @if($field->related == true)
                     @include('mgmt::fields._' . $field->relationship, [
-                        'value' => $field->getRelatedItems($item),
+                        'value' => $field->getRelatedOptions($item),
                         'selected' => null,
                         'name' => $field->name,
                         'label' => $field->label,
@@ -43,7 +43,7 @@
                     @if($field->sidebar === true)
                         @if($field->related === true)
                             @include('mgmt::fields._' . $field->relationship, [
-                                'value' => $field->getRelatedItems($item),
+                                'value' => $field->getRelatedOptions($item),
                                 'selected' => null,
                                 'name' => $field->name,
                                 'label' => $field->label,

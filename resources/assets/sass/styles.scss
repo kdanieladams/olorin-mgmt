@@ -50,6 +50,38 @@ a {
 .btn-cancel {
   color: $light-black;
 }
+.create-btn {
+  float: right;
+  margin-top: 20px;
+  @extend .btn;
+  @extend .btn-success;
+}
+.inner-field-container {
+  padding: 15px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+
+  table tbody tr td {
+    vertical-align: middle;
+
+    &:last-of-type{
+      padding-top: 12px;
+      text-align: right;
+    }
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn {
+    margin-top: -5px;
+  }
+
+  hr {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
 
 // Layout Classes
 .master-wrapper{
@@ -74,20 +106,12 @@ a {
     color: $dark-gray;
 
     .footer-text {
-      /**
-       * This might be a good use case for a mixin to vertically center elements.
-       */
+      // This might be a good use case for a mixin to vertically center elements.
       position: relative;
       top: 50%;
       transform: translateY(-50%);
     }
   }
-}
-.create-btn {
-  float: right;
-  margin-top: 20px;
-  @extend .btn;
-  @extend .btn-success;
 }
 
 // CK Editor styles

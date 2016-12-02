@@ -8,7 +8,7 @@ gulp.task('sass', function() {
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('resources/assets/css/'));
 
-    gutil.log("===========");
+    gutil.log(" ");
     gutil.log(gutil.colors.green('Sass successfully compiled!'));
     gutil.log("===========");
 });
@@ -18,7 +18,7 @@ gulp.task('css', function(){
         .pipe(concat('mgmt_styles.css'))
         .pipe(gulp.dest('public/css/'));
 
-    gutil.log("===========");
+    gutil.log(" ");
     gutil.log(gutil.colors.green('CSS successfully concatenated and published!'));
     gutil.log("===========");
 });
@@ -31,16 +31,17 @@ gulp.task('scripts', function() {
         .pipe(concat('mgmt_scripts.js'))
         .pipe(gulp.dest('src/public/js/'));
 
-    gutil.log("===========");
+    gutil.log(" ");
     gutil.log(gutil.colors.green('JavaScripts successfully concatenated and published!'));
     gutil.log("===========");
 });
 
 gulp.task('default', ['sass', 'css', 'scripts'], function() {
-    gutil.log("===========");
-    gutil.log(gutil.colors.yellow('Tasks completed!  Initiating watch...'));
+    gutil.log(" ");
+    gutil.log(gutil.colors.yellow('Tasks completed!'));
+    // gutil.log(gutil.colors.yellow('Tasks completed!  Initiating watch...'));
     gutil.log("===========");
 
-    gulp.watch('resources/assets/sass/**/*.scss', ['sass', 'css']);
-    gulp.watch('resources/assets/js/**/*.js', ['scripts']);
+    //gulp.watch('resources/assets/sass/**/*.scss', ['sass', 'css']);
+    //gulp.watch('resources/assets/js/**/*.js', ['scripts']);
 });
