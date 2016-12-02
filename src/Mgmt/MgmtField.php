@@ -20,15 +20,16 @@ class MgmtField {
      * @var $typelist array
      */
     private $typelist = [
+        'add-one',
         'boolean',
         'date',
         'datetime',
         'email',
         'image',
         'integer',
-        'text',
         'password',
         'related',
+        'text',
         'textarea',
         'textarea-html'
     ];

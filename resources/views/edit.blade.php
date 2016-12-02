@@ -23,7 +23,11 @@
                                 {{ $item->{$field->name}->{$field->getLabelKey($item)} }}
                             </a>
                         </div>
-                    @elseif(!is_null($field->view))
+                    @elseif(!is_null($field->view) || $field->type == 'add-one')
+                        @if($field->type == 'add-one' && is_null($field->view))
+                            <?php $field->view = "mgmt::fields._add-one"; ?>
+                        @endif
+
                         @include($field->view, ['field' => $field, 'item' => $item])
                     @else
                         @if($field->related === true)
