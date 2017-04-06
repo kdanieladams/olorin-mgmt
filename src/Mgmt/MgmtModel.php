@@ -19,7 +19,7 @@ use DB;
 class MgmtModel extends Model
 {
     protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
-    public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
+    public $create_permission = ''; // Olorin\Auth\Permission->$name required to create an instance of this model.
     public $label_key = 'label';
 
     /**
@@ -175,7 +175,6 @@ class MgmtModel extends Model
             }
 
             // TODO: Validate many-to-many attachments...
-            // many-to-many validation depends on how many items were selected to be attached...thanks Laravel...
             if($field->related && $field->relationship != 'belongsToMany' && $field->relationship != 'hasMany'){
                 $relationship = $field->relationship;
                 $class = $field->$relationship;
@@ -300,7 +299,7 @@ class MgmtModel extends Model
             // verify field names
             foreach($sorted_names as $name) {
                 if(!in_array($name, $unsorted_names)) {
-                    // maybe should throw an error instead?
+                    // invalid field name found - maybe should throw an error instead?
                     return false;
                 }
             }

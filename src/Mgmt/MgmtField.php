@@ -64,11 +64,22 @@ class MgmtField {
 
     public function __construct($name, $type, $options = array()){
         if($this->setName($name) && $this->setType($type)){
+            // special type defaults
             if($this->type == 'related') {
                 $this->related = true;
                 $this->sidebar = true;
             }
+            if($this->type == 'image') {
+                $this->view_options['image_options'] = $this->image_options;
+            }
+            if($this->type == 'boolean') {
+                $this->view_options['labels'] = [
+                    'true' => 'true',
+                    'false' => 'false'
+                ];
+            }
 
+            // set property values according to given options
             foreach($options as $opt => $value) {
                 if(is_string($opt) && property_exists($this, $opt)) {
                     $setString = 'set ' . $opt;
@@ -80,9 +91,7 @@ class MgmtField {
                 }
             }
 
-            if($this->type == 'image') {
-                $this->view_options['image_options'] = $this->image_options;
-            }
+
         }
         else {
             $msg = $this->setName($name) ? ($this->setType($type) ? '[unknown error]' :
@@ -280,6 +289,7 @@ class MgmtField {
                             $opt_val = rtrim($val, "/") . "/" . $filename;
 
                             if(is_dir(ltrim($opt_val, "/"))) {
+                                // TODO: Include support for subdirectories.
                                 continue;
                             }
 

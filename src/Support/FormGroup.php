@@ -238,10 +238,14 @@ class FormGroup {
         // insert a block element to abide strict XML-formatting standards of DOMDocument() while forcing a line-break.
         $inputStr = "<div></div>";
 
+        $field->attributes["id"] = $field->name . "_true";
+
         $inputStr .= "<label class='radio-inline'>";
         $inputStr .= Form::radio($field->name, "1", ($field->value == 1), $field->attributes) . '</input>';
         $inputStr .= " " . $options['labels']['true'];
         $inputStr .= "</label>";
+
+        $field->attributes["id"] = $field->name . "_false";
 
         $inputStr .= "<label class='radio-inline'>";
         $inputStr .= Form::radio($field->name, "0", ($field->value == 0), $field->attributes) . '</input>';

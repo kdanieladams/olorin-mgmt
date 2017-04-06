@@ -19,11 +19,11 @@
     }
 
     $meta_fields = $meta_fields ?: $related_items[key($related_items)]->mgmt_fields;
-    ?>
 
-    @if(is_array($field->view_options) && count($field->view_options) > 0)
-        <?php $options = array_merge($options, $field->view_options); ?>
-    @endif
+    if(is_array($field->view_options) && count($field->view_options) > 0){
+        $options = array_merge($options, $field->view_options);
+    }
+    ?>
 
     <div class="form-group">
         <label>{{ $options['label'] }}:</label>
@@ -66,7 +66,7 @@
                             <td>
                                 @include('mgmt::fields._' . $rel_field->type, [
                                     'value' => null,
-                                    'name' => $rel_field->name,
+                                    'name' => 'inner_' . $rel_field->name,
                                     'label' => $rel_field->label,
                                     'editable' => true,
                                     'view_options' => $rel_field->view_options
@@ -75,7 +75,7 @@
                         @endif
                     @endforeach
                     <td>
-                        <button class="btn btn-success" onclick="">
+                        <button class="btn btn-success" type="button" onclick="inner_{{ $field->name }}_submit()">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             Add One
                         </button>
@@ -85,4 +85,37 @@
             </table>
         </div>
     </div>
+    {{-- inject some javascript --}}
+    @section('scripts')
+    <script>
+        var inner_{{ $field->name }}_submit = function(){
+            var postData = {};
+            var fieldNames = [
+            @foreach($meta_fields as $rel_field)
+                @if(strtolower($rel_field->name) != strtolower($model_name))
+                'inner_{{ $rel_field->name }}',
+                @endif
+            @endforeach
+            ];
+
+            $.each(fieldNames, function(index, fieldName){
+                var elm = $("[name='" + fieldName + "']");
+                var val = '';
+
+                if(elm.attr("type") == "radio") {
+                    val = $("[name='" + fieldName + "']:checked").val();
+                }
+                else {
+                    val = elm.val();
+                }
+
+                postData[fieldName] = val;
+            });
+
+            console.log("Post Data:");
+            console.log("=========");
+            console.log(postData);
+        };
+    </script>
+    @append
 @endif
