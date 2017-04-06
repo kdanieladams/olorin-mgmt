@@ -174,6 +174,15 @@ class MgmtUserModel extends Authenticatable
                                 $this->$fieldname()->detach();
                                 $this->$fieldname()->attach($input[$fieldname]);
                                 break;
+                            case 'hasMany':
+                                $relationship = $mgmt_field->relationship;
+                                $class_ref = $mgmt_field->$relationship;
+
+                                foreach($input[$fieldname] as $val) {
+                                    $instance = $class_ref::find($val);
+                                    $this->$fieldname()->save($instance);
+                                }
+                                break;
                             default:
                                 dd("You've come across a relationship that isn't handled yet", $mgmt_field, $input);
                                 break;

@@ -21,7 +21,7 @@
                 'class' => 'form-control',
                 'id' => $name . '_display'
             ]) !!}
-            <input type="hidden" name="{{ $name }}" value="{{ $selected }}">
+            <input type="hidden" name="{{ $name }}" value="{{ is_null($selected) ? key($value) : $selected }}">
 
             <div class="input-group-btn" id="{{ $name }}_dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle"

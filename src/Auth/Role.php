@@ -8,7 +8,7 @@ use Olorin\Auth\Permission;
 class Role extends MgmtModel
 {
     protected $fillable = ['name', 'label'];
-    protected $mgmt_relations = ['permissions' => ['hasMany', 'Olorin\Auth\Permission']];
+    protected $mgmt_relations = ['permissions' => ['belongsToMany', 'Olorin\Auth\Permission']];
     public $create_permission = "create_roles";
 
     /**

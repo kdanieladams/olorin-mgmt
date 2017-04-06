@@ -4,7 +4,7 @@
 
 @section('main')
     <h1>Create a New {{ $model_name }}</h1>
-    <form method="POST" action="/mgmt/savenew/{{ $model_name }}">
+    <form name="model_form" method="POST" action="/mgmt/savenew/{{ $model_name }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="row">
         @if($has_sidebar)

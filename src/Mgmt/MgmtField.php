@@ -410,36 +410,44 @@ class MgmtField {
 
     public function getRelatedOptions(Model $instance)
     {
-        $relationship = $this->relationship;
-        $class = $relationship ? $this->$relationship : '';
-        $items = array();
+        if($this->related) {
+            $relationship = $this->relationship;
+            $class = $relationship ? $this->$relationship : '';
+            $items = array();
 
-        if(!class_exists($class)) {
-            throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
+            if(!class_exists($class)) {
+                throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
+            }
+
+            foreach($class::all() as $item){
+                $label_key = $this->getLabelKey($instance);
+                $items[$item->id] = $item->$label_key;
+            }
+
+            return $items;
         }
 
-        foreach($class::all() as $item){
-            $label_key = $this->getLabelKey($instance);
-            $items[$item->id] = $item->$label_key;
-        }
-
-        return $items;
+        throw new MgmtException('Mgmt was unable to resolve a relationship!', 1);
     }
 
     public function getRelatedItems(Model $instance)
     {
-        $relationship = $this->relationship;
-        $class = $relationship ? $this->$relationship : '';
-        $items = array();
+        if($this->related) {
+            $relationship = $this->relationship;
+            $class = $relationship ? $this->$relationship : '';
+            $items = array();
 
-        if(!class_exists($class)) {
-            throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
+            if(!class_exists($class)) {
+                throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
+            }
+
+            foreach($instance->{$this->name} as $item){
+                $items[$item->id] = $item;
+            }
+
+            return $items;
         }
 
-        foreach($instance->{$this->name} as $item){
-            $items[$item->id] = $item;
-        }
-
-        return $items;
+        throw new MgmtException('Mgmt was unable to resolve a relationship!', 1);
     }
 }
