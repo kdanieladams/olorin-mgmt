@@ -202,7 +202,7 @@ class MgmtModel extends Model
      *
      * @param array $input
      */
-    public function translateInput(array $input)
+    public function translateInput(array $input, $inner_model)
     {
         $fields = $this->mgmt_fields;
 
@@ -229,7 +229,7 @@ class MgmtModel extends Model
                         $this->$fieldname = new Carbon($input[$fieldname]);
                         break;
                     case 'related':
-                        if($this->id == null){
+                        if($this->id == null && !$inner_model){
                             $this->save();
                         }
                         switch($mgmt_field->relationship){

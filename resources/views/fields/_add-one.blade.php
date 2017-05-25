@@ -19,6 +19,7 @@
     }
 
     $meta_fields = $meta_fields ?: $related_items[key($related_items)]->mgmt_fields;
+    $field_class = preg_replace('/.+\\\\/i', '', get_class($related_items[key($related_items)]));
 
     if(is_array($field->view_options) && count($field->view_options) > 0){
         $options = array_merge($options, $field->view_options);
@@ -107,14 +108,35 @@
                 }
                 else {
                     val = elm.val();
+                    elm.val('');
                 }
 
-                postData[fieldName] = val;
+                postData[fieldName.replace("inner_", "")] = val;
+
             });
 
-            console.log("Post Data:");
-            console.log("=========");
-            console.log(postData);
+            /**
+             * Now that we have the formData for the inner model, we need to add the parent's ID to the data, and post
+             * it back to the server, which will then save this new instance of the inner model.  We can inject the
+             * result into the page here, as soon as the postBack returns success...sort of faking it for convenience
+             * sake, and if the page reloads the query should update with current information - and will that the new
+             * entry exists...provided caching doesn't bite us in the ass on this one.
+             */
+
+            // add some stuff
+            postData["{{ strtolower($model_name) }}"] = parseInt("{{ $item->id }}");
+            postData["_token"] = "{{ csrf_token() }}";
+
+            // do the POST
+            $.ajax({
+                url: "/mgmt/savenew/{{ $field_class }}",
+                method: "post",
+                data: postData,
+                success: function(retData){
+                    // reload on success
+                    location.reload();
+                }
+            });
         };
     </script>
     @append
