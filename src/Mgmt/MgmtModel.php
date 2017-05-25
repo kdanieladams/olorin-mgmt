@@ -202,7 +202,7 @@ class MgmtModel extends Model
      *
      * @param array $input
      */
-    public function translateInput(array $input, $inner_model)
+    public function translateInput(array $input, $inner_model = false)
     {
         $fields = $this->mgmt_fields;
 
@@ -210,6 +210,8 @@ class MgmtModel extends Model
         foreach($fields as $mgmt_field){
             if($mgmt_field->editable){
                 $fieldname = $mgmt_field->name;
+
+                if(!array_key_exists($fieldname, $input)) $input[$fieldname] = null;
 
                 if($mgmt_field->required == false && $input[$fieldname] != "0" && empty($input[$fieldname])) {
                     if($mgmt_field->related == true) {

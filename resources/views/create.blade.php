@@ -16,7 +16,13 @@
         {{-- Render primary fields in a large column. --}}
         @foreach($item->mgmt_fields as $index => $field)
             @if($field->sidebar === false)
-                @if($field->related == true)
+                @if(!is_null($field->view) || $field->type == 'add-one')
+                    @if($field->type == 'add-one' && is_null($field->view))
+                        <?php $field->view = "mgmt::fields._add-one"; ?>
+                    @endif
+
+                    @include($field->view, ['field' => $field, 'item' => $item, 'create' => true])
+                @elseif($field->related == true)
                     @include('mgmt::fields._' . $field->relationship, [
                         'value' => $field->getRelatedOptions($item),
                         'selected' => null,
@@ -25,6 +31,7 @@
                         'editable' => true,
                         'view_options' => $field->view_options
                     ])
+
                 @else
                     @include('mgmt::fields._' . $field->type, [
                         'value' => null,
