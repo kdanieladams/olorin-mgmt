@@ -247,13 +247,14 @@ class MgmtController extends Controller
             $item->user()->associate(Auth::user());
         }
 
+        $this->validate($request, $rules);
+
         if($request->ajax()) {
             $item->translateInput($input, true);
             $item->save();
             return response()->json(['success' => true]);
         }
 
-        $this->validate($request, $rules);
         $item->translateInput($input);
         $item->save();
 

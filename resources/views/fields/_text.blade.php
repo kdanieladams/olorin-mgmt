@@ -3,5 +3,5 @@
     {{ $value }}
 @else
     {{-- edit form display here --}}
-    {!! FormGroup::text($name, ['value' => $value, 'disabled' => !$editable]) !!}
+    {!! FormGroup::text($name, ['label' => $label, 'value' => $value, 'disabled' => !$editable]) !!}
 @endif

@@ -93,9 +93,7 @@
             var postData = {};
             var fieldNames = [
             @foreach($meta_fields as $rel_field)
-                @if(strtolower($rel_field->name) != strtolower($model_name))
-                'inner_{{ $rel_field->name }}',
-                @endif
+                @if(strtolower($rel_field->name) != strtolower($model_name))'inner_{{ $rel_field->name }}',@endif
             @endforeach
             ];
 
@@ -103,25 +101,16 @@
                 var elm = $("[name='" + fieldName + "']");
                 var val = '';
 
-                if(elm.attr("type") == "radio") {
+                if(elm.attr("type") === "radio") {
                     val = $("[name='" + fieldName + "']:checked").val();
                 }
                 else {
                     val = elm.val();
-                    elm.val('');
                 }
 
                 postData[fieldName.replace("inner_", "")] = val;
 
             });
-
-            /**
-             * Now that we have the formData for the inner model, we need to add the parent's ID to the data, and post
-             * it back to the server, which will then save this new instance of the inner model.  We can inject the
-             * result into the page here, as soon as the postBack returns success...sort of faking it for convenience
-             * sake, and if the page reloads the query should update with current information - and will that the new
-             * entry exists...provided caching doesn't bite us in the ass on this one.
-             */
 
             // add some stuff
             postData["{{ strtolower($model_name) }}"] = parseInt("{{ $item->id }}");
@@ -134,7 +123,29 @@
                 data: postData,
                 success: function(retData){
                     // reload on success
-                    location.reload();
+                    if(retData.success) {
+                        $.each(fieldNames, function(index, fieldName){
+                            var elm = $("[name='" + fieldName + "']");
+                            if(elm.attr("type") !== "radio") {
+                                elm.val('');
+                            }
+                        });
+                        location.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    var retData = $.parseJSON(jqXHR.responseText);
+
+                    sweetAlert({
+                        html: true,
+                        title: "There was a problem adding one!",
+                        text: retData[Object.keys(retData)[0]],
+                        type: "error",
+                        confirmButtonText: "Ok",
+                        confirmButtonColor: "#337ab7" // $brand-primary
+                    });
+
+                    console.log(jqXHR.responseText, textStatus, errorThrown);
                 }
             });
         };
