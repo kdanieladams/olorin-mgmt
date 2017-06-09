@@ -1,6 +1,6 @@
 @if(isset($list) && $list)
     {{-- list display here --}}
-    {{ $value }}
+    {!! $value !!}
 @else
     {{-- edit form display here --}}
     {!! FormGroup::textarea($name, ['value' => $value, 'disabled' => !$editable]) !!}

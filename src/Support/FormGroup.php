@@ -57,11 +57,11 @@ class FormGroup {
 
                 if(!is_null($field->selected) && in_array($val, $field->selected)) {
                     $selectStr .= Form::checkbox($name . '[]', $val,
-                            true, array_merge($field->attributes, ['class' => ''])) . '</input>';
+                            true, array_merge($field->attributes, ['class' => '', 'multiple' => ''])) . '</input>';
                 }
                 else {
                     $selectStr .= Form::checkbox($name . '[]', $val,
-                            false, array_merge($field->attributes, ['class' => ''])) . '</input>';
+                            false, array_merge($field->attributes, ['class' => '', 'multiple' => ''])) . '</input>';
                 }
 
                 $selectStr .= str_replace('_', ' ', $lbl);
@@ -70,7 +70,8 @@ class FormGroup {
             }
         }
         else {
-            $selectStr = Form::select($field->name . '[]', $field->value, $field->selected, $field->attributes);
+            $selectStr = Form::select($field->name . '[]', $field->value, $field->selected,
+                array_merge($field->attributes, ['class' => '', 'multiple' => '']));
         }
 
         $field->addInput($selectStr);
