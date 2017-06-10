@@ -420,8 +420,13 @@ class MgmtField {
             }
 
             foreach($class::all() as $item){
-                $label_key = $this->getLabelKey($instance);
-                $items[$item->id] = $item->$label_key;
+                if(empty($item->label)) {
+                    $label_key = $this->getLabelKey($instance);
+                    $items[$item->id] = $item->$label_key;
+                }
+                else {
+                    $items[$item->id] = $item->label;
+                }
             }
 
             return $items;
