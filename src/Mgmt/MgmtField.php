@@ -378,6 +378,10 @@ class MgmtField {
         $fieldname = $this->name;
         $value = $instance->$fieldname;
 
+        if($value == null) {
+            throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
+        }
+
         if($value instanceof Collection){
             if(count($value) > 0){
                 $value = $value[0];

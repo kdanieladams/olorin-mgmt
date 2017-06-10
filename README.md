@@ -35,8 +35,14 @@
 5. Finally, the last thing to do is to [define error handler logic](https://laravel.com/docs/master/errors#render-method) for `MgmtException`s.  Open your `app\Exceptions\Handler.php` file, and add the following to the `render()` method before it's final return statement:
  
      ```php
-     if($e instanceof \Olorin\Mgmt\MgmtException) {
-         return $e->render();
+     if($e instanceof \Olorin\Mgmt\MgmtException
+         || ($e instanceof \ErrorException && strstr($e->getMessage(), "Mgmt"))) {
+         if(method_exists($e, "render")) {
+             return $e->render();
+         }
+         elseif(method_exists($e->getPrevious(), 'render')) {
+             return $e->getPrevious()->render();
+         }
      }
              
      return parent::render($request, $e);
