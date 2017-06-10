@@ -71,7 +71,7 @@ class FormGroup {
         }
         else {
             $selectStr = Form::select($field->name . '[]', $field->value, $field->selected,
-                array_merge($field->attributes, ['class' => '', 'multiple' => '']));
+                array_merge($field->attributes, ['multiple' => '']));
         }
 
         $field->addInput($selectStr);
