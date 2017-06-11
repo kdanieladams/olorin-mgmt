@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading login"><h3 class="panel-title">Login</h3></div>
                 <div class="panel-body">
-                    {!! Form::open(['url' => '/login']) !!}
+                    {!! Form::open(['route' => 'mgmt.loginPost']) !!}
 
                     {!! FormGroup::email('email', ['value' => (empty($email) ? '' : $email)]) !!}
 

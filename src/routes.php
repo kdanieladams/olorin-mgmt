@@ -3,20 +3,19 @@
 /**
  * Auth routes
  */
-Route::get('/login', [
-    'as' => 'auth.login',
+Route::get('/mgmt/login', [
+    'as' => 'mgmt.login',
     'middleware' => 'web',
     'uses' => '\Olorin\Auth\LoginLogoutController@loginForm'
 ]);
-Route::post('/login', [
-    'as' => 'auth.loginPost',
+Route::post('/mgmt/login', [
+    'as' => 'mgmt.loginPost',
     'middleware' => 'web',
-    // 'uses' => 'App\Http\Controllers\Auth\AuthController@postLogin'
     'uses' => '\Olorin\Auth\LoginLogoutController@postLogin'
 ]);
 
-Route::get('/logout', [
-    'as' => 'auth.logout',
+Route::get('/mgmt/logout', [
+    'as' => 'mgmt.logout',
     'middleware' => 'web',
     'uses' => '\Olorin\Auth\LoginLogoutController@logout'
 ]);

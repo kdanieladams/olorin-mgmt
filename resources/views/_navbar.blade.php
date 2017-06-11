@@ -30,7 +30,7 @@
                 <li class="navbar-text">
                     Hello, {{ $user->name }}
                 </li>
-                <li><a href="{{ route('auth.logout') }}">Logout</a></li>
+                <li><a href="{{ route('mgmt.logout') }}">Logout</a></li>
             </ul>
             @endif
         </div>
