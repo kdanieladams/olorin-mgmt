@@ -11,7 +11,7 @@
 @else
     {{-- edit form display here --}}
     <?php
-        $value = is_null($value) ? new \Carbon\Carbon() : $value;
+        $value = new \Carbon\Carbon($value);
         $value = str_replace(' ', 'T', $value->toDateTimeString());
     ?>
     <div class="form-group">
