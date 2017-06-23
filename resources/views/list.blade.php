@@ -24,12 +24,25 @@
             <tr>
             @foreach($list_fields as $field)
                 <td>
-                    @include('mgmt::fields._' . $field->type, [
-                        'list' => true,
-                        'name' => $field->name,
-                        'value' => $item->{$field->name},
-                        'view_options' => $field->view_options
-                    ])
+                    <?php $fieldtype = $field->type; ?>
+                    @if($fieldtype == "related")
+                        @include('mgmt::fields._' . $field->relationship, [
+                            'list' => true,
+                            'value' => $field->getRelatedOptions($item),
+                            'selected' => $field->getRelatedId($item),
+                            'name' => $field->name,
+                            'label' => $field->label,
+                            'view_options' => $field->view_options
+                        ])
+                    @else
+                        @include('mgmt::fields._' . $fieldtype, [
+                            'list' => true,
+                            'name' => $field->name,
+                            'value' => $item->{$field->name},
+                            'view_options' => $field->view_options
+                        ])
+                    @endif
+
                 </td>
             @endforeach
                 <td>

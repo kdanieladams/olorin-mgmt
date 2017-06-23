@@ -1,5 +1,6 @@
 @if(isset($list) && $list)
     {{-- list view here --}}
+    {{ $value[is_null($selected) ? key($value) : $selected] }}
 @else
     {{-- edit view here --}}
     @section('head')

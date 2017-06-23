@@ -1,5 +1,8 @@
 @if(isset($list) && $list)
     {{-- list view here --}}
+    @foreach($selected as $sel)
+        {{ $value[$sel] }}@if($sel !== end($selected)),@endif
+    @endforeach
 @elseif(is_array($view_options) && count($view_options) > 0)
     {{-- edit view with options here --}}
     <?php
