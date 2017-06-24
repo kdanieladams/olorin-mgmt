@@ -17,7 +17,7 @@
     <div class="form-group">
         <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
-            {!! Form::text($name . '_display', $value[is_null($selected) ? key($value) : $selected], [
+            {!! Form::text($name . '_display', $value[is_null($selected) || $selected === 0 ? key($value) : $selected], [
                 'readonly' => 'readonly',
                 'class' => 'form-control',
                 'id' => $name . '_display'
