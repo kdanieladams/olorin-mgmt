@@ -61,7 +61,13 @@
                                 @endif
                             @endforeach
                             <td>
-                                <a href="#">Edit</a> | <a href="#">Delete</a>
+                                <a href="/mgmt/edit/{{ $related_item->getUrlFriendlyName() }}/{{ $related_item->id }}">
+                                    Edit
+                                </a>
+                                |
+                                <a href="/mgmt/delete/{{ $related_item->getUrlFriendlyName() }}/{{ $related_item->id }}">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                     @endforeach

@@ -344,11 +344,16 @@ class MgmtModel extends Model
      */
     protected function setListFields()
     {
+        $sortedListFieldNames = [];
+
         foreach(func_get_args() as $name) {
             if(is_string($name) && array_key_exists($name, $this->mgmt_fields)){
+                array_push($sortedListFieldNames, $name);
                 $this->mgmt_fields[$name]->list = true;
             }
         }
+
+        $this->sortMgmtFieldsByName($sortedListFieldNames);
     }
 
     /**
