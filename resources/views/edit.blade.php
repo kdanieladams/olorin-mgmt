@@ -92,7 +92,7 @@
                 <hr />
                 <input type="submit" class="btn btn-success" value="Save Changes" />
                 <button type="button" class="btn btn-danger" onclick="window.location.href = '/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}';">Delete</button>
-                <button type="button" class="btn btn-cancel" onclick="window.location.href = '/mgmt/{{ $item->getUrlFriendlyName() }}';">Cancel</button>
+                <button type="button" class="btn btn-cancel" onclick="window.location.href = '{{ url()->previous() }}';">Cancel</button>
             </div>
         </div>
     </form>
