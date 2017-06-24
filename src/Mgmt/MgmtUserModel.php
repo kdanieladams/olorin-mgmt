@@ -163,9 +163,11 @@ class MgmtUserModel extends Authenticatable
                         $this->$fieldname = new Carbon($input[$fieldname]);
                         break;
                     case 'related':
-                        if($this->id == null){
+                        /* ** PROVISIONARY SOLUTION **
+                        if($this->id == null && !$inner_model){
                             $this->save();
                         }
+                        */
                         switch($mgmt_field->relationship){
                             case 'belongsTo':
                                 $this->$fieldname()->associate($input[$fieldname]);

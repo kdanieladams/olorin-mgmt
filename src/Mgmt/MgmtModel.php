@@ -231,9 +231,11 @@ class MgmtModel extends Model
                         $this->$fieldname = new Carbon($input[$fieldname]);
                         break;
                     case 'related':
+                        /* ** PROVISIONARY SOLUTION **
                         if($this->id == null && !$inner_model){
                             $this->save();
                         }
+                        */
                         switch($mgmt_field->relationship){
                             case 'belongsTo':
                                 $this->$fieldname()->associate($input[$fieldname]);

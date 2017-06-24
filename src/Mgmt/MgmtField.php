@@ -53,7 +53,7 @@ class MgmtField {
     private $type           = 'text';
     private $validation     = null;
     private $view           = null;
-    private $view_options   = [];
+    private $view_options   = ["labels" => ["true" => "True", "false" => "False"]];
 
     // relationship properties
     private $belongsTo      = null;
