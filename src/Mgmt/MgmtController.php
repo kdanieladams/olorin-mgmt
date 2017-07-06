@@ -213,7 +213,7 @@ class MgmtController extends Controller
      */
     protected function create()
     {
-        $item = $this->getItem(1);
+        $item = new $this->model();
 
         if(!empty($item->create_permission) && !$this->user->hasPermission($item->create_permission)){
             throw new MgmtException('You are not authorized to create a '. $this->model_name .'.', 2);

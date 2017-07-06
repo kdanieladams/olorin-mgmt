@@ -379,7 +379,10 @@ class MgmtField {
         $value = $instance->$fieldname;
 
         if($value == null) {
-            throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
+            // throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
+            $relationship = $this->relationship;
+            $class = $this->$relationship;
+            $value = new $class();
         }
 
         if($value instanceof Collection){
@@ -396,15 +399,15 @@ class MgmtField {
 
         $label_key = $value->label_key;
 
-        if(empty($value->$label_key)){
-            if(!empty($value->title)) {
+        if(!isset($value->$label_key)){
+            if(isset($value->title)) {
                 $label_key = 'title';
             }
-            elseif(!empty($value->name)) {
+            elseif(isset($value->name)) {
                 $label_key = 'name';
             }
             else {
-                //dd($instance->$fieldname, $fieldname, $value);
+                //dd($instance->$fieldname, $fieldname, $value, $value->{$value->label_key}, $value->name);
                 throw new MgmtException("resolveRelatedFields(): Unable to determine related field identifier.", 1);
             }
         }
@@ -418,6 +421,7 @@ class MgmtField {
             $relationship = $this->relationship;
             $class = $relationship ? $this->$relationship : '';
             $items = array();
+            $label_key = $this->getLabelKey($instance);
 
             if(!class_exists($class)) {
                 throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
@@ -425,7 +429,6 @@ class MgmtField {
 
             foreach($class::all() as $item){
                 if(empty($item->label)) {
-                    $label_key = $this->getLabelKey($instance);
                     $items[$item->id] = $item->$label_key;
                 }
                 else {
