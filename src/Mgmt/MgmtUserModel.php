@@ -22,8 +22,82 @@ class MgmtUserModel extends Authenticatable
     use HasRolesTrait;
 
     protected $isFresh = false;     // Is this model's $mgmt_fields attribute currently being instantiated?
-    public $create_permission = ''; // Olorin\Auth\Permission::$name required to create an instance of this model.
+    public $create_permission = ''; // Olorin\Auth\Permission->$name required to create an instance of this model.
     public $label_key = 'label';
+
+    /**
+     * Populates this models $mgmt_fields attributes with instances
+     * of App\Mgmt\MgmtField.
+     */
+    private function getFieldData()
+    {
+        // Table column names
+        $table = $this->getTable();
+
+        foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
+            $field_name = $table_row->Field;
+            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
+            $type = preg_replace("/\sunsigned/i", "", $type);
+            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
+            $options = array();
+
+            switch($type) {
+                case "varchar":
+                    $type = "text";
+                    break;
+                case "text":
+                    $type = "textarea";
+                    break;
+                case "timestamp":
+                    $type = "datetime";
+                    break;
+                case "int":
+                case "tinyint":
+                case "smallint":
+                case "mediumint":
+                case "bigint":
+                    $type = "integer";
+                    break;
+            }
+
+            if(!empty($limit)) {
+                $options["limit"] = $limit;
+            }
+
+            if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
+                $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+            }
+            else if(in_array($field_name, $this->hidden)) {
+                $options['hidden'] = true;
+
+                // TODO: Handle hidden fields on model...
+                if(!!strstr(strtolower($field_name), "password")) {
+                    $type = "password";
+                    $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+                }
+            }
+        }
+
+        // Eloquent relationships
+        // NOTE: $mgmt_relations property required to resolve related classes, e.g.:
+        //      protected $mgmt_relations = array(
+        //          'property_name' => array(
+        //              'belongsTo',
+        //              'App\RelatedModel'
+        //          )
+        //      );
+        if(!empty($this->mgmt_relations)){
+            foreach($this->mgmt_relations as $key => $relation) {
+                if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
+                    throw new MgmtException("getFieldData(): Invalid relationship!", 1);
+                }
+
+                $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
+                    $relation[0] => $relation[1]
+                ]);
+            }
+        }
+    }
 
     /**
      * Returns this models $mgmt_fields property.  If the property
@@ -108,13 +182,13 @@ class MgmtUserModel extends Authenticatable
             }
 
             // TODO: Validate many-to-many attachments...
-            // many-to-many validation depends on how many items were selected to be attached...thanks Laravel...
             if($field->related && $field->relationship != 'belongsToMany' && $field->relationship != 'hasMany'){
                 $relationship = $field->relationship;
                 $class = $field->$relationship;
 
                 $ruleString .= "|in:";
 
+                // TODO: Find a better way of making sure the chosen item exists...
                 foreach($class::all() as $item){
                     $ruleString .= $item->id . ",";
                 }
@@ -136,7 +210,7 @@ class MgmtUserModel extends Authenticatable
      *
      * @param array $input
      */
-    public function translateInput(array $input)
+    public function translateInput(array $input, $inner_model = false)
     {
         $fields = $this->mgmt_fields;
 
@@ -144,6 +218,8 @@ class MgmtUserModel extends Authenticatable
         foreach($fields as $mgmt_field){
             if($mgmt_field->editable){
                 $fieldname = $mgmt_field->name;
+
+                if(!array_key_exists($fieldname, $input)) $input[$fieldname] = null;
 
                 if($mgmt_field->required == false && $input[$fieldname] != "0" && empty($input[$fieldname])) {
                     if($mgmt_field->related == true) {
@@ -200,6 +276,11 @@ class MgmtUserModel extends Authenticatable
         }
     }
 
+    /**
+     * Get a URL friendly version of this model's name.
+     *
+     * @return string
+     */
     public function getUrlFriendlyName()
     {
         $reflect = new \ReflectionClass($this);
@@ -211,112 +292,14 @@ class MgmtUserModel extends Authenticatable
     }
 
     /**
-     * Populates this models $mgmt_fields attributes with instances
-     * of App\Mgmt\MgmtField.
-     */
-    private function getFieldData()
-    {
-        // Table column names
-        $table = $this->getTable();
-
-        foreach(DB::select("SHOW COLUMNS FROM " . $table) as $table_row) {
-            $field_name = $table_row->Field;
-            $type = preg_replace("/\(\d+\)/i", "", $table_row->Type);
-            $limit = intval(preg_replace("/[a-z\(\)]+/i", "", $table_row->Type));
-            $options = array();
-
-            switch($type) {
-                case "varchar":
-                    $type = "text";
-                    break;
-                case "text":
-                    $type = "textarea";
-                    break;
-                case "timestamp":
-                    $type = "datetime";
-                    break;
-                case "int unsigned":
-                    $type = "integer";
-                    break;
-            }
-
-            if(!empty($limit)) {
-                $options["limit"] = $limit;
-            }
-
-            if(in_array($field_name, $this->fillable) && !in_array($field_name, $this->hidden)) {
-                $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
-            }
-            else if(in_array($field_name, $this->hidden)) {
-                $options['hidden'] = true;
-
-                if(!!strstr(strtolower($field_name), "password")) {
-                    $type = "password";
-                    $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
-                }
-            }
-        }
-
-        // Eloquent relationships
-        // NOTE: $mgmt_relations property required to resolve related classes, e.g.:
-        //      protected $mgmt_relations = array(
-        //          'property_name' => array(
-        //              'belongsTo',
-        //              'App\RelatedModel'
-        //          )
-        //      );
-        if(!empty($this->mgmt_relations)){
-            foreach($this->mgmt_relations as $key => $relation) {
-                if(count($relation) !== 2 || !is_string($relation[0]) || !is_string($relation[1])){
-                    throw new \Exception("MgmtUserModel->getFieldData(): Invalid relationship!");
-                }
-
-                $this->mgmt_fields[$key] = new MgmtField($key, 'related', [
-                    $relation[0] => $relation[1]
-                ]);
-            }
-        }
-    }
-
-    /**
-     * Accepts multiple field_names, which it will set as fields to display
-     * in Mgmt's list function.
-     *
-     * @param string $field_name (+)
-     */
-    protected function setListFields()
-    {
-        foreach(func_get_args() as $name) {
-            if(is_string($name) && array_key_exists($name, $this->mgmt_fields)){
-                $this->mgmt_fields[$name]->list = true;
-            }
-        }
-    }
-
-    /**
-     * Accepts an array of $field_name => $label, then sets the label
-     * attribute on the relevant field names.
-     *
-     * @param array $labels
-     */
-    protected function setFieldLabels(array $labels)
-    {
-        foreach($labels as $name => $label) {
-            if(array_key_exists($name, $this->mgmt_fields)){
-                $this->mgmt_fields[$name]->label = $label;
-            }
-        }
-    }
-
-    /**
      * Sort this model's MgmtFields by name.  Accepts an array of field names.
      *
-     * @param $sorted_names
+     * @param array $sorted_names
      * @return bool
      */
-    public function sortMgmtFieldsByName($sorted_names)
+    public function sortMgmtFieldsByName(array $sorted_names)
     {
-        if(is_array($sorted_names) && is_string($sorted_names[0])) {
+        if(is_string($sorted_names[0])) {
             $unsorted_names = [];
             $unspecified_names = [];
 
@@ -337,7 +320,7 @@ class MgmtUserModel extends Authenticatable
             // verify field names
             foreach($sorted_names as $name) {
                 if(!in_array($name, $unsorted_names)) {
-                    // maybe should throw an error instead?
+                    // invalid field name found - maybe should throw an error instead?
                     return false;
                 }
             }
@@ -361,5 +344,40 @@ class MgmtUserModel extends Authenticatable
         }
 
         return false;
+    }
+
+    /**
+     * Accepts multiple field_names, which it will set as fields to display
+     * in Mgmt's list function, provided mgmt_field's exist for each given name.
+     *
+     * @param string $field_name (+)
+     */
+    protected function setListFields()
+    {
+        $sortedListFieldNames = [];
+
+        foreach(func_get_args() as $name) {
+            if(is_string($name) && array_key_exists($name, $this->mgmt_fields)){
+                array_push($sortedListFieldNames, $name);
+                $this->mgmt_fields[$name]->list = true;
+            }
+        }
+
+        $this->sortMgmtFieldsByName($sortedListFieldNames);
+    }
+
+    /**
+     * Accepts an array of $field_name => $label, then sets the label
+     * attribute on the relevant field names.
+     *
+     * @param array $labels
+     */
+    protected function setFieldLabels(array $labels)
+    {
+        foreach($labels as $name => $label) {
+            if(array_key_exists($name, $this->mgmt_fields)){
+                $this->mgmt_fields[$name]->label = $label;
+            }
+        }
     }
 }

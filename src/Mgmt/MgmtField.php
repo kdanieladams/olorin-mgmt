@@ -97,7 +97,7 @@ class MgmtField {
             $msg = $this->setName($name) ? ($this->setType($type) ? '[unknown error]' :
                 'setType(\'' . $type . '\')') : 'setName(\'' . $name . '\')';
 
-            throw new \Exception("MgmtField: Unable to " . $msg . ".");
+            throw new MgmtException("Unable to " . $msg . ".");
         }
     }
 
@@ -378,23 +378,16 @@ class MgmtField {
         $fieldname = $this->name;
         $value = $instance->$fieldname;
 
-        if($value == null) {
+        if($value == null || (is_a($value, 'Illuminate\Database\Eloquent\Collection') && count($value) == 0)) {
             // throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
             $relationship = $this->relationship;
             $class = $this->$relationship;
             $value = new $class();
+
         }
 
         if($value instanceof Collection){
-            if(count($value) > 0){
-                $value = $value[0];
-            }
-            else {
-                $relationship = $this->relationship;
-
-                $class = $this->$relationship;
-                $value = $class::first();
-            }
+            $value = $value->first();
         }
 
         $label_key = $value->label_key;

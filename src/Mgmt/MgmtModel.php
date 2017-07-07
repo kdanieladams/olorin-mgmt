@@ -68,6 +68,10 @@ class MgmtModel extends Model
                 $options['hidden'] = true;
 
                 // TODO: Handle hidden fields on model...
+                if(!!strstr(strtolower($field_name), "password")) {
+                    $type = "password";
+                    $this->mgmt_fields[$field_name] = new MgmtField($field_name, $type, $options);
+                }
             }
         }
 
@@ -181,6 +185,7 @@ class MgmtModel extends Model
 
                 $ruleString .= "|in:";
 
+                // TODO: Find a better way of making sure the chosen item exists...
                 foreach($class::all() as $item){
                     $ruleString .= $item->id . ",";
                 }

@@ -168,7 +168,7 @@ class MgmtController extends Controller
             throw new MgmtException('No ' . $this->model_name . "s found", 2);
         }
 
-        $fields = $items[0]->mgmt_fields;
+        $fields = (new $model())->mgmt_fields;
 
         if(empty($fields)) {
             throw new MgmtException($this->model_name . '\'s not configured for MGMT.', 1);
