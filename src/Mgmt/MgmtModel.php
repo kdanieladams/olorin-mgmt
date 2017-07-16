@@ -164,7 +164,7 @@ class MgmtModel extends Model
                 case 'textarea-html':
                     $ruleString .= "|string";
 
-                    if(strpos($ruleString, "required")){
+                    if(strpos($ruleString, "required") && $field->limit == 0){
                         $ruleString .= "|min:3";
                     }
                     break;
