@@ -40,6 +40,7 @@ class MgmtModel extends Model
 
             switch($type) {
                 case "varchar":
+                case "char":
                     $type = "text";
                     break;
                 case "text":
