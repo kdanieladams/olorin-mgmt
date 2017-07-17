@@ -36,13 +36,27 @@ class RolesAndPermissionsSeeder extends Seeder
                 'label' => 'Can View MGMT',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],
+            [
+                'name' => 'create_roles',
+                'label' => 'Can create Roles',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'name' => 'edit_permissions',
+                'label' => 'Can edit Permissions',
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ]);
 
         // Seed some relationships
         DB::table('permission_role')->insert([
-            ['permission_id' => 1, 'role_id' => 1],
-            ['permission_id' => 1, 'role_id' => 2]
+            ['permission_id' => 1, 'role_id' => 1], // view_mgmt        -> mod
+            ['permission_id' => 1, 'role_id' => 2], // view_mgmt        -> admin
+            ['permission_id' => 2, 'role_id' => 2], // create_roles     -> admin
+            ['permission_id' => 3, 'role_id' => 2]  // edit_permissions -> admin
         ]);
     }
 }
