@@ -5947,7 +5947,7 @@ hr {
       transform: translateY(-50%); }
 
 #cke_body {
-  border: solid 1px #ddd;
+  border: solid 1px #777;
   border-radius: 5px;
   padding: 2px; }
 
@@ -5973,6 +5973,10 @@ hr {
     .dropdown-menu li a:hover {
       background-color: #777;
       color: #ccc; }
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .create-btn {
+  border-color: #777;
+  border-bottom-width: 2px; }
 
 .list-group-item {
   border-color: #777; }
