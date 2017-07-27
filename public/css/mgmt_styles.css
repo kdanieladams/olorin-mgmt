@@ -5889,12 +5889,16 @@ a {
   a:hover {
     color: #ff3333; }
 
+hr {
+  border-color: #777; }
+
 .error {
   color: #c00; }
 
 .form-control {
   background-color: #111;
-  color: #ccc; }
+  color: #ccc;
+  border-color: #777; }
 
 .btn-cancel {
   color: #111; }
@@ -5958,6 +5962,10 @@ a {
     .panel .panel-body hr {
       border-top-color: #777; }
 
+.input-group-btn:last-child {
+  border-color: #777;
+  border-bottom-width: 7px; }
+
 .dropdown-menu {
   background-color: #222; }
   .dropdown-menu li a {
@@ -5965,6 +5973,9 @@ a {
     .dropdown-menu li a:hover {
       background-color: #777;
       color: #ccc; }
+
+.list-group-item {
+  border-color: #777; }
 
 .table tbody tr.separator-row {
   height: 30px; }

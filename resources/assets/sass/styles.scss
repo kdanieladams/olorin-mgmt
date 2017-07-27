@@ -38,6 +38,9 @@ a {
     color: lighten($dark-red, 30%);
   }
 }
+hr {
+  border-color: $dark-gray;
+}
 
 // General Classes
 .error{
@@ -46,6 +49,7 @@ a {
 .form-control {
   background-color: $light-black;
   color: $gray;
+  border-color: $dark-gray;
 }
 .btn-cancel {
   color: $light-black;
@@ -138,7 +142,10 @@ a {
     }
   }
 }
-
+.input-group-btn:last-child{
+  border-color: $dark-gray;
+  border-bottom-width: 7px;
+}
 .dropdown-menu {
   background-color: $darker-gray;
   li a {
@@ -150,7 +157,13 @@ a {
     }
   }
 }
-
+.input-group-btn:last-child > .btn {
+  border-color: $dark-gray;
+  border-bottom-width: 2px;
+}
+.list-group-item {
+  border-color: $dark-gray;
+}
 .table tbody tr.separator-row {
   height: 30px;
 }
