@@ -338,5 +338,4 @@ class MgmtController extends Controller
         flash()->success("Successfully deleted " . $this->model_name . " " . $id . ".");
         return redirect()->route('mgmt.index');
     }
-
 }

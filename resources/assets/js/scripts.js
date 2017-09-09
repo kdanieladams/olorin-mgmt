@@ -1,8 +1,6 @@
 // Create a properly formatted ISO string for the current local date-time.
 function formatLocalDate(date) {
-    var now = date ? new Date(date) : new Date(),
-        tzo = -now.getTimezoneOffset(),
-        dif = tzo >= 0 ? '+' : '-';
+    var now = date ? new Date(date) : new Date();
 
     function pad(num) {
         var norm = Math.abs(Math.floor(num));

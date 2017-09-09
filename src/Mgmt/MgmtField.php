@@ -382,8 +382,7 @@ class MgmtField {
             // throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
             $relationship = $this->relationship;
             $class = $this->$relationship;
-            $value = new $class();
-
+            $value = $class::first();
         }
 
         if($value instanceof Collection){
