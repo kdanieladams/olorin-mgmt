@@ -264,6 +264,11 @@ class MgmtModel extends Model
                                 break;
                         }
                         break;
+                    case 'image':
+                        // save image to disk
+                        Storage::put('file.jpg', $contents);
+                        $this->$fieldname = $input[$fieldname];
+                        break;
                     default:
                         $this->$fieldname = $input[$fieldname];
                         break;

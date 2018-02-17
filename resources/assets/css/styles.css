@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -1078,7 +1078,6 @@ a {
     color: #4d0000;
     text-decoration: underline; }
   a:focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
@@ -2294,7 +2293,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
@@ -2828,7 +2826,6 @@ select[multiple].input-lg,
   -ms-user-select: none;
   user-select: none; }
   .btn:focus, .create-btn:focus, .btn.focus, .focus.create-btn, .btn:active:focus, .create-btn:active:focus, .btn:active.focus, .create-btn:active.focus, .btn.active:focus, .active.create-btn:focus, .btn.active.focus, .active.focus.create-btn {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .create-btn:hover, .btn:focus, .create-btn:focus, .btn.focus, .focus.create-btn {
@@ -5889,14 +5886,19 @@ a {
   a:hover {
     color: #ff3333; }
 
+hr {
+  border-color: #777; }
+
 .error {
   color: #c00; }
 
 .form-control {
   background-color: #111;
-  color: #ccc; }
+  color: #ccc;
+  border-color: #777; }
 
 .btn-cancel {
+  background-color: #e6e6e6;
   color: #111; }
 
 .create-btn {
@@ -5943,7 +5945,7 @@ a {
       transform: translateY(-50%); }
 
 #cke_body {
-  border: solid 1px #ddd;
+  border: solid 1px #777;
   border-radius: 5px;
   padding: 2px; }
 
@@ -5958,6 +5960,10 @@ a {
     .panel .panel-body hr {
       border-top-color: #777; }
 
+.input-group-btn:last-child {
+  border-color: #777;
+  border-bottom-width: 7px; }
+
 .dropdown-menu {
   background-color: #222; }
   .dropdown-menu li a {
@@ -5965,6 +5971,13 @@ a {
     .dropdown-menu li a:hover {
       background-color: #777;
       color: #ccc; }
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .create-btn {
+  border-color: #777;
+  border-bottom-width: 2px; }
+
+.list-group-item {
+  border-color: #777; }
 
 .table tbody tr.separator-row {
   height: 30px; }

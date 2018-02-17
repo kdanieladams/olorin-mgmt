@@ -29,7 +29,7 @@ gulp.task('scripts', function() {
         'resources/assets/js/vendor/sweetalert.js',
         'resources/assets/js/scripts.js'])
         .pipe(concat('mgmt_scripts.js'))
-        .pipe(gulp.dest('src/public/js/'));
+        .pipe(gulp.dest('public/js/'));
 
     gutil.log(" ");
     gutil.log(gutil.colors.green('JavaScripts successfully concatenated and published!'));

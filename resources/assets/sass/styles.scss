@@ -53,6 +53,7 @@ hr {
   border-color: $dark-gray;
 }
 .btn-cancel {
+  background-color: lighten($gray, 10%);
   color: $light-black;
 }
 .create-btn {

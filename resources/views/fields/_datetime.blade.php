@@ -23,7 +23,7 @@
                 {!! Form::input('datetime-local', $name, $value, ['class' => 'form-control', 'step' => '1']) !!}
             @endif
             <span class="input-group-btn">
-                <button type='button' class="btn pull-right" onclick='$("input[name=\"{{ $name }}\"]").val(formatLocalDate())'>
+                <button type='button' class="btn btn-cancel pull-right" onclick='$("input[name=\"{{ $name }}\"]").val(formatLocalDateTime())'>
                     Now
                 </button>
             </span>
