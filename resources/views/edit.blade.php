@@ -4,7 +4,8 @@
 
 @section('main')
     <h1>Edit {{ $model_name }}</h1>
-    <form name="model_form" method="POST" action="/mgmt/update/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">
+    <form name="model_form" enctype="multipart/form-data"
+          method="POST" action="/mgmt/update/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="row">
             @if($has_sidebar)

@@ -58,6 +58,7 @@
                     'id' => $name . '_display'
                 ]) !!}
                 <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-url="{{ $image_url }}">
+                <input type="file" class="hidden" name="{{ $name }}_file" id="{{ $name }}_file" accept="image/*">
 
                 <div class="input-group-btn" id="{{ $name }}_dropdown">
                     <button type="button" class="btn btn-default dropdown-toggle"
@@ -71,6 +72,10 @@
                         </li>
                     @endforeach
                     </ul>
+                    <button type="button" id="{{ $name }}_upload_btn"
+                            class="btn btn-warning">
+                        Upload
+                    </button>
                 </div>
             @endif
         </div>
@@ -79,14 +84,8 @@
     {{-- inject some javascript --}}
     @section('scripts')
     <script>
-        $(document).ready(function(){
-            $('input[name="{{ $name }}"]').on('selected-new-img', function(e){
-                $('#{{ $name }}_preview').fadeOut(500, function(){
-                    $(this).prop('src', $('input[name="{{ $name }}"]').data('url'));
-                    $(this).fadeIn(500);
-                });
-            });
-
+        function {{ $name }}SetOptionEventHandlers() {
+            $('#{{ $name }}_dropdown ul.dropdown-menu li a').off('click');
             $('#{{ $name }}_dropdown ul.dropdown-menu li a').click(function(e){
                 e.preventDefault();
 
@@ -99,11 +98,44 @@
                 $('input[name="{{ $name }}"]').data('url', url);
                 $('input[name="{{ $name }}"]').trigger('selected-new-img');
             });
+        }
+
+        $(document).ready(function(){
+            $('input[name="{{ $name }}"]').on('selected-new-img', function(e){
+                $('#{{ $name }}_preview').fadeOut(500, function(){
+                    $(this).prop('src', $('input[name="{{ $name }}"]').data('url'));
+                    $(this).fadeIn(500);
+                });
+            });
+
+            {{ $name }}SetOptionEventHandlers();
 
             $('#{{ $name }}_display').click(function(e){
                 e.stopPropagation();
 
                 $("#{{ $name }}_dropdown").find('[data-toggle=dropdown]').dropdown('toggle');
+            });
+
+            $('#{{ $name }}_upload_btn').click(function(e){
+                $('#{{ $name }}_file').click();
+            });
+            $('#{{ $name }}_file').on('change', function(e){
+                var url = window.URL.createObjectURL(this.files[0]),
+                    filename = this.files[0].name,
+                    label = filename,
+                    value = filename;
+
+                // add it to the list of images
+                $('#{{ $name }}_dropdown ul.dropdown-menu').children('.appended').remove();
+                $('#{{ $name }}_dropdown ul.dropdown-menu')
+                    .append('<li class="appended"><a href="#" data-value="' + filename + '" data-url="' + url + '">' + filename + '</a></li>');
+                {{ $name }}SetOptionEventHandlers();
+
+                // display the image
+                $('input[name="{{ $name }}_display"]').val(label);
+                $('input[name="{{ $name }}"]').val(value);
+                $('input[name="{{ $name }}"]').data('url', url);
+                $('input[name="{{ $name }}"]').trigger('selected-new-img');
             });
         });
     </script>

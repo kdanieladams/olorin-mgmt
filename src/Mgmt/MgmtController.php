@@ -263,12 +263,12 @@ class MgmtController extends Controller
         $this->validate($request, $rules);
 
         if($request->ajax()) {
-            $item->translateInput($input, true);
+            $item->translateInput($request, true);
             $item->save();
             return response()->json(['success' => true]);
         }
 
-        $item->translateInput($input);
+        $item->translateInput($request);
         $item->save();
 
         // return to list page with success message
@@ -310,7 +310,7 @@ class MgmtController extends Controller
         $input = $request->input();
 
         $this->validate($request, $rules);
-        $item->translateInput($input);
+        $item->translateInput($request);
 
         $item->save();
 

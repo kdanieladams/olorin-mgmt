@@ -2,6 +2,7 @@
 
 namespace Olorin\Mgmt;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Olorin\Auth\HasRolesTrait;
 use Carbon\Carbon;
@@ -210,8 +211,9 @@ class MgmtUserModel extends Authenticatable
      *
      * @param array $input
      */
-    public function translateInput(array $input, $inner_model = false)
+    public function translateInput(Request $request, $inner_model = false)
     {
+        $input = $request->input();
         $fields = $this->mgmt_fields;
 
         // input translations by field
@@ -265,6 +267,17 @@ class MgmtUserModel extends Authenticatable
                                 dd("You've come across a relationship that isn't handled yet", $mgmt_field, $input);
                                 break;
                         }
+                        break;
+                    case 'image':
+                        // save image to disk
+                        $file = $request->file($fieldname . '_file');
+                        $location = rtrim(public_path(), '/') . $this->mgmt_fields[$fieldname]->image_options['dir']
+                            . '/' . $input[$fieldname];
+                        dd($location, $file, $request->hasFile($fieldname . '_file'), $request->files);
+                        //Storage::disk('public')->put($location, file_get_contents($file));
+
+                        // set model property
+                        $this->$fieldname = $input[$fieldname];
                         break;
                     default:
                         $this->$fieldname = $input[$fieldname];

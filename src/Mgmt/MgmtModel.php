@@ -2,9 +2,10 @@
 
 namespace Olorin\Mgmt;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use DB;
+use DB, Storage;
 
 /**
  * Class MgmtModel
@@ -208,8 +209,9 @@ class MgmtModel extends Model
      *
      * @param array $input
      */
-    public function translateInput(array $input, $inner_model = false)
+    public function translateInput(Request $request, $inner_model = false)
     {
+        $input = $request->input();
         $fields = $this->mgmt_fields;
 
         // input translations by field
@@ -266,7 +268,17 @@ class MgmtModel extends Model
                         break;
                     case 'image':
                         // save image to disk
-                        //Storage::put('file.jpg', $contents);
+                        if($request->hasFile($fieldname . '_file')) {
+                            $file = $request->file($fieldname . '_file');
+                            if($file->getClientOriginalName() == $input[$fieldname]) {
+                                $location = rtrim(public_path(), '/')
+                                    . $this->mgmt_fields[$fieldname]->image_options['dir']
+                                    . '/';
+                                $file->move($location, $input[$fieldname]);
+                            }
+                        }
+
+                        // set model property
                         $this->$fieldname = $input[$fieldname];
                         break;
                     default:
