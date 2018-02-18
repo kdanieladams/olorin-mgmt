@@ -207,7 +207,8 @@ class MgmtModel extends Model
      * Takes an input array from a form submission, then translates the input
      * to the model using the MgmtField declarations.
      *
-     * @param array $input
+     * @param Request $request
+     * @param bool $inner_model
      */
     public function translateInput(Request $request, $inner_model = false)
     {
@@ -272,7 +273,7 @@ class MgmtModel extends Model
                             $file = $request->file($fieldname . '_file');
                             if($file->getClientOriginalName() == $input[$fieldname]) {
                                 $location = rtrim(public_path(), '/')
-                                    . $this->mgmt_fields[$fieldname]->image_options['dir']
+                                    . $mgmt_field->image_options['dir']
                                     . '/';
                                 $file->move($location, $input[$fieldname]);
                             }
@@ -294,7 +295,8 @@ class MgmtModel extends Model
     /**
      * Get a URL friendly version of this model's name.
      *
-     * @return string
+     * @return mixed|string
+     * @throws \ReflectionException
      */
     public function getUrlFriendlyName()
     {
