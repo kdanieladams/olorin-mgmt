@@ -22,6 +22,7 @@ class MgmtField {
     private $typelist = [
         'add-one',
         'boolean',
+        'color',
         'date',
         'datetime',
         'email',

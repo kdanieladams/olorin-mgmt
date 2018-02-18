@@ -257,4 +257,22 @@ class FormGroup {
 
         return $field->output();
     }
+
+    /**
+     * Create a new form-group with a color selection field inside.
+     *
+     * @param $name
+     * @param $options
+     * @return string
+     * @throws \Exception
+     */
+    public static function color($name, $options)
+    {
+        $field = new FormGroupField($name, $options);
+        $textStr = Form::color($field->name, $field->value, $field->attributes) . '</input>';
+
+        $field->addInput($textStr);
+
+        return $field->output();
+    }
 }

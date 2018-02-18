@@ -48,6 +48,18 @@ class RolesAndPermissionsSeeder extends Seeder
                 'label' => 'Can edit Permissions',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],
+            [
+                'name' => 'create_users',
+                'label' => 'Can create Users',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'name' => 'edit_password',
+                'label' => 'Can edit a User\'s Password',
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ]);
 
@@ -56,7 +68,9 @@ class RolesAndPermissionsSeeder extends Seeder
             ['permission_id' => 1, 'role_id' => 1], // view_mgmt        -> mod
             ['permission_id' => 1, 'role_id' => 2], // view_mgmt        -> admin
             ['permission_id' => 2, 'role_id' => 2], // create_roles     -> admin
-            ['permission_id' => 3, 'role_id' => 2]  // edit_permissions -> admin
+            ['permission_id' => 3, 'role_id' => 2], // edit_permissions -> admin
+            ['permission_id' => 4, 'role_id' => 2], // create_users     -> admin
+            ['permission_id' => 5, 'role_id' => 2]  // edit_password    -> admin
         ]);
     }
 }

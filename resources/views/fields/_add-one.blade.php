@@ -16,11 +16,12 @@
 
     if(empty($related_items)) {
         $classref = $field->{$field->relationship};
-        $meta_fields = $classref::first()->mgmt_fields;
+        //$meta_fields = $classref::first()->mgmt_fields;
+        $meta_fields = (new $classref())->mgmt_fields;
     }
 
     $meta_fields = $meta_fields ?: $related_items[key($related_items)]->mgmt_fields;
-    $field_class = preg_replace('/.+\\\\/i', '', get_class($classref ? $classref::first() : $related_items[key($related_items)]));
+    $field_class = preg_replace('/.+\\\\/i', '', get_class($classref ? new $classref(): $related_items[key($related_items)]));
 
     if(is_array($field->view_options) && count($field->view_options) > 0){
         $options = array_merge($options, $field->view_options);

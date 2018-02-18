@@ -1,10 +1,9 @@
 @extends('mgmt::master')
 
 @section('title', $model_name . ' List')
-
 @section('main')
-    @if(empty($items[0]->create_permission) || $user->hasPermission($items[0]->create_permission))
-    <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $items[0]->getUrlFriendlyName() }}';">
+    @if(empty($exmp->create_permission) || $user->hasPermission($exmp->create_permission))
+    <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $exmp->getUrlFriendlyName() }}';">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         Create a New {{ $model_name }}
     </button>

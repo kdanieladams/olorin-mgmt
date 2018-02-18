@@ -164,9 +164,9 @@ class MgmtController extends Controller
         $model = $this->model;
         $items = $model::all();
 
-        if(count($items) == 0) {
-            throw new MgmtException('No ' . $this->model_name . "s found", 2);
-        }
+        //if(count($items) == 0) {
+        //   throw new MgmtException('No ' . $this->model_name . "s found", 2);
+        //}
 
         $fields = (new $model())->mgmt_fields;
 
@@ -184,7 +184,12 @@ class MgmtController extends Controller
      */
     protected function getList()
     {
+        $model = $this->model;
         $items = $this->getItems();
+
+        if(count($items) == 0) {
+            $items = [new $model()];
+        }
 
         $list_fields = array();
 
@@ -198,10 +203,18 @@ class MgmtController extends Controller
             // TODO: Try to find one or two field names which seem like they belong in the list, and use those
         }
 
+        $label_key = $items[0]->label_key;
+
+        if(count($items) == 1 && !isset($items[0]->$label_key))
+        {
+            $items = [];
+        }
+
         return view('mgmt::list', [
             'model_name' => $this->model_name,
             'items' => $items,
-            'list_fields' => $list_fields
+            'list_fields' => $list_fields,
+            'exmp' => new $model()
         ]);
     }
 
