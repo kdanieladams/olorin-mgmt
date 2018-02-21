@@ -271,6 +271,7 @@ class MgmtModel extends Model
                         // save image to disk
                         if($request->hasFile($fieldname . '_file')) {
                             $file = $request->file($fieldname . '_file');
+                            // TODO: check if the file already exists, and confirm overwrite...
                             if($file->getClientOriginalName() == $input[$fieldname]) {
                                 $location = rtrim(public_path(), '/')
                                     . $mgmt_field->image_options['dir']

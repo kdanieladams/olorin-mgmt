@@ -2303,7 +2303,8 @@ output {
   line-height: 1.42857;
   color: #555555; }
 
-.form-control {
+.form-control, .dataTables_length label select,
+.dataTables_filter label input {
   display: block;
   width: 100%;
   height: 34px;
@@ -2320,27 +2321,47 @@ output {
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
-  .form-control:focus {
+  .form-control:focus, .dataTables_length label select:focus,
+  .dataTables_filter label input:focus {
     border-color: #66afe9;
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
-  .form-control::-moz-placeholder {
+  .form-control::-moz-placeholder, .dataTables_length label select::-moz-placeholder,
+  .dataTables_filter label input::-moz-placeholder {
     color: #999;
     opacity: 1; }
-  .form-control:-ms-input-placeholder {
+  .form-control:-ms-input-placeholder, .dataTables_length label select:-ms-input-placeholder,
+  .dataTables_filter label input:-ms-input-placeholder {
     color: #999; }
-  .form-control::-webkit-input-placeholder {
+  .form-control::-webkit-input-placeholder, .dataTables_length label select::-webkit-input-placeholder,
+  .dataTables_filter label input::-webkit-input-placeholder {
     color: #999; }
-  .form-control::-ms-expand {
+  .form-control::-ms-expand, .dataTables_length label select::-ms-expand,
+  .dataTables_filter label input::-ms-expand {
     border: 0;
     background-color: transparent; }
-  .form-control[disabled], .form-control[readonly],
-  fieldset[disabled] .form-control {
+  .form-control[disabled], .dataTables_length label select[disabled],
+  .dataTables_filter label input[disabled], .form-control[readonly], .dataTables_length label select[readonly],
+  .dataTables_filter label input[readonly],
+  fieldset[disabled] .form-control,
+  fieldset[disabled] .dataTables_length label select, .dataTables_length label
+  fieldset[disabled] select,
+  fieldset[disabled]
+  .dataTables_filter label input,
+  .dataTables_filter label
+  fieldset[disabled] input {
     background-color: #eeeeee;
     opacity: 1; }
-  .form-control[disabled],
-  fieldset[disabled] .form-control {
+  .form-control[disabled], .dataTables_length label select[disabled],
+  .dataTables_filter label input[disabled],
+  fieldset[disabled] .form-control,
+  fieldset[disabled] .dataTables_length label select, .dataTables_length label
+  fieldset[disabled] select,
+  fieldset[disabled]
+  .dataTables_filter label input,
+  .dataTables_filter label
+  fieldset[disabled] input {
     cursor: not-allowed; }
 
 textarea.form-control {
@@ -2351,17 +2372,23 @@ input[type="search"] {
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input[type="date"].form-control,
+  .dataTables_filter label input[type="date"],
   input[type="time"].form-control,
+  .dataTables_filter label input[type="time"],
   input[type="datetime-local"].form-control,
-  input[type="month"].form-control {
+  .dataTables_filter label input[type="datetime-local"],
+  input[type="month"].form-control,
+  .dataTables_filter label input[type="month"] {
     line-height: 34px; }
   input[type="date"].input-sm, .input-group-sm > input[type="date"].form-control,
+  .dataTables_filter label .input-group-sm > input[type="date"],
   .input-group-sm > input[type="date"].input-group-addon,
   .input-group-sm > .input-group-btn > input[type="date"].btn,
   .input-group-sm > .input-group-btn > input[type="date"].create-btn,
   .input-group-sm input[type="date"],
   input[type="time"].input-sm,
   .input-group-sm > input[type="time"].form-control,
+  .dataTables_filter label .input-group-sm > input[type="time"],
   .input-group-sm > input[type="time"].input-group-addon,
   .input-group-sm > .input-group-btn > input[type="time"].btn,
   .input-group-sm > .input-group-btn > input[type="time"].create-btn,
@@ -2369,6 +2396,7 @@ input[type="search"] {
   input[type="time"],
   input[type="datetime-local"].input-sm,
   .input-group-sm > input[type="datetime-local"].form-control,
+  .dataTables_filter label .input-group-sm > input[type="datetime-local"],
   .input-group-sm > input[type="datetime-local"].input-group-addon,
   .input-group-sm > .input-group-btn > input[type="datetime-local"].btn,
   .input-group-sm > .input-group-btn > input[type="datetime-local"].create-btn,
@@ -2376,6 +2404,7 @@ input[type="search"] {
   input[type="datetime-local"],
   input[type="month"].input-sm,
   .input-group-sm > input[type="month"].form-control,
+  .dataTables_filter label .input-group-sm > input[type="month"],
   .input-group-sm > input[type="month"].input-group-addon,
   .input-group-sm > .input-group-btn > input[type="month"].btn,
   .input-group-sm > .input-group-btn > input[type="month"].create-btn,
@@ -2383,12 +2412,14 @@ input[type="search"] {
   input[type="month"] {
     line-height: 30px; }
   input[type="date"].input-lg, .input-group-lg > input[type="date"].form-control,
+  .dataTables_filter label .input-group-lg > input[type="date"],
   .input-group-lg > input[type="date"].input-group-addon,
   .input-group-lg > .input-group-btn > input[type="date"].btn,
   .input-group-lg > .input-group-btn > input[type="date"].create-btn,
   .input-group-lg input[type="date"],
   input[type="time"].input-lg,
   .input-group-lg > input[type="time"].form-control,
+  .dataTables_filter label .input-group-lg > input[type="time"],
   .input-group-lg > input[type="time"].input-group-addon,
   .input-group-lg > .input-group-btn > input[type="time"].btn,
   .input-group-lg > .input-group-btn > input[type="time"].create-btn,
@@ -2396,6 +2427,7 @@ input[type="search"] {
   input[type="time"],
   input[type="datetime-local"].input-lg,
   .input-group-lg > input[type="datetime-local"].form-control,
+  .dataTables_filter label .input-group-lg > input[type="datetime-local"],
   .input-group-lg > input[type="datetime-local"].input-group-addon,
   .input-group-lg > .input-group-btn > input[type="datetime-local"].btn,
   .input-group-lg > .input-group-btn > input[type="datetime-local"].create-btn,
@@ -2403,6 +2435,7 @@ input[type="search"] {
   input[type="datetime-local"],
   input[type="month"].input-lg,
   .input-group-lg > input[type="month"].form-control,
+  .dataTables_filter label .input-group-lg > input[type="month"],
   .input-group-lg > input[type="month"].input-group-addon,
   .input-group-lg > .input-group-btn > input[type="month"].btn,
   .input-group-lg > .input-group-btn > input[type="month"].create-btn,
@@ -2481,17 +2514,20 @@ fieldset[disabled]
   padding-bottom: 7px;
   margin-bottom: 0;
   min-height: 34px; }
-  .form-control-static.input-lg, .input-group-lg > .form-control-static.form-control,
+  .form-control-static.input-lg, .input-group-lg > .form-control-static.form-control, .dataTables_length label .input-group-lg > select.form-control-static,
+  .dataTables_filter label .input-group-lg > input.form-control-static,
   .input-group-lg > .form-control-static.input-group-addon,
   .input-group-lg > .input-group-btn > .form-control-static.btn,
-  .input-group-lg > .input-group-btn > .form-control-static.create-btn, .form-control-static.input-sm, .input-group-sm > .form-control-static.form-control,
+  .input-group-lg > .input-group-btn > .form-control-static.create-btn, .form-control-static.input-sm, .input-group-sm > .form-control-static.form-control, .dataTables_length label .input-group-sm > select.form-control-static,
+  .dataTables_filter label .input-group-sm > input.form-control-static,
   .input-group-sm > .form-control-static.input-group-addon,
   .input-group-sm > .input-group-btn > .form-control-static.btn,
   .input-group-sm > .input-group-btn > .form-control-static.create-btn {
     padding-left: 0;
     padding-right: 0; }
 
-.input-sm, .input-group-sm > .form-control,
+.input-sm, .input-group-sm > .form-control, .dataTables_length label .input-group-sm > select,
+.dataTables_filter label .input-group-sm > input,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn,
 .input-group-sm > .input-group-btn > .create-btn {
@@ -2501,7 +2537,7 @@ fieldset[disabled]
   line-height: 1.5;
   border-radius: 3px; }
 
-select.input-sm, .input-group-sm > select.form-control,
+select.input-sm, .input-group-sm > select.form-control, .dataTables_length label .input-group-sm > select,
 .input-group-sm > select.input-group-addon,
 .input-group-sm > .input-group-btn > select.btn,
 .input-group-sm > .input-group-btn > select.create-btn {
@@ -2514,24 +2550,29 @@ textarea.input-sm, .input-group-sm > textarea.form-control,
 .input-group-sm > .input-group-btn > textarea.create-btn,
 select[multiple].input-sm,
 .input-group-sm > select[multiple].form-control,
+.dataTables_length label .input-group-sm > select[multiple],
 .input-group-sm > select[multiple].input-group-addon,
 .input-group-sm > .input-group-btn > select[multiple].btn,
 .input-group-sm > .input-group-btn > select[multiple].create-btn {
   height: auto; }
 
-.form-group-sm .form-control {
+.form-group-sm .form-control, .form-group-sm .dataTables_length label select, .dataTables_length label .form-group-sm select, .form-group-sm
+.dataTables_filter label input,
+.dataTables_filter label .form-group-sm input {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px; }
 
-.form-group-sm select.form-control {
+.form-group-sm select.form-control, .form-group-sm .dataTables_length label select, .dataTables_length label .form-group-sm select {
   height: 30px;
   line-height: 30px; }
 
 .form-group-sm textarea.form-control,
-.form-group-sm select[multiple].form-control {
+.form-group-sm select[multiple].form-control,
+.form-group-sm .dataTables_length label select[multiple], .dataTables_length label
+.form-group-sm select[multiple] {
   height: auto; }
 
 .form-group-sm .form-control-static {
@@ -2541,7 +2582,8 @@ select[multiple].input-sm,
   font-size: 12px;
   line-height: 1.5; }
 
-.input-lg, .input-group-lg > .form-control,
+.input-lg, .input-group-lg > .form-control, .dataTables_length label .input-group-lg > select,
+.dataTables_filter label .input-group-lg > input,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn,
 .input-group-lg > .input-group-btn > .create-btn {
@@ -2551,7 +2593,7 @@ select[multiple].input-sm,
   line-height: 1.33333;
   border-radius: 6px; }
 
-select.input-lg, .input-group-lg > select.form-control,
+select.input-lg, .input-group-lg > select.form-control, .dataTables_length label .input-group-lg > select,
 .input-group-lg > select.input-group-addon,
 .input-group-lg > .input-group-btn > select.btn,
 .input-group-lg > .input-group-btn > select.create-btn {
@@ -2564,24 +2606,29 @@ textarea.input-lg, .input-group-lg > textarea.form-control,
 .input-group-lg > .input-group-btn > textarea.create-btn,
 select[multiple].input-lg,
 .input-group-lg > select[multiple].form-control,
+.dataTables_length label .input-group-lg > select[multiple],
 .input-group-lg > select[multiple].input-group-addon,
 .input-group-lg > .input-group-btn > select[multiple].btn,
 .input-group-lg > .input-group-btn > select[multiple].create-btn {
   height: auto; }
 
-.form-group-lg .form-control {
+.form-group-lg .form-control, .form-group-lg .dataTables_length label select, .dataTables_length label .form-group-lg select, .form-group-lg
+.dataTables_filter label input,
+.dataTables_filter label .form-group-lg input {
   height: 46px;
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33333;
   border-radius: 6px; }
 
-.form-group-lg select.form-control {
+.form-group-lg select.form-control, .form-group-lg .dataTables_length label select, .dataTables_length label .form-group-lg select {
   height: 46px;
   line-height: 46px; }
 
 .form-group-lg textarea.form-control,
-.form-group-lg select[multiple].form-control {
+.form-group-lg select[multiple].form-control,
+.form-group-lg .dataTables_length label select[multiple], .dataTables_length label
+.form-group-lg select[multiple] {
   height: auto; }
 
 .form-group-lg .form-control-static {
@@ -2593,7 +2640,9 @@ select[multiple].input-lg,
 
 .has-feedback {
   position: relative; }
-  .has-feedback .form-control {
+  .has-feedback .form-control, .has-feedback .dataTables_length label select, .dataTables_length label .has-feedback select, .has-feedback
+  .dataTables_filter label input,
+  .dataTables_filter label .has-feedback input {
     padding-right: 42.5px; }
 
 .form-control-feedback {
@@ -2608,22 +2657,36 @@ select[multiple].input-lg,
   text-align: center;
   pointer-events: none; }
 
-.input-lg + .form-control-feedback, .input-group-lg > .form-control + .form-control-feedback,
+.input-lg + .form-control-feedback, .input-group-lg > .form-control + .form-control-feedback, .dataTables_length label .input-group-lg > select + .form-control-feedback,
+.dataTables_filter label .input-group-lg > input + .form-control-feedback,
 .input-group-lg > .input-group-addon + .form-control-feedback,
 .input-group-lg > .input-group-btn > .btn + .form-control-feedback,
 .input-group-lg > .input-group-btn > .create-btn + .form-control-feedback,
 .input-group-lg + .form-control-feedback,
-.form-group-lg .form-control + .form-control-feedback {
+.form-group-lg .form-control + .form-control-feedback,
+.form-group-lg .dataTables_length label select + .form-control-feedback, .dataTables_length label
+.form-group-lg select + .form-control-feedback,
+.form-group-lg
+.dataTables_filter label input + .form-control-feedback,
+.dataTables_filter label
+.form-group-lg input + .form-control-feedback {
   width: 46px;
   height: 46px;
   line-height: 46px; }
 
-.input-sm + .form-control-feedback, .input-group-sm > .form-control + .form-control-feedback,
+.input-sm + .form-control-feedback, .input-group-sm > .form-control + .form-control-feedback, .dataTables_length label .input-group-sm > select + .form-control-feedback,
+.dataTables_filter label .input-group-sm > input + .form-control-feedback,
 .input-group-sm > .input-group-addon + .form-control-feedback,
 .input-group-sm > .input-group-btn > .btn + .form-control-feedback,
 .input-group-sm > .input-group-btn > .create-btn + .form-control-feedback,
 .input-group-sm + .form-control-feedback,
-.form-group-sm .form-control + .form-control-feedback {
+.form-group-sm .form-control + .form-control-feedback,
+.form-group-sm .dataTables_length label select + .form-control-feedback, .dataTables_length label
+.form-group-sm select + .form-control-feedback,
+.form-group-sm
+.dataTables_filter label input + .form-control-feedback,
+.dataTables_filter label
+.form-group-sm input + .form-control-feedback {
   width: 30px;
   height: 30px;
   line-height: 30px; }
@@ -2640,11 +2703,15 @@ select[multiple].input-lg,
 .has-success.checkbox-inline label {
   color: #3c763d; }
 
-.has-success .form-control {
+.has-success .form-control, .has-success .dataTables_length label select, .dataTables_length label .has-success select, .has-success
+.dataTables_filter label input,
+.dataTables_filter label .has-success input {
   border-color: #3c763d;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
-  .has-success .form-control:focus {
+  .has-success .form-control:focus, .has-success .dataTables_length label select:focus, .dataTables_length label .has-success select:focus, .has-success
+  .dataTables_filter label input:focus,
+  .dataTables_filter label .has-success input:focus {
     border-color: #2b542c;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168; }
@@ -2669,11 +2736,15 @@ select[multiple].input-lg,
 .has-warning.checkbox-inline label {
   color: #8a6d3b; }
 
-.has-warning .form-control {
+.has-warning .form-control, .has-warning .dataTables_length label select, .dataTables_length label .has-warning select, .has-warning
+.dataTables_filter label input,
+.dataTables_filter label .has-warning input {
   border-color: #8a6d3b;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
-  .has-warning .form-control:focus {
+  .has-warning .form-control:focus, .has-warning .dataTables_length label select:focus, .dataTables_length label .has-warning select:focus, .has-warning
+  .dataTables_filter label input:focus,
+  .dataTables_filter label .has-warning input:focus {
     border-color: #66512c;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b; }
@@ -2698,11 +2769,15 @@ select[multiple].input-lg,
 .has-error.checkbox-inline label {
   color: #a94442; }
 
-.has-error .form-control {
+.has-error .form-control, .has-error .dataTables_length label select, .dataTables_length label .has-error select, .has-error
+.dataTables_filter label input,
+.dataTables_filter label .has-error input {
   border-color: #a94442;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
-  .has-error .form-control:focus {
+  .has-error .form-control:focus, .has-error .dataTables_length label select:focus, .dataTables_length label .has-error select:focus, .has-error
+  .dataTables_filter label input:focus,
+  .dataTables_filter label .has-error input:focus {
     border-color: #843534;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483; }
@@ -2732,7 +2807,9 @@ select[multiple].input-lg,
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle; }
-  .form-inline .form-control {
+  .form-inline .form-control, .form-inline .dataTables_length label select, .dataTables_length label .form-inline select, .form-inline
+  .dataTables_filter label input,
+  .dataTables_filter label .form-inline input {
     display: inline-block;
     width: auto;
     vertical-align: middle; }
@@ -2743,9 +2820,17 @@ select[multiple].input-lg,
     vertical-align: middle; }
     .form-inline .input-group .input-group-addon,
     .form-inline .input-group .input-group-btn,
-    .form-inline .input-group .form-control {
+    .form-inline .input-group .form-control,
+    .form-inline .input-group .dataTables_length label select, .dataTables_length label
+    .form-inline .input-group select,
+    .form-inline .input-group
+    .dataTables_filter label input,
+    .dataTables_filter label
+    .form-inline .input-group input {
       width: auto; }
-  .form-inline .input-group > .form-control {
+  .form-inline .input-group > .form-control, .form-inline .dataTables_length label .input-group > select, .dataTables_length label .form-inline .input-group > select, .form-inline
+  .dataTables_filter label .input-group > input,
+  .dataTables_filter label .form-inline .input-group > input {
     width: 100%; }
   .form-inline .control-label {
     margin-bottom: 0;
@@ -3484,22 +3569,38 @@ tbody.collapse.in {
     float: none;
     padding-left: 0;
     padding-right: 0; }
-  .input-group .form-control {
+  .input-group .form-control, .input-group .dataTables_length label select, .dataTables_length label .input-group select, .input-group
+  .dataTables_filter label input,
+  .dataTables_filter label .input-group input {
     position: relative;
     z-index: 2;
     float: left;
     width: 100%;
     margin-bottom: 0; }
-    .input-group .form-control:focus {
+    .input-group .form-control:focus, .input-group .dataTables_length label select:focus, .dataTables_length label .input-group select:focus, .input-group
+    .dataTables_filter label input:focus,
+    .dataTables_filter label .input-group input:focus {
       z-index: 3; }
 
 .input-group-addon,
 .input-group-btn,
-.input-group .form-control {
+.input-group .form-control,
+.input-group .dataTables_length label select, .dataTables_length label
+.input-group select,
+.input-group
+.dataTables_filter label input,
+.dataTables_filter label
+.input-group input {
   display: table-cell; }
   .input-group-addon:not(:first-child):not(:last-child),
   .input-group-btn:not(:first-child):not(:last-child),
-  .input-group .form-control:not(:first-child):not(:last-child) {
+  .input-group .form-control:not(:first-child):not(:last-child),
+  .input-group .dataTables_length label select:not(:first-child):not(:last-child), .dataTables_length label
+  .input-group select:not(:first-child):not(:last-child),
+  .input-group
+  .dataTables_filter label input:not(:first-child):not(:last-child),
+  .dataTables_filter label
+  .input-group input:not(:first-child):not(:last-child) {
     border-radius: 0; }
 
 .input-group-addon,
@@ -3518,14 +3619,16 @@ tbody.collapse.in {
   background-color: #eeeeee;
   border: 1px solid #ccc;
   border-radius: 4px; }
-  .input-group-addon.input-sm,
+  .input-group-addon.input-sm, .dataTables_length label .input-group-sm > select.input-group-addon,
+  .dataTables_filter label .input-group-sm > input.input-group-addon,
   .input-group-sm > .input-group-addon,
   .input-group-sm > .input-group-btn > .input-group-addon.btn,
   .input-group-sm > .input-group-btn > .input-group-addon.create-btn {
     padding: 5px 10px;
     font-size: 12px;
     border-radius: 3px; }
-  .input-group-addon.input-lg,
+  .input-group-addon.input-lg, .dataTables_length label .input-group-lg > select.input-group-addon,
+  .dataTables_filter label .input-group-lg > input.input-group-addon,
   .input-group-lg > .input-group-addon,
   .input-group-lg > .input-group-btn > .input-group-addon.btn,
   .input-group-lg > .input-group-btn > .input-group-addon.create-btn {
@@ -3536,7 +3639,9 @@ tbody.collapse.in {
   .input-group-addon input[type="checkbox"] {
     margin-top: 0; }
 
-.input-group .form-control:first-child,
+.input-group .form-control:first-child, .input-group .dataTables_length label select:first-child, .dataTables_length label .input-group select:first-child, .input-group
+.dataTables_filter label input:first-child,
+.dataTables_filter label .input-group input:first-child,
 .input-group-addon:first-child,
 .input-group-btn:first-child > .btn,
 .input-group-btn:first-child > .create-btn,
@@ -3553,7 +3658,9 @@ tbody.collapse.in {
 .input-group-addon:first-child {
   border-right: 0; }
 
-.input-group .form-control:last-child,
+.input-group .form-control:last-child, .input-group .dataTables_length label select:last-child, .dataTables_length label .input-group select:last-child, .input-group
+.dataTables_filter label input:last-child,
+.dataTables_filter label .input-group input:last-child,
 .input-group-addon:last-child,
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .create-btn,
@@ -3898,7 +4005,9 @@ tbody.collapse.in {
       display: inline-block;
       margin-bottom: 0;
       vertical-align: middle; }
-    .navbar-form .form-control {
+    .navbar-form .form-control, .navbar-form .dataTables_length label select, .dataTables_length label .navbar-form select, .navbar-form
+    .dataTables_filter label input,
+    .dataTables_filter label .navbar-form input {
       display: inline-block;
       width: auto;
       vertical-align: middle; }
@@ -3909,9 +4018,17 @@ tbody.collapse.in {
       vertical-align: middle; }
       .navbar-form .input-group .input-group-addon,
       .navbar-form .input-group .input-group-btn,
-      .navbar-form .input-group .form-control {
+      .navbar-form .input-group .form-control,
+      .navbar-form .input-group .dataTables_length label select, .dataTables_length label
+      .navbar-form .input-group select,
+      .navbar-form .input-group
+      .dataTables_filter label input,
+      .dataTables_filter label
+      .navbar-form .input-group input {
         width: auto; }
-    .navbar-form .input-group > .form-control {
+    .navbar-form .input-group > .form-control, .navbar-form .dataTables_length label .input-group > select, .dataTables_length label .navbar-form .input-group > select, .navbar-form
+    .dataTables_filter label .input-group > input,
+    .dataTables_filter label .navbar-form .input-group > input {
       width: 100%; }
     .navbar-form .control-label {
       margin-bottom: 0;
@@ -5892,7 +6009,8 @@ hr {
 .error {
   color: #c00; }
 
-.form-control {
+.form-control, .dataTables_length label select,
+.dataTables_filter label input {
   background-color: #111;
   color: #ccc;
   border-color: #777; }
@@ -5921,6 +6039,12 @@ hr {
   .inner-field-container hr {
     margin-left: -15px;
     margin-right: -15px; }
+
+.image-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 50px;
+  margin: 0; }
 
 .master-wrapper {
   position: relative;
@@ -5987,6 +6111,21 @@ hr {
 
 .table-striped > tbody > tr:nth-of-type(2n+1) {
   background-color: #222; }
+
+table.dataTable tbody tr {
+  background-color: inherit; }
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+  color: #ccc; }
+
+.dataTables_length label select,
+.dataTables_filter label input {
+  display: inline;
+  width: auto; }
 
 @media (min-width: 768px) {
   body.mgmt table tr td {

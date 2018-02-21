@@ -7,20 +7,8 @@
 ?>
 
 @if(isset($list) && $list)
-    {{-- inject some styles --}}
-    @section('head')
-        <style>
-            #{{ $name }}_preview {
-                display: block;
-                max-width: 100%;
-                max-height: 50px;
-                margin: 0;
-            }
-        </style>
-    @append
-
     {{-- list display here --}}
-    <img src="{{ $image_url }}" id="{{ $name }}_preview">
+    <img src="{{ $image_url }}" class="image-preview">
 @else
     {{-- inject some styles --}}
     @section('head')
