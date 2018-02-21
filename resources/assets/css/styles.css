@@ -6127,6 +6127,17 @@ table.dataTable tbody tr {
   display: inline;
   width: auto; }
 
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #ccc !important; }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #ccc !important;
+  background: inherit; }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #777; }
+
 @media (min-width: 768px) {
   body.mgmt table tr td {
     min-width: 160px; } }

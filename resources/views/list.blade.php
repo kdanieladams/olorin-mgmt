@@ -1,6 +1,6 @@
 @extends('mgmt::master')
 @section('title', $model_name . ' List')
-@section('vendor_head')
+@section('vendor_styles')
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 @append
 @section('main')

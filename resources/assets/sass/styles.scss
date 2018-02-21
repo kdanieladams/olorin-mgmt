@@ -199,6 +199,17 @@ table.dataTable tbody tr {
   display: inline;
   width: auto;
 }
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: $gray !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: $gray !important;
+  background: inherit;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: $dark-gray;
+}
 
 // Media Queries
 @media(min-width: 768px){
