@@ -181,6 +181,11 @@ hr {
 .table-striped > tbody > tr:nth-of-type(2n+1) {
   background-color: $darker-gray;
 }
+.table > thead > tr > th, .table > thead > tr > td,
+.table > tbody > tr > th, .table > tbody > tr > td,
+.table > tfoot > tr > th, .table > tfoot > tr > td {
+  vertical-align: middle;
+}
 
 // jQuery DataTable Overrides
 table.dataTable tbody tr {
