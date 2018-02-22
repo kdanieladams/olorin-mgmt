@@ -70,8 +70,14 @@
                     @endif
                 @endforeach
                 <hr />
-                <input type="submit" class="btn btn-success" value="Create New {{ $model_name }}" />
-                <button type="button" class="btn btn-cancel" onclick="window.history.back();">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-save"></span>
+                        Create New {{ $model_name }}
+                    </button>
+                    <button type="button" class="btn btn-hollow" onclick="window.history.back();">
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                        Cancel
+                    </button>
             </div>
         </div>
     </form>

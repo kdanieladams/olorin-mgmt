@@ -6117,6 +6117,20 @@ hr {
 .table > tfoot > tr > th, .table > tfoot > tr > td {
   vertical-align: middle; }
 
+.btn-hollow, .btn-hollow-danger {
+  background-color: inherit;
+  border-color: #777;
+  color: #ccc; }
+  .btn-hollow:hover, .btn-hollow-danger:hover {
+    color: #222;
+    background-color: #ccc; }
+  .btn-hollow:active, .btn-hollow:focus, .btn-hollow-danger:active, .btn-hollow-danger:focus {
+    color: #ececec; }
+
+.btn-hollow-danger:hover {
+  color: #ececec;
+  background-color: #c00; }
+
 table.dataTable tbody tr {
   background-color: inherit; }
 

@@ -62,6 +62,7 @@
                     </ul>
                     <button type="button" id="{{ $name }}_upload_btn"
                             class="btn btn-warning">
+                        <span class="glyphicon glyphicon-cloud-upload"></span>
                         Upload
                     </button>
                 </div>

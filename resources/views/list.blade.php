@@ -47,15 +47,16 @@
                 </td>
             @endforeach
                 <td>
-                    <a href="/mgmt/edit/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">Edit</a>
-                    @if(Route::has('show-' . strtolower($model_name)))
-                        @if(isset($item->slug))
-                            | <a href="{{ route('show-' . strtolower($model_name), $item->slug) }}">View</a>
-                        @else
-                            | <a href="{{ route('show-' . strtolower($model_name), $item->id) }}">View</a>
-                        @endif
-                    @endif
-                    | <a href="/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}">Delete</a>
+                    <div class="btn-group pull-right">
+                        <a href="/mgmt/edit/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}" class="btn btn-hollow">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Edit
+                        </a>
+                        <a href="/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}" class="btn btn-hollow-danger">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Delete
+                        </a>
+                    </div>
                 </td>
             </tr>
         @endforeach

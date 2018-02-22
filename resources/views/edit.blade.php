@@ -91,9 +91,19 @@
                     @endif
                 @endforeach
                 <hr />
-                <input type="submit" class="btn btn-success" value="Save Changes" />
-                <button type="button" class="btn btn-danger" onclick="window.location.href = '/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}';">Delete</button>
-                <button type="button" class="btn btn-cancel" onclick="window.history.back();">Cancel</button>
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-save"></span>
+                    Save Changes
+                </button>
+                <button type="button" class="btn btn-danger"
+                        onclick="window.location.href = '/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}';">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Delete
+                </button>
+                <button type="button" class="btn btn-hollow" onclick="window.history.back();">
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                    Cancel
+                </button>
             </div>
         </div>
     </form>

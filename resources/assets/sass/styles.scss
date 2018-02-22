@@ -8,12 +8,15 @@ $icon-font-path: '/fonts/';
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 
 // Global Variables
+$black: #000;
 $almost-black: #0c0c0c;
 $light-black: #111;
 $lightest-black: #121212;
 $darker-gray: #222;
 $dark-gray: #777;
 $gray: #ccc;
+$almost-white: #ececec;
+$white: #fff;
 $dark-red: #900;
 $med-red: #c00;
 
@@ -64,7 +67,7 @@ hr {
 }
 .inner-field-container {
   padding: 15px;
-  border: solid 1px #ccc;
+  border: solid 1px $gray;
   border-radius: 5px;
 
   table tbody tr td {
@@ -185,6 +188,22 @@ hr {
 .table > tbody > tr > th, .table > tbody > tr > td,
 .table > tfoot > tr > th, .table > tfoot > tr > td {
   vertical-align: middle;
+}
+.btn-hollow, .btn-hollow-danger {
+  background-color: inherit;
+  border-color: $dark-gray;
+  color: $gray;
+  &:hover {
+    color: $darker-gray;
+    background-color: $gray;
+  }
+  &:active, &:focus {
+    color: $almost-white;
+  }
+}
+.btn-hollow-danger:hover {
+  color: $almost-white;
+  background-color: $med-red;
 }
 
 // jQuery DataTable Overrides
