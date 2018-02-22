@@ -6115,7 +6115,8 @@ hr {
 .table > thead > tr > th, .table > thead > tr > td,
 .table > tbody > tr > th, .table > tbody > tr > td,
 .table > tfoot > tr > th, .table > tfoot > tr > td {
-  vertical-align: middle; }
+  vertical-align: middle;
+  border-color: #777; }
 
 .btn-hollow, .btn-hollow-danger {
   background-color: inherit;
