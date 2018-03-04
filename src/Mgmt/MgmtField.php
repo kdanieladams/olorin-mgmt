@@ -421,11 +421,16 @@ class MgmtField {
         if($this->related) {
             $relationship = $this->relationship;
             $class = $relationship ? $this->$relationship : '';
+
             $items = array();
             $label_key = $this->getLabelKey($instance);
 
             if(!class_exists($class)) {
                 throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
+            }
+            $fillables = (new $class())->getFillable();
+            if(!isset($fillables[$label_key])) {
+                $label_key = $fillables[0];
             }
 
             foreach($class::orderBy($label_key, 'asc')->get() as $item){
