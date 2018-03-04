@@ -1,10 +1,8 @@
-<?php
-    $default = "-- Select " . ucwords($label) . " --";
-?>
 @if(isset($list) && $list)
     {{-- list view here --}}
     {{ $value[is_null($selected) ? '' : $selected] }}
 @else
+    <?php $default = "-- Select " . ucwords($label) . " --"; ?>
     {{-- edit view here --}}
     @section('head')
     <style>

@@ -4,13 +4,13 @@
     //}
 
     $image_url = is_null($value) ? '' : rtrim($view_options['image_options']['dir'], "/") . "/" . $value;
-    $default = "-- Select " . ucwords($label) . " --";
 ?>
 
 @if(isset($list) && $list)
     {{-- list display here --}}
     <img src="{{ $image_url }}" class="image-preview">
 @else
+    <?php $default = "-- Select " . ucwords($label) . " --"; ?>
     {{-- inject some styles --}}
     @section('head')
         <style>
