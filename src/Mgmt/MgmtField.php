@@ -380,10 +380,9 @@ class MgmtField {
         $value = $instance->$fieldname;
 
         if($value == null || (is_a($value, 'Illuminate\Database\Eloquent\Collection') && count($value) == 0)) {
-            // throw new MgmtException("Unable to query " . $this->getClassName() . " relationship on " . $fieldname . "!");
             $relationship = $this->relationship;
             $class = $this->$relationship;
-            $value = $class::first();
+            $value = new $class();
         }
 
         if($value instanceof Collection){
@@ -400,8 +399,9 @@ class MgmtField {
                 $label_key = 'name';
             }
             else {
-                //dd($instance->$fieldname, $fieldname, $value, $value->{$value->label_key}, $value->name);
-                throw new MgmtException("resolveRelatedFields(): Unable to determine related field identifier.", 1);
+                //dd($instance->$fieldname, $fieldname, $value, $value->{$value->label_key}, $value->name, $label_key);
+                throw new MgmtException("resolveRelatedFields(): Unable to determine related field identifier for "
+                    . $this->name . '.', 1);
             }
         }
 

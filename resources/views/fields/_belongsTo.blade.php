@@ -1,6 +1,9 @@
+<?php
+    $default = "-- Select a " . $name . " --";
+?>
 @if(isset($list) && $list)
     {{-- list view here --}}
-    {{ $value[is_null($selected) ? key($value) : $selected] }}
+    {{ $value[is_null($selected) ? '' : $selected] }}
 @else
     {{-- edit view here --}}
     @section('head')
@@ -17,7 +20,7 @@
     <div class="form-group">
         <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
-            {!! Form::text($name . '_display', $value[is_null($selected) || $selected === 0 ? key($value) : $selected], [
+            {!! Form::text($name . '_display', is_null($selected) ? $default : $value[$selected], [
                 'readonly' => 'readonly',
                 'class' => 'form-control',
                 'id' => $name . '_display'
@@ -30,6 +33,7 @@
                     <i class="glyphicon glyphicon-chevron-down"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#" data-value="">{{ $default }}</a></li>
                 @foreach($value as $val => $lbl)
                     <li>
                         <a href="#" data-value="{{ $val }}">{{ $lbl }}</a>

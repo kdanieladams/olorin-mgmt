@@ -1,9 +1,10 @@
 <?php
-    if(is_null($value)) {
-        $value = current($view_options['image_options']['options']);
-    }
+    //if(is_null($value)) {
+    //    $value = current($view_options['image_options']['options']);
+    //}
 
-    $image_url = rtrim($view_options['image_options']['dir'], "/") . "/" . $value;
+    $image_url = is_null($value) ? '' : rtrim($view_options['image_options']['dir'], "/") . "/" . $value;
+    $default = "-- Select " . ucwords($name) . " --";
 ?>
 
 @if(isset($list) && $list)
@@ -31,7 +32,7 @@
 
     {{-- edit form display here --}}
     @if($view_options['image_options']['preview'])
-        <img src="{{ $image_url }}" id="{{ $name }}_preview">
+        <img src="{{ $image_url }}" id="{{ $name }}_preview" {!!  is_null($value) ? 'style="opacity: 0; height: 150px;"' : '' !!}>
     @endif
 
     <div class="form-group">
@@ -40,12 +41,12 @@
             @if(isset($editable) && !$editable)
                 {{ $value }}
             @else
-                {!! Form::text($name . '_display', $value, [
+                {!! Form::text($name . '_display', is_null($value) ? $default : $value, [
                     'readonly' => 'readonly',
                     'class' => 'form-control',
                     'id' => $name . '_display'
                 ]) !!}
-                <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-url="{{ $image_url }}">
+                <input type="hidden" name="{{ $name }}" value="{{ $value }}">
                 <input type="file" class="hidden" name="{{ $name }}_file" id="{{ $name }}_file" accept="image/*">
 
                 <div class="input-group-btn" id="{{ $name }}_dropdown">
@@ -54,6 +55,7 @@
                         <i class="glyphicon glyphicon-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="#" data-value="" data-url="">{{ $default }}</a></li>
                     @foreach($view_options['image_options']['options'] as $url => $filename)
                         <li>
                             <a href="#" data-value="{{ $filename }}" data-url="{{ $url }}">{{ $filename }}</a>
@@ -73,6 +75,9 @@
     {{-- inject some javascript --}}
     @section('scripts')
     <script>
+        /**
+         * Image selection functionality:
+         */
         function {{ $name }}SetOptionEventHandlers() {
             $('#{{ $name }}_dropdown ul.dropdown-menu li a').off('click');
             $('#{{ $name }}_dropdown ul.dropdown-menu li a').click(function(e){
@@ -91,9 +96,12 @@
 
         $(document).ready(function(){
             $('input[name="{{ $name }}"]').on('selected-new-img', function(e){
-                $('#{{ $name }}_preview').fadeOut(500, function(){
-                    $(this).prop('src', $('input[name="{{ $name }}"]').data('url'));
-                    $(this).fadeIn(500);
+                $('#{{ $name }}_preview').animate({'opacity': 0}, 500, function(){
+                    var url = $('input[name="{{ $name }}"]').data('url');
+                    if(url.length > 0) {
+                        $(this).prop('src', url);
+                        $(this).animate({'opacity': 1}, 500);
+                    }
                 });
             });
 
@@ -105,6 +113,9 @@
                 $("#{{ $name }}_dropdown").find('[data-toggle=dropdown]').dropdown('toggle');
             });
 
+            /**
+             * Upload functionality:
+             */
             $('#{{ $name }}_upload_btn').click(function(e){
                 $('#{{ $name }}_file').click();
             });
