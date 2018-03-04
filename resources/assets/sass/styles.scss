@@ -168,6 +168,10 @@ hr {
     }
   }
 }
+.input-group-btn.open > .dropdown-menu {
+  max-height: 275px;
+  overflow-y: scroll;
+}
 .input-group-btn:last-child > .btn {
   border-color: $dark-gray;
   border-bottom-width: 2px;

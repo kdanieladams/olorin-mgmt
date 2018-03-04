@@ -281,6 +281,14 @@ class MgmtField {
 
                         $dir = scandir($path);
                         $options = array();
+                        usort($dir, function($a, $b){
+                            $a = strtolower($a);
+                            $b = strtolower($b);
+                            if ($a == $b) {
+                                return 0;
+                            }
+                            return ($a < $b) ? -1 : 1;
+                        });
 
                         foreach($dir as $k => $filename) {
                             if($filename == "." || $filename == "..") {
@@ -420,7 +428,7 @@ class MgmtField {
                 throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
             }
 
-            foreach($class::all() as $item){
+            foreach($class::orderBy($label_key, 'asc')->get() as $item){
                 if(empty($item->label)) {
                     $items[$item->id] = $item->$label_key;
                 }
