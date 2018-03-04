@@ -4,7 +4,7 @@
     //}
 
     $image_url = is_null($value) ? '' : rtrim($view_options['image_options']['dir'], "/") . "/" . $value;
-    $default = "-- Select " . ucwords($name) . " --";
+    $default = "-- Select " . ucwords($label) . " --";
 ?>
 
 @if(isset($list) && $list)

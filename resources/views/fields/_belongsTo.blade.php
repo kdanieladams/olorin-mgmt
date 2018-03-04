@@ -1,5 +1,5 @@
 <?php
-    $default = "-- Select " . ucwords($name) . " --";
+    $default = "-- Select " . ucwords($label) . " --";
 ?>
 @if(isset($list) && $list)
     {{-- list view here --}}
