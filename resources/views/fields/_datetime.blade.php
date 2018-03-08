@@ -1,3 +1,4 @@
+<?php $value = new \Carbon\Carbon($value); ?>
 @if(isset($list) && $list)
     {{-- list display here --}}
     <?php
@@ -10,10 +11,7 @@
     ?>
 @else
     {{-- edit form display here --}}
-    <?php
-        $value = new \Carbon\Carbon($value);
-        $value = str_replace(' ', 'T', $value->toDateTimeString());
-    ?>
+    <?php $value = str_replace(' ', 'T', $value->toDateTimeString()); ?>
     <div class="form-group">
         <label for="{{ $name }}">{{ $label }}:</label>
         <div class="input-group">
