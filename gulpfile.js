@@ -14,7 +14,8 @@ gulp.task('sass', function() {
 });
 
 gulp.task('css', function(){
-    gulp.src('resources/assets/css/**/*.css')
+    gulp.src(['resources/assets/css/vendor/*.css',
+        'resources/assets/css/*.css'])
         .pipe(concat('mgmt_styles.css'))
         .pipe(gulp.dest('public/css/'));
 
@@ -25,6 +26,7 @@ gulp.task('css', function(){
 
 gulp.task('scripts', function() {
     gulp.src(['resources/assets/js/vendor/jquery-*.js',
+        'resources/assets/js/vendor/dataTables.min.js',
         'resources/assets/js/vendor/bootstrap.js',
         'resources/assets/js/vendor/sweetalert.js',
         'resources/assets/js/scripts.js'])

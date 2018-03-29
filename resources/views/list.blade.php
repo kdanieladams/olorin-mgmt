@@ -1,8 +1,5 @@
 @extends('mgmt::master')
 @section('title', $model_name . ' List')
-@section('vendor_styles')
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-@append
 @section('main')
     @if(empty($exmp->create_permission) || $user->hasPermission($exmp->create_permission))
     <button class="create-btn" onclick="window.location.href = '/mgmt/create/{{ $exmp->getUrlFriendlyName() }}';">
@@ -65,7 +62,6 @@
 
 @stop
 @section('scripts')
-    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#listTable').DataTable();
