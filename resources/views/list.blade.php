@@ -26,7 +26,7 @@
                     @if($fieldtype == "related")
                         @include('mgmt::fields._' . $field->relationship, [
                             'list' => true,
-                            'value' => $field->getRelatedOptions($item),
+                            'value' => $field->getRelatedItems($item),
                             'selected' => $field->getRelatedId($item),
                             'name' => $field->name,
                             'label' => $field->label,

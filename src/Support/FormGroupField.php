@@ -118,9 +118,15 @@ class FormGroupField {
      */
     public function addInput($fieldStr)
     {
-        $fieldStr = html_entity_decode(str_replace("disabled", "disabled=\"\"", $fieldStr));
+        $fieldStr = str_replace(["disabled", "\r\n", '&nbsp;'], ["disabled=\"\"", "", ' '], $fieldStr);
         $element = $this->html->createDocumentFragment();
-        $element->appendXML($fieldStr);
+        try {
+            $element->appendXML($fieldStr);
+        }
+        catch(\Exception $ex) {
+            dd($ex->getMessage(), $fieldStr, $element);
+        }
+
 
         $this->container->appendChild($element);
     }

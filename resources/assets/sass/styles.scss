@@ -239,6 +239,41 @@ table.dataTable tbody tr {
   background: $dark-gray;
 }
 
+// Select 2 Overrides
+.select2-container--default .select2-selection--single {
+  background-color: $lightest-black;
+  border-color: $dark-gray;
+  .select2-selection__rendered {
+    color: $gray;
+    line-height: 2.3em;
+  }
+  .select2-selection__arrow {
+    top: 3px;
+  }
+}
+.select2-container .select2-selection--single {
+  height: 34px;
+}
+.select2-dropdown {
+  background-color: $lightest-black;
+  border: 1px solid $dark-gray;
+  .select2-search__field {
+    border: 1px solid #777;
+    background-color: transparent;
+    color: #ccc;
+  }
+}
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: $dark-gray;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: $gray;
+  color: $lightest-black;
+}
+.input-group .select2-container .select2-selection--single {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 // Media Queries
 @media(min-width: 768px){
   body.mgmt {

@@ -26,9 +26,10 @@ gulp.task('css', function(){
 
 gulp.task('scripts', function() {
     gulp.src(['resources/assets/js/vendor/jquery-*.js',
-        'resources/assets/js/vendor/dataTables.min.js',
         'resources/assets/js/vendor/bootstrap.js',
         'resources/assets/js/vendor/sweetalert.js',
+        'resources/assets/js/vendor/dataTables.min.js',
+        'resources/assets/js/vendor/select2.full.min.js',
         'resources/assets/js/scripts.js'])
         .pipe(concat('mgmt_scripts.js'))
         .pipe(gulp.dest('public/js/'));

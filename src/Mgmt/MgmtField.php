@@ -460,11 +460,15 @@ class MgmtField {
                 throw new MgmtException('Mgmt was unable to resolve a related classname!', 1);
             }
 
-            foreach($instance->{$this->name} as $item){
-                $items[$item->id] = $item;
+            if($instance->{$this->name} instanceof Collection) {
+                foreach($instance->{$this->name} as $item){
+                    $items[$item->id] = $item->{$item->label_key};
+                }
+
+                return $items;
             }
 
-            return $items;
+            return $instance->{$this->name};
         }
 
         throw new MgmtException('Mgmt was unable to resolve a relationship!', 1);
