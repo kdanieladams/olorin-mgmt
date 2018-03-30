@@ -105,11 +105,13 @@ class JqdtController extends Controller
                         $this->qry = $classname::join($relatedInstance->getTable(),
                             $relatedInstance->getTable() . '.id', '=',
                             $this->instance->getTable() . '.' . $colName)
+                            ->select($this->instance->getTable() . ".*", $relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance))
                             ->orderBy($relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance), $ord['dir']);
                     else
                         $this->qry->join($relatedInstance->getTable(),
                             $relatedInstance->getTable() . '.id', '=',
                             $this->instance->getTable() . '.' . $colName)
+                            ->select($this->instance->getTable() . ".*", $relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance))
                             ->orderBy($relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance), $ord['dir']);
 
                     continue;
