@@ -26,8 +26,6 @@ class JqdtController extends Controller
         $this->data = [];
         $retArr = [];
 
-        //dd($classname, $model, "\\" . str_replace("-", "\\", $model));
-
         if(!class_exists($classname)) {
             return response()->json(['error' => 'Whoops!  No class found...']);
         }
@@ -36,7 +34,6 @@ class JqdtController extends Controller
         $this->instance = new $classname();
         $this->getData($classname);
 
-        //dd($retArr);
         return response()->json(new JqdtPageResponse($this->input['draw'],
             $total, $this->filteredCount,
             $this->resolveValues()
@@ -79,7 +76,7 @@ class JqdtController extends Controller
                                     $query->whereIn($col['name'], $relatedResults);
                                 });
 
-                            //dd($this->qry->toSql(), $searchQry, $relatedResults);
+                            continue;
                         }
                         else {
                             continue;
