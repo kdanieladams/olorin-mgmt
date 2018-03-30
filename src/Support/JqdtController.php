@@ -99,18 +99,30 @@ class JqdtController extends Controller
             if($field->related) {
                 if($field->relationship == 'belongsTo') {
                     $colName = $colName . '_id';
+                    $relatedClassname = '\\' . $field->{$field->relationship};
+                    $relatedInstance = new $relatedClassname();
+                    if(!($this->qry instanceof Builder))
+                        $this->qry = $classname::join($relatedInstance->getTable(),
+                            $relatedInstance->getTable() . '.id', '=',
+                            $this->instance->getTable() . '.' . $colName)
+                            ->orderBy($relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance), $ord['dir']);
+                    else
+                        $this->qry->join($relatedInstance->getTable(),
+                            $relatedInstance->getTable() . '.id', '=',
+                            $this->instance->getTable() . '.' . $colName)
+                            ->orderBy($relatedInstance->getTable() . '.' . $field->getLabelKey($this->instance), $ord['dir']);
+
+                    continue;
                 }
                 else {
                     continue;
                 }
             }
 
-            if(!($this->qry instanceof Builder)) {
+            if(!($this->qry instanceof Builder))
                 $this->qry = $classname::orderBy($colName, $ord['dir']);
-            }
-            else {
+            else
                 $this->qry->orderBy($colName, $ord['dir']);
-            }
         }
 
         $this->filteredCount = $this->qry->count();
