@@ -33,6 +33,11 @@ Route::group(['prefix' => 'mgmt', 'middleware' => ['web', 'auth']], function(){
         'uses' => '\Olorin\Mgmt\MgmtController@index'
     ]);
 
+    Route::post('/jqdt/list/{model}', [
+        'as' => 'mgmt.jqdt.list',
+        'uses' => '\Olorin\Support\JqdtController@getListPage'
+    ]);
+
     Route::get('/{command}/{model?}/{id?}', [
         'as' => 'mgmt.command',
         'uses' => '\Olorin\Mgmt\MgmtController@command'

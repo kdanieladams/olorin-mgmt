@@ -17,55 +17,32 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
-        @foreach($items as $item)
-            <tr>
-            @foreach($list_fields as $field)
-                <td>
-                    <?php $fieldtype = $field->type; ?>
-                    @if($fieldtype == "related")
-                        @include('mgmt::fields._' . $field->relationship, [
-                            'list' => true,
-                            'value' => $field->getRelatedItems($item),
-                            'selected' => $field->getRelatedId($item),
-                            'name' => $field->name,
-                            'label' => $field->label,
-                            'view_options' => $field->view_options
-                        ])
-                    @else
-                        @include('mgmt::fields._' . $fieldtype, [
-                            'list' => true,
-                            'name' => $field->name,
-                            'value' => $item->{$field->name},
-                            'view_options' => $field->view_options
-                        ])
-                    @endif
-
-                </td>
-            @endforeach
-                <td>
-                    <div class="btn-group pull-right">
-                        <a href="/mgmt/edit/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}" class="btn btn-hollow">
-                            <span class="glyphicon glyphicon-edit"></span>
-                            Edit
-                        </a>
-                        <a href="/mgmt/delete/{{ $item->getUrlFriendlyName() }}/{{ $item->id }}" class="btn btn-hollow-danger">
-                            <span class="glyphicon glyphicon-trash"></span>
-                            Delete
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
     </table>
-
 @stop
 @section('scripts')
     <script>
         $(document).ready(function(){
             $('#listTable').DataTable({
-                stateSave: true
+                processing: true,
+                stateSave: true,
+                serverSide: true,
+                columns: [
+                    @foreach($list_fields as $field)
+                    {'name': '{{ $field->name }}'},
+                    @endforeach
+                    {
+                        'name': '',
+                        'sortable': false,
+                        'searchable': false
+                    }
+                ],
+                ajax: {
+                    headers: {
+                      'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    url:'/mgmt/jqdt/list/{{ $exmp->getUrlFriendlyName() }}',
+                    type: 'POST'
+                }
             });
         });
     </script>

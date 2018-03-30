@@ -1,6 +1,6 @@
 @if(isset($list) && $list)
     {{-- list view here --}}
-    {{ $value->{$value->label_key} }}
+    {{ $value[is_null($selected) ? '' : $selected] }}
 @else
     {{-- edit view here --}}
     <?php
