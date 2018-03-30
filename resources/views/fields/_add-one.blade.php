@@ -21,7 +21,7 @@
     }
 
     $meta_fields = $meta_fields ?: $related_items->first()->mgmt_fields;
-    $field_class = preg_replace('/.+\\\\/i', '', get_class($classref ? new $classref(): $related_items->first()));
+    $field_class = preg_replace('/.+\\\\/i', '', get_class($classref ? new $classref() : $related_items->first()));
 
     if(is_array($field->view_options) && count($field->view_options) > 0){
         $options = array_merge($options, $field->view_options);
