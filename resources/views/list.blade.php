@@ -64,7 +64,9 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-            $('#listTable').DataTable();
+            $('#listTable').DataTable({
+                stateSave: true
+            });
         });
     </script>
 @append

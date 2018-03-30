@@ -205,7 +205,7 @@ class MgmtController extends Controller
 
         $label_key = $items[0]->label_key;
 
-        if(count($items) == 1 && !isset($items[0]->$label_key))
+        if(count($items) == 1 && (!isset($items[0]->$label_key) || empty($items[0]->$label_key)))
         {
             $items = [];
         }
