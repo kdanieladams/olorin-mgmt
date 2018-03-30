@@ -56,26 +56,39 @@ class JqdtController extends Controller
 
     private function filterQry($classname)
     {
-        $searchQry = '%' . $this->input['search']['value'] . '%';
+        $searchQry = $this->input['search']['value'];
         if(!empty($searchQry)) {
+            $searchQry = '%' . $this->input['search']['value'] . '%';
             foreach($this->input['columns'] as $k => $col) {
                 if(!empty($col['name'])) {
-                    $field = $this->instance->mgmt_fields[$col['name']];
                     $field = $this->instance->mgmt_fields[$col['name']];
                     if($field->related) {
                         if($field->relationship == 'belongsTo') {
                             $col['name'] = $col['name'] . '_id';
+                            $relatedClassname = '\\' . $field->{$field->relationship};
+                            $relatedResults = array_flatten($relatedClassname::select('id')
+                                ->where($field->getLabelKey($this->instance), 'like', $searchQry)
+                                ->get()->toArray()
+                            );
+                            if($k == 0)
+                                $this->qry = $classname::orWhere(function($query) use($col, $relatedResults) {
+                                    $query->whereIn($col['name'], $relatedResults);
+                                });
+                            else
+                                $this->qry->orWhere(function($query) use($col, $relatedResults) {
+                                    $query->whereIn($col['name'], $relatedResults);
+                                });
+
+                            //dd($this->qry->toSql(), $searchQry, $relatedResults);
                         }
                         else {
                             continue;
                         }
                     }
-                    if($k == 0) {
+                    if($k == 0)
                         $this->qry = $classname::where($col['name'], 'like', $searchQry);
-                    }
-                    else {
+                    else
                         $this->qry->orWhere($col['name'], 'like', $searchQry);
-                    }
                 }
             }
         }
