@@ -263,6 +263,13 @@ table.dataTable tbody tr {
     color: #ccc;
   }
 }
+.input-group .select2-container .select2-selection--single {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.select2-container--default .select2-results > .select2-results__options {
+  overflow-x: hidden;
+}
 .select2-container--default .select2-results__option[aria-selected=true] {
   background-color: $dark-gray;
 }
@@ -270,10 +277,7 @@ table.dataTable tbody tr {
   background-color: $gray;
   color: $lightest-black;
 }
-.input-group .select2-container .select2-selection--single {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
+
 // Media Queries
 @media(min-width: 768px){
   body.mgmt {
