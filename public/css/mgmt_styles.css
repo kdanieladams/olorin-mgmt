@@ -7118,16 +7118,19 @@ table.dataTable tbody tr {
     background-color: transparent;
     color: #ccc; }
 
+.input-group .select2-container .select2-selection--single {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.select2-container--default .select2-results > .select2-results__options {
+  overflow-x: hidden; }
+
 .select2-container--default .select2-results__option[aria-selected=true] {
   background-color: #777; }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: #ccc;
   color: #121212; }
-
-.input-group .select2-container .select2-selection--single {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0; }
 
 @media (min-width: 768px) {
   body.mgmt table tr td {
