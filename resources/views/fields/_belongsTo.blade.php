@@ -5,7 +5,7 @@
     {{-- edit view here --}}
     <?php
     $default = "-- Select " . ucwords($label) . " --";
-    array_unshift($value, $default);
+    $value = [$default] + $value;
     ?>
 
     {!! FormGroup::select($name, ['value' => $value, 'selected' => $selected, 'label' => $label ]) !!}
