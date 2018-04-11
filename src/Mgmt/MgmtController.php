@@ -18,8 +18,6 @@ class MgmtController extends Controller
     public function __construct()
     {
         // parent::__construct();
-
-        $this->user = auth()->user();
     }
 
     /**
@@ -43,6 +41,9 @@ class MgmtController extends Controller
      */
     public function command(Request $request, $command, $model = null, $id = 0)
     {
+        if($this->user == null) {
+            $this->user = Auth::user();
+        }
         if($this->hasCommand($command)){
             $this->getModel($model);
 
