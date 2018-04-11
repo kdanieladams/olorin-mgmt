@@ -37,6 +37,16 @@ class Permission extends MgmtModel
     }
 
     /**
+     * Label attribute accessor.  Returns an empty string if not assigned.
+     *
+     * @return string
+     */
+    public function getLabelAttribute()
+    {
+        return isset($this->attributes['label']) ? $this->attributes['label'] : '';
+    }
+
+    /**
      * Define some properties for displaying this model's fields
      * in the MGMT editor.
      *
