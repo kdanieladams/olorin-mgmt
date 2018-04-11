@@ -7,8 +7,25 @@ use Olorin\Auth\Permission;
 
 class Role extends MgmtModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['name', 'label'];
+
+    /**
+     * Array of relationship class definitions for Mgmt.
+     *
+     * @var array
+     */
     protected $mgmt_relations = ['permissions' => ['belongsToMany', 'Olorin\Auth\Permission']];
+
+    /**
+     * Olorin\Auth\Permission::$name required to create a User.
+     *
+     * @var string
+     */
     public $create_permission = "create_roles";
 
     /**
@@ -39,6 +56,22 @@ class Role extends MgmtModel
         }
     }
 
+    /**
+     * Label attribute accessor.  Returns an empty string if not assigned.
+     *
+     * @return string
+     */
+    public function getLabelAttribute()
+    {
+        return isset($this->attributes['label']) ? $this->attributes['label'] : '';
+    }
+
+    /**
+     * Define some properties for displaying this model's fields
+     * in the MGMT editor.
+     *
+     * @return array|mixed
+     */
     public function getMgmtFieldsAttribute()
     {
         // run the base-model's method first to populate the $mgmt_fields array
