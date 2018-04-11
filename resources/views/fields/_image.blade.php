@@ -11,7 +11,7 @@
     <img src="{{ $image_url }}" class="image-preview">
 @else
     <?php $default = "-- Select " . ucwords($label) . " --"; ?>
-    {{-- inject some styles --}}
+
     @section('head')
         <style>
             #{{ $name }}_preview {
@@ -19,13 +19,6 @@
                 max-width: 100%;
                 max-height: 150px;
                 margin: 0 auto;
-            }
-
-            input[name="{{ $name }}_display"][readonly] {
-                background-color: inherit;
-            }
-            input[name="{{ $name }}_display"][readonly]:hover {
-                cursor: pointer;
             }
         </style>
     @append
@@ -74,9 +67,12 @@
                     var url = $('#{{ $name }}').data('url');
                     if(url.length > 0) {
                         $(this).prop('src', url);
-                        $(this).animate({'opacity': 1}, 500);
                     }
                 });
+            });
+
+            $('#{{ $name }}_preview').on('load', function(e){
+                $(this).animate({'opacity': 1}, 500);
             });
 
             $('#{{ $name }}').on('change', function(e){
@@ -92,14 +88,13 @@
             
             $('#{{ $name }}_file').on('change', function(e){
                 var url = window.URL.createObjectURL(this.files[0]),
-                    filename = this.files[0].name,
-                    label = filename,
-                    value = filename;
+                    filename = this.files[0].name;
 
                 // add it to the list of images
                 $('#{{ $name }}').children('.appended').remove();
+                $('#{{ $name }}').prop('selectedIndex', -1);
                 $('#{{ $name }}')
-                    .append('<option class="appended" data-value="' + filename + '" data-url="' + url + '">' 
+                    .append('<option class="appended" data-value="' + filename + '" data-url="' + url + '" selected>'
                         + filename + '</option>');
 
                 // display the image
