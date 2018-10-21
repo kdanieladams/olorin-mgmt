@@ -384,6 +384,7 @@ class MgmtField {
     {
         if(!$this->related) return false;
 
+        $newclass = false;
         $fieldname = $this->name;
         $value = $instance->$fieldname;
 
@@ -391,6 +392,7 @@ class MgmtField {
             $relationship = $this->relationship;
             $class = $this->$relationship;
             $value = new $class();
+            $newclass = true;
         }
 
         if($value instanceof Collection){
@@ -399,7 +401,7 @@ class MgmtField {
 
         $label_key = $value->label_key;
 
-        if(!isset($value->$label_key)){
+        if(!$newclass && !isset($value->$label_key)){
             if(isset($value->title)) {
                 $label_key = 'title';
             }
@@ -407,7 +409,7 @@ class MgmtField {
                 $label_key = 'name';
             }
             else {
-                //dd($instance->$fieldname, $fieldname, $value, $value->{$value->label_key}, $value->name, $label_key);
+                // dd($instance, $instance->$fieldname, $fieldname, $value, $value->{$value->label_key}, $value->name, $label_key);
                 throw new MgmtException("resolveRelatedFields(): Unable to determine related field identifier for "
                     . $this->name . '.', 1);
             }
