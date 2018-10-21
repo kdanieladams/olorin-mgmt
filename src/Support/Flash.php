@@ -27,7 +27,7 @@ class Flash
      */
     public function success($msg, $title = 'Success')
     {
-        return $this->flashMessage($title, $msg, 'success');
+        return $this->flashMessage($title, $msg, 'success', 'flash_message');
     }
 
 
@@ -40,7 +40,7 @@ class Flash
      */
     public function warning($msg, $title = 'Warning')
     {
-        return $this->flashMessage($title, $msg, 'warning');
+        return $this->flashMessage($title, $msg, 'warning', 'flash_message');
     }
 
 
@@ -91,7 +91,7 @@ class Flash
      * @param string $key
      * @return mixed
      */
-    private function flashMessage($title, $message, $type, $key = 'flash_message'){
+    private function flashMessage($title, $message, $type, $key = 'flash_message_alert'){
         return session()->flash($key, [
             'title'     => $title,
             'message'   => $message,

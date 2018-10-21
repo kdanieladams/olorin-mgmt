@@ -1,6 +1,6 @@
 @if(isset($list) && $list)
     {{-- list view here --}}
-    {{ $value[is_null($selected) ? '' : $selected] }}
+    {{ is_null($selected) || $selected == 0 ? '' : $value[$selected] }}
 @else
     {{-- edit view here --}}
     <?php

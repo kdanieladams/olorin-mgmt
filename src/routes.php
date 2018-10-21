@@ -11,7 +11,7 @@ Route::get('/mgmt/login', [
 Route::post('/mgmt/login', [
     'as' => 'mgmt.loginPost',
     'middleware' => 'web',
-    'uses' => '\Olorin\Auth\LoginLogoutController@postLogin'
+    'uses' => '\Olorin\Auth\LoginLogoutController@login'
 ]);
 
 Route::get('/mgmt/logout', [
